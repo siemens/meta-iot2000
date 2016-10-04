@@ -1,0 +1,28 @@
+diff -uNr galileo-target-0.1/scripts/etc/modules-load.d/auto.conf galileo-target-0.1.1/scripts/etc/modules-load.d/auto.conf
+--- galileo-target-0.1/scripts/etc/modules-load.d/auto.conf	2013-10-01 11:54:16.000000000 +0100
++++ galileo-target-0.1.1/scripts/etc/modules-load.d/auto.conf	1970-01-01 01:00:00.000000000 +0100
+@@ -1,24 +0,0 @@
+-pch-udc
+-g-serial vendor=0x8086 product=0xBABE
+-stmmac
+-ehci_hcd
+-ohci_hcd
+-ehci-pci
+-usb_storage
+-gpio_sch
+-intel_cln_gip i2c_std_mode=1
+-cy8c9540a
+-at24
+-i2c_dev
+-spidev
+-mtd
+-spi-pxa2xx-pci gpio_cs=0
+-spi-pxa2xx
+-industrialio
+-ad7298
+-iwlwifi
+-spi-lpc-sch
+-m25p80
+-btusb
+-usbhid
+-evdev

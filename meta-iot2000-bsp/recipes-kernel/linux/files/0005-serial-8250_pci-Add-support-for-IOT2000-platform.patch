@@ -1,0 +1,174 @@
+From e028a018fd02120e1c3a4bec513255db4855a09d Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Wed, 27 Jul 2016 16:32:20 +0200
+Subject: [PATCH 5/6] serial: 8250_pci: Add support for IOT2000 platform
+
+This implements the setup of RS232 and the switch-over to RS485 or RS422
+for the Siemens IOT2000 platform. That uses an EXAR XR17V352 with
+external logic to switch between the different modes. The external logic
+is controlled via MPIO pins of the EXAR controller.
+
+As the XR17V352 used on the IOT2000 is not equipped with an external
+EEPROM, it cannot present itself as IOT2000-variant via subvendor/
+subdevice IDs. Thus, we have to check via DMI for the target platform.
+
+Co-developed with Sascha Weisenberger.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Sascha Weisenberger <sascha.weisenberger@siemens.com>
+---
+ drivers/tty/serial/8250/8250_pci.c | 94 ++++++++++++++++++++++++++++++++++++--
+ include/uapi/linux/serial_reg.h    |  2 +
+ 2 files changed, 93 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/tty/serial/8250/8250_pci.c b/drivers/tty/serial/8250/8250_pci.c
+index eff6c2f..6e2590e 100644
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -22,6 +22,7 @@
+ #include <linux/8250_pci.h>
+ #include <linux/bitops.h>
+ #include <linux/rational.h>
++#include <linux/dmi.h>
+ 
+ #include <asm/byteorder.h>
+ #include <asm/io.h>
+@@ -1785,11 +1786,90 @@ xr17v35x_has_slave(struct serial_private *priv)
+ 	        (dev_id == PCI_DEVICE_ID_EXAR_XR17V8358));
+ }
+ 
++/*
++ * IOT2000 MPIO wiring semantics:
++ *
++ * MPIO		Port	Function
++ * ----		----	--------
++ * 0		2 	Mode bit 0
++ * 1		2	Mode bit 1
++ * 2		2	Terminate bus
++ * 3		2	<reserved>
++ * 4		3	Mode bit 0
++ * 5		3	Mode bit 1
++ * 6		3	Terminate bus
++ * 7		3	<reserved>
++ * 8		3	Enable
++ * 9		3	Enable
++ * 10		-	Red LED
++ * 11..15	-	<unused>
++ */
++
++/* IOT2000 MPIOs 0..7 */
++#define IOT2000_UART_MODE_RS232		0x01
++#define IOT2000_UART_MODE_RS485		0x02
++#define IOT2000_UART_MODE_RS422		0x03
++#define IOT2000_UART_TERMINATE_BUS	0x04
++
++#define IOT2000_UART1_MASK		0x0f
++#define IOT2000_UART2_SHIFT		4
++
++#define IOT2000_UARTS_DEFAULT_MODE	0x11	/* both RS232 */
++#define IOT2000_UARTS_DEFAULT_GPIO_MODE	0x88	/* direction pins as input */
++
++/* IOT2000 MPIOs 8..15 */
++#define IOT2000_UARTS_ENABLE		0x03
++
++static int pci_iot2000_rs485_config(struct uart_port *port,
++				    struct serial_rs485 *rs485)
++{
++	u8 __iomem *p = port->membase;
++	u8 mask = IOT2000_UART1_MASK;
++	u8 mode, value;
++	bool is_rs485 = false;
++
++	if (rs485->flags & SER_RS485_ENABLED) {
++		is_rs485 = true;
++		if (rs485->flags & SER_RS485_RX_DURING_TX)
++			mode = IOT2000_UART_MODE_RS422;
++		else
++			mode = IOT2000_UART_MODE_RS485;
++
++		if (rs485->flags & SER_RS485_TERMINATE_BUS)
++			mode |= IOT2000_UART_TERMINATE_BUS;
++	} else {
++		mode = IOT2000_UART_MODE_RS232;
++	}
++
++	if (port->line == 3) {
++		mask <<= IOT2000_UART2_SHIFT;
++		mode <<= IOT2000_UART2_SHIFT;
++	}
++
++	value = readb(p + UART_EXAR_MPIOLVL_7_0);
++	value &= ~mask;
++	value |= mode;
++	writeb(value, p + UART_EXAR_MPIOLVL_7_0);
++
++	value = readb(p + UART_EXAR_FCTR);
++	if (is_rs485)
++		value |= UART_FCTR_EXAR_485;
++	else
++		value &= ~UART_FCTR_EXAR_485;
++	writeb(value, p + UART_EXAR_FCTR);
++
++	if (is_rs485)
++		writeb(UART_EXAR_RS485_DLY(4), p + UART_MSR);
++
++	return 0;
++}
++
+ static int
+ pci_xr17v35x_setup(struct serial_private *priv,
+ 		  const struct pciserial_board *board,
+ 		  struct uart_8250_port *port, int idx)
+ {
++	bool is_iot2000;
+ 	u8 __iomem *p;
+ 
+ 	p = pci_ioremap_bar(priv->dev, 0);
+@@ -1798,6 +1878,11 @@ pci_xr17v35x_setup(struct serial_private *priv,
+ 
+ 	port->port.flags |= UPF_EXAR_EFR;
+ 
++	is_iot2000 = strcmp(dmi_get_system_info(DMI_BOARD_NAME),
++			    "SIMATIC IOT2000") == 0;
++	if (is_iot2000)
++		port->port.rs485_config = pci_iot2000_rs485_config;
++
+ 	/*
+ 	 * Setup the uart clock for the devices on expansion slot to
+ 	 * half the clock speed of the main chip (which is 125MHz)
+@@ -1810,13 +1895,16 @@ pci_xr17v35x_setup(struct serial_private *priv,
+ 	 */
+ 	if (idx == 0) {
+ 		writeb(0x00, p + UART_EXAR_MPIOINT_7_0);
+-		writeb(0x00, p + UART_EXAR_MPIOLVL_7_0);
++		writeb(is_iot2000 ? IOT2000_UARTS_DEFAULT_MODE : 0x00,
++		       p + UART_EXAR_MPIOLVL_7_0);
+ 		writeb(0x00, p + UART_EXAR_MPIO3T_7_0);
+ 		writeb(0x00, p + UART_EXAR_MPIOINV_7_0);
+-		writeb(0x00, p + UART_EXAR_MPIOSEL_7_0);
++		writeb(is_iot2000 ? IOT2000_UARTS_DEFAULT_GPIO_MODE : 0x00,
++		       p + UART_EXAR_MPIOSEL_7_0);
+ 		writeb(0x00, p + UART_EXAR_MPIOOD_7_0);
+ 		writeb(0x00, p + UART_EXAR_MPIOINT_15_8);
+-		writeb(0x00, p + UART_EXAR_MPIOLVL_15_8);
++		writeb(is_iot2000 ? IOT2000_UARTS_ENABLE : 0x00,
++		       p + UART_EXAR_MPIOLVL_15_8);
+ 		writeb(0x00, p + UART_EXAR_MPIO3T_15_8);
+ 		writeb(0x00, p + UART_EXAR_MPIOINV_15_8);
+ 		writeb(0x00, p + UART_EXAR_MPIOSEL_15_8);
+diff --git a/include/uapi/linux/serial_reg.h b/include/uapi/linux/serial_reg.h
+index cdb9f97..9be7eb2 100644
+--- a/include/uapi/linux/serial_reg.h
++++ b/include/uapi/linux/serial_reg.h
+@@ -365,6 +365,8 @@
+ #define UART_EXAR_SLEEP		0x8b	/* Sleep mode */
+ #define UART_EXAR_DVID		0x8d	/* Device identification */
+ 
++#define UART_EXAR_RS485_DLY(x) (x << 4)
++
+ #define UART_EXAR_FCTR		0x08	/* Feature Control Register */
+ #define UART_FCTR_EXAR_IRDA	0x10	/* IrDa data encode select */
+ #define UART_FCTR_EXAR_485	0x20	/* Auto 485 half duplex dir ctl */
+-- 
+2.1.4
+

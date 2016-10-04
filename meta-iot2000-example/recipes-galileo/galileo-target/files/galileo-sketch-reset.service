@@ -1,0 +1,9 @@
+[Unit]
+Description=Galileo Arduino Sketch Reset
+
+[Service]
+Type=simple
+ExecStart=/opt/cln/galileo/galileo_sketch_reset
+
+[Install]
+WantedBy=multi-user.target

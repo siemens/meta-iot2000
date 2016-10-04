@@ -1,0 +1,30 @@
+From 83143cd1012514d3131bb7e3fc660c774480d6c4 Mon Sep 17 00:00:00 2001
+From: Brendan Le Foll <brendan.le.foll@intel.com>
+Date: Fri, 23 May 2014 15:56:36 +0100
+Subject: [PATCH 2/2] dl-elf.c: never look in shared library loader for
+ libraries
+
+This essentially does the same as undef __LDSO_SEARCH_INTERP_PATH__ in the
+config but makes the hack even clearer.
+
+Signed-off-by: Brendan Le Foll <brendan.le.foll@intel.com>
+---
+ ldso/ldso/dl-elf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ldso/ldso/dl-elf.c b/ldso/ldso/dl-elf.c
+index 62174d3..db139e7 100644
+--- a/ldso/ldso/dl-elf.c
++++ b/ldso/ldso/dl-elf.c
+@@ -287,7 +287,7 @@ struct elf_resolve *_dl_load_shared_library(unsigned rflags, struct dyn_elf **rp
+ 		}
+ 	}
+ #endif
+-#if defined SHARED && defined __LDSO_SEARCH_INTERP_PATH__
++#if 0
+ 	/* Look for libraries wherever the shared library loader
+ 	 * was installed */
+ 	_dl_if_debug_dprint("\tsearching ldso dir='%s'\n", _dl_ldsopath);
+-- 
+1.7.10.4
+

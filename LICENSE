@@ -1,0 +1,7 @@
+The meta-iot2000 layers are generally made available under the MIT license
+except for explicitly marked components, which are GPLv2. Please see
+
+meta-iot2000-*/COPYING.MIT
+meta-iot2000-*/COPYING.GPLv2
+
+as well as separate COPYING files of components.

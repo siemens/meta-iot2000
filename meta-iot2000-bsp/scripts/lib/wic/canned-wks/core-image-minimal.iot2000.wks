@@ -1,0 +1,9 @@
+# short-description: Create an Galileo Gen 1/2 disk image
+# long-description: Creates a partitioned EFI disk image for Intel Galileo Gen 1/2,
+# that the user can directly dd to boot media.
+
+part /boot --source bootimg-efi --sourceparams="loader=gummiboot" --ondisk mmcblk0 --label msdos --active --align 1024
+
+part / --source rootfs --ondisk mmcblk0 --fstype=ext3 --label platform --align 1024
+
+bootloader  --timeout=0  --append="console=ttyS1,115200n8 reboot=efi,warm rw LABEL=boot debugshell=5"

@@ -1,0 +1,9 @@
+[Unit]
+Description=Galileo Arduino Layer
+
+[Service]
+Type=simple
+ExecStart=/bin/sh /opt/cln/galileo/launcher.sh
+
+[Install]
+WantedBy=multi-user.target

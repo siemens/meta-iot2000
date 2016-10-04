@@ -1,0 +1,32 @@
+From 18e2b81bd782b546ec42d6eb53ff410f25066bb8 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Tue, 26 Jul 2016 21:24:32 +0200
+Subject: [PATCH 4/6] serial: 8250_pci: Fix EXAR feature control register
+ constants
+
+According to the XR17V352 manual, bit 4 is IrDA control and bit 5 for
+485. Fortunately, no driver used them so far.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ include/uapi/linux/serial_reg.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/uapi/linux/serial_reg.h b/include/uapi/linux/serial_reg.h
+index 1e5ac4e7..cdb9f97 100644
+--- a/include/uapi/linux/serial_reg.h
++++ b/include/uapi/linux/serial_reg.h
+@@ -366,8 +366,8 @@
+ #define UART_EXAR_DVID		0x8d	/* Device identification */
+ 
+ #define UART_EXAR_FCTR		0x08	/* Feature Control Register */
+-#define UART_FCTR_EXAR_IRDA	0x08	/* IrDa data encode select */
+-#define UART_FCTR_EXAR_485	0x10	/* Auto 485 half duplex dir ctl */
++#define UART_FCTR_EXAR_IRDA	0x10	/* IrDa data encode select */
++#define UART_FCTR_EXAR_485	0x20	/* Auto 485 half duplex dir ctl */
+ #define UART_FCTR_EXAR_TRGA	0x00	/* FIFO trigger table A */
+ #define UART_FCTR_EXAR_TRGB	0x60	/* FIFO trigger table B */
+ #define UART_FCTR_EXAR_TRGC	0x80	/* FIFO trigger table C */
+-- 
+2.1.4
+

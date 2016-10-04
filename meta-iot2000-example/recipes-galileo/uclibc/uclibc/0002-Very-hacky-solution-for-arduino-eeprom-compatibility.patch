@@ -1,0 +1,30 @@
+From 34fbba9d0a204d541027fec5b4f0c294a9b1b59e Mon Sep 17 00:00:00 2001
+From: Claudius Heine <ch@denx.de>
+Date: Thu, 29 Sep 2016 15:13:34 +0200
+Subject: [PATCH] Very hacky solution for arduino eeprom compatibility
+
+This patches the `open()` to change the sysfs filepath to the eeprom.
+
+Signed-off-by: Claudius Heine <ch@denx.de>
+---
+ libc/sysdeps/linux/common/open.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/libc/sysdeps/linux/common/open.c b/libc/sysdeps/linux/common/open.c
+index fd37ea0..28172fe 100644
+--- a/libc/sysdeps/linux/common/open.c
++++ b/libc/sysdeps/linux/common/open.c
+@@ -29,6 +29,10 @@ int open(const char *file, int oflag, ...)
+ {
+ 	mode_t mode = 0;
+ 
++	if (0 == strcmp(file, "/sys/bus/i2c/devices/0-0050/eeprom") ||
++	    0 == strcmp(file, "/sys/bus/i2c/devices/0-0054/eeprom"))
++		file = "/sys/bus/i2c/devices/i2c-INT3499:00/eeprom";
++
+ 	if (oflag & O_CREAT) {
+ 		va_list arg;
+ 		va_start(arg, oflag);
+-- 
+2.9.3
+
