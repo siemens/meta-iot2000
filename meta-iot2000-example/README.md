@@ -18,9 +18,9 @@ This layer depends on:
   layers: meta-intel
   branch: krogoth
 
-  URI: git://github.com/intel-iot-devkit/meta-java
-  layers: meta-intel-java
-  branch: openjdk-8
+  URI: git://git.yoctoproject.org/meta-java
+  layers: meta-java
+  branch: master
 
   URI: git://git.yoctoproject.org/meta-intel-iot-middleware
   layers: meta-intel-iot-middleware
