@@ -45,13 +45,13 @@ Run additional commands to clone and checkout further dependencies.
 
 ```shell
 $ git clone git://git.openembedded.org/meta-openembedded poky/meta-oe -b krogoth
-$ git clone git://github.com/intel-iot-devkit/meta-java poky/meta-intel-java -b openjdk-8
+$ git clone git://git.yoctoproject.org/meta-java poky/meta-java
 $ git clone git://git.yoctoproject.org/meta-intel-iot-middleware poky/meta-intel-iot-middleware -b master
 ```
 
 ```shell
 $ git -C poky/meta-oe checkout 247b1267bbe9
-$ git -C poky/meta-intel-java checkout e53735323f3d
+$ git -C poky/meta-java checkout 3d7f23b15415
 $ git -C poky/meta-intel-iot-middleware checkout 821cf14c8304
 ```
 
@@ -69,7 +69,7 @@ environment.
    /home/build/poky/meta-yocto-bsp \
 +  /home/build/poky/meta-oe/meta-oe \
 +  /home/build/poky/meta-intel \
-+  /home/build/poky/meta-intel-java \
++  /home/build/poky/meta-java \
 +  /home/build/poky/meta-intel-iot-middleware \
 +  /home/build/poky/meta-iot2000/meta-iot2000-bsp \
 +  /home/build/poky/meta-iot2000/meta-iot2000-example \
