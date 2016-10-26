@@ -51,7 +51,7 @@ $ git clone git://git.yoctoproject.org/meta-intel-iot-middleware poky/meta-intel
 
 ```shell
 $ git -C poky/meta-oe checkout 247b1267bbe9
-$ git -C poky/meta-java checkout 3d7f23b15415
+$ git -C poky/meta-java checkout 9edf7d5aa5bd
 $ git -C poky/meta-intel-iot-middleware checkout 821cf14c8304
 ```
 
