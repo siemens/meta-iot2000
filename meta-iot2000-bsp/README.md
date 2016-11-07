@@ -93,7 +93,7 @@ $ bitbake core-image-minimal
 ```
 
 
-Booting the Image
+Booting the Image from SD card
 =================
 
 Under Linux, insert an unused SD card. Assuming the SD card takes device
@@ -107,3 +107,25 @@ If you want to ssh into the system, you can use the root terminal to
 ifconfig the IP address and use that to ssh in. The root password is
 empty, so to log in type 'root' for the user name and hit 'Enter' at
 the Password prompt and you should be in.
+
+
+Booting the Image from USB stick
+=================
+
+Under Linux, insert an unused USB stick. Assuming the USB stcik takes device
+/dev/sda, use dd to copy the image to it. For example:
+
+```shell
+$ sudo dd if=tmp/deploy/images/iot2000/core-image-minimal-iot2000.wic of=/dev/sda bs=4M oflag=sync
+```
+
+In addition, you have to change the boot config. On the first partition, navigate to the folder loader/entries, open the file boot.conf and change the following:
+
+```diff
+--- loader/entries/boot.conf.old
++++ loader/entries/boot.conf
+title boot
+linux /bzImage
+-options LABEL=Boot root=/dev/mmcblk0p2 console=ttyS1,115200n8 reboot=efi,warm rw LABEL=boot debugshell=5
++options LABEL=Boot root=/dev/sda2 console=ttyS1,115200n8 reboot=efi,warm rw LABEL=boot debugshell=5 rootdelay=1
+```
