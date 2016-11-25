@@ -225,6 +225,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=2ee41112a44fe7014dce33e26468ba93 \
                     file://node_modules/node-red-node-feedparser/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/bcrypt-pbkdf/node_modules/tweetnacl/COPYING.txt;md5=46f67a23fdd589f2f363fa861830f359 \
                     file://node_modules/node-red-node-feedparser/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/getpass/LICENSE;md5=38ecf0a3a3894f404ca99c2a08924afc \
                     file://node_modules/node-red-node-feedparser/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/asn1/LICENSE;md5=5ce2f42143c298495637e28e40cd5462 \
+                    file://node_modules/node-red-node-feedparser/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/dashdash/LICENSE.txt;md5=ebce61c1a0900d798daaf5853c69ce72 \
                     file://node_modules/node-red-node-feedparser/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/jodid25519/LICENSE;md5=5e6d2cd78a8664b38651e01b76a2323a \
                     file://node_modules/node-red-node-feedparser/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/jodid25519/node_modules/jsbn/LICENSE;md5=c6ea389b6b52325149beeec27075c5ac \
                     file://node_modules/node-red-node-feedparser/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/jsbn/LICENSE;md5=c6ea389b6b52325149beeec27075c5ac \
@@ -323,9 +324,9 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=2ee41112a44fe7014dce33e26468ba93 \
                     file://node_modules/sentiment/node_modules/lodash.assign/node_modules/lodash.keys/LICENSE;md5=a3b2b7770df62392c164de4001b59f8f \
                     file://node_modules/sentiment/node_modules/lodash.assign/node_modules/lodash.rest/LICENSE;md5=a3b2b7770df62392c164de4001b59f8f \
                     file://node_modules/cron/node_modules/moment-timezone/LICENSE;md5=a4bc4f89c63be47b29495aa61d6525bc \
-                    file://node_modules/cron/node_modules/moment-timezone/node_modules/moment/LICENSE;md5=f8a4ce497a1cfb9cfe47a1d983f3f321 \
+                    file://node_modules/cron/node_modules/moment-timezone/node_modules/moment/LICENSE;md5=397bb5fedab22612d8d69f1458a9321e \
                     file://node_modules/i18next/license;md5=b352c50e7426c74d9e3ff402e516912b \
-                    file://node_modules/i18next/node_modules/cookies/LICENSE.txt;md5=53aa5fd667a930886a2fee6fa7c97de8 \
+                    file://node_modules/i18next/node_modules/cookies/LICENSE;md5=682d05ded140d8b9878944462f099014 \
                     file://node_modules/i18next/node_modules/cookies/node_modules/keygrip/LICENSE.txt;md5=1860af38bb0bf0190d08c9ddf3d2165f \
                     file://node_modules/i18next/node_modules/cookies/node_modules/depd/LICENSE;md5=89378960d0c54c30539e50c7a78ce846 \
                     file://node_modules/i18next/node_modules/i18next-client/license;md5=d79f2ef6f5765f02c4b89fb58dda7352 \
@@ -475,7 +476,6 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=2ee41112a44fe7014dce33e26468ba93 \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/stringstream/LICENSE.txt;md5=3b3d0996fc07ae2d89c4659b9ffcbe2e \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/isstream/LICENSE.md;md5=1798150b9d70250c42b55b3530e6af2b \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/tunnel-agent/LICENSE;md5=f3f8ead5440d1c311b45be065d135d90 \
-                    file://node_modules/node-red-node-twitter/node_modules/request/node_modules/node-uuid/LICENSE.md;md5=465a37064da7d113df228e930a1cfdcd \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/mime-types/LICENSE;md5=bf1f9ad1e2e1d507aef4883fff7103de \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/mime-types/node_modules/mime-db/LICENSE;md5=c8d3a30332ecb31cfaf4c0a06da18f5c \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/forever-agent/LICENSE;md5=f3f8ead5440d1c311b45be065d135d90 \
@@ -489,6 +489,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=2ee41112a44fe7014dce33e26468ba93 \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/form-data/node_modules/mime-types/LICENSE;md5=bf1f9ad1e2e1d507aef4883fff7103de \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db/LICENSE;md5=c8d3a30332ecb31cfaf4c0a06da18f5c \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/form-data/node_modules/asynckit/LICENSE;md5=177bc287fb9558bf3ea50b440c1c86ff \
+                    file://node_modules/node-red-node-twitter/node_modules/request/node_modules/uuid/LICENSE.md;md5=465a37064da7d113df228e930a1cfdcd \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/http-signature/LICENSE;md5=38ecf0a3a3894f404ca99c2a08924afc \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/http-signature/node_modules/jsprim/LICENSE;md5=bc3c23d98d7aa86bbf232058884e19b2 \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/http-signature/node_modules/jsprim/node_modules/extsprintf/LICENSE;md5=bc3c23d98d7aa86bbf232058884e19b2 \
@@ -498,6 +499,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=2ee41112a44fe7014dce33e26468ba93 \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/bcrypt-pbkdf/node_modules/tweetnacl/COPYING.txt;md5=46f67a23fdd589f2f363fa861830f359 \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/getpass/LICENSE;md5=38ecf0a3a3894f404ca99c2a08924afc \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/asn1/LICENSE;md5=5ce2f42143c298495637e28e40cd5462 \
+                    file://node_modules/node-red-node-twitter/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/dashdash/LICENSE.txt;md5=ebce61c1a0900d798daaf5853c69ce72 \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/jodid25519/LICENSE;md5=5e6d2cd78a8664b38651e01b76a2323a \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/jodid25519/node_modules/jsbn/LICENSE;md5=c6ea389b6b52325149beeec27075c5ac \
                     file://node_modules/node-red-node-twitter/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/jsbn/LICENSE;md5=c6ea389b6b52325149beeec27075c5ac \
@@ -670,7 +672,6 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=2ee41112a44fe7014dce33e26468ba93 \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/stringstream/LICENSE.txt;md5=3b3d0996fc07ae2d89c4659b9ffcbe2e \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/isstream/LICENSE.md;md5=1798150b9d70250c42b55b3530e6af2b \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/tunnel-agent/LICENSE;md5=f3f8ead5440d1c311b45be065d135d90 \
-                    file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/node-uuid/LICENSE.md;md5=465a37064da7d113df228e930a1cfdcd \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/mime-types/LICENSE;md5=bf1f9ad1e2e1d507aef4883fff7103de \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/mime-types/node_modules/mime-db/LICENSE;md5=c8d3a30332ecb31cfaf4c0a06da18f5c \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/forever-agent/LICENSE;md5=f3f8ead5440d1c311b45be065d135d90 \
@@ -684,6 +685,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=2ee41112a44fe7014dce33e26468ba93 \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/form-data/node_modules/mime-types/LICENSE;md5=bf1f9ad1e2e1d507aef4883fff7103de \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/form-data/node_modules/mime-types/node_modules/mime-db/LICENSE;md5=c8d3a30332ecb31cfaf4c0a06da18f5c \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/form-data/node_modules/asynckit/LICENSE;md5=177bc287fb9558bf3ea50b440c1c86ff \
+                    file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/uuid/LICENSE.md;md5=465a37064da7d113df228e930a1cfdcd \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/http-signature/LICENSE;md5=38ecf0a3a3894f404ca99c2a08924afc \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/http-signature/node_modules/jsprim/LICENSE;md5=bc3c23d98d7aa86bbf232058884e19b2 \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/http-signature/node_modules/jsprim/node_modules/extsprintf/LICENSE;md5=bc3c23d98d7aa86bbf232058884e19b2 \
@@ -693,6 +695,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=2ee41112a44fe7014dce33e26468ba93 \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/bcrypt-pbkdf/node_modules/tweetnacl/COPYING.txt;md5=46f67a23fdd589f2f363fa861830f359 \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/getpass/LICENSE;md5=38ecf0a3a3894f404ca99c2a08924afc \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/asn1/LICENSE;md5=5ce2f42143c298495637e28e40cd5462 \
+                    file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/dashdash/LICENSE.txt;md5=ebce61c1a0900d798daaf5853c69ce72 \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/jodid25519/LICENSE;md5=5e6d2cd78a8664b38651e01b76a2323a \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/jodid25519/node_modules/jsbn/LICENSE;md5=c6ea389b6b52325149beeec27075c5ac \
                     file://node_modules/node-red-node-serialport/node_modules/serialport/node_modules/node-pre-gyp/node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/jsbn/LICENSE;md5=c6ea389b6b52325149beeec27075c5ac \
@@ -1622,13 +1625,13 @@ LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-request-isstream 
 LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-request-json-stringify-safe = "ISC"
 LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-request-mime-types-mime-db = "MIT"
 LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-request-mime-types = "MIT"
-LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-request-node-uuid = "MIT"
 LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-request-oauth-sign = "Unknown"
 LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-request-qs = "Unknown"
 LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-request-stringstream = "MIT"
 LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-request-tough-cookie-punycode = "MIT"
 LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-request-tough-cookie = "Unknown"
 LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-request-tunnel-agent = "Unknown"
+LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-request-uuid = "MIT"
 LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-request = "Unknown"
 LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-rimraf-glob-fs.realpath = "Unknown"
 LICENSE_${PN}-node-red-node-serialport-serialport-node-pre-gyp-rimraf-glob-inflight-once-wrappy = "ISC"
@@ -1896,13 +1899,13 @@ LICENSE_${PN}-node-red-node-twitter-request-isstream = "Unknown"
 LICENSE_${PN}-node-red-node-twitter-request-json-stringify-safe = "ISC"
 LICENSE_${PN}-node-red-node-twitter-request-mime-types-mime-db = "MIT"
 LICENSE_${PN}-node-red-node-twitter-request-mime-types = "MIT"
-LICENSE_${PN}-node-red-node-twitter-request-node-uuid = "MIT"
 LICENSE_${PN}-node-red-node-twitter-request-oauth-sign = "Unknown"
 LICENSE_${PN}-node-red-node-twitter-request-qs = "Unknown"
 LICENSE_${PN}-node-red-node-twitter-request-stringstream = "MIT"
 LICENSE_${PN}-node-red-node-twitter-request-tough-cookie-punycode = "MIT"
 LICENSE_${PN}-node-red-node-twitter-request-tough-cookie = "Unknown"
 LICENSE_${PN}-node-red-node-twitter-request-tunnel-agent = "Unknown"
+LICENSE_${PN}-node-red-node-twitter-request-uuid = "MIT"
 LICENSE_${PN}-node-red-node-twitter-request = "Unknown"
 LICENSE_${PN}-node-red-node-twitter-twitter-ng-oauth = "MIT"
 LICENSE_${PN}-node-red-node-twitter-twitter-ng = "Unknown"
