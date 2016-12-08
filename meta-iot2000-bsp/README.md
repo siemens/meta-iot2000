@@ -61,8 +61,8 @@ $ source poky/oe-init-build-env iot2000-build
 ## Configure:
 
 ```diff
---- conf/bblayers.conf.old
-+++ conf/bblayers.conf
+--- iot2000-build/conf/bblayers.conf.old
++++ iot2000-build/conf/bblayers.conf
 @@ -9,4 +9,6 @@
    /home/build/poky/meta \
    /home/build/poky/meta-poky \
@@ -73,8 +73,8 @@ $ source poky/oe-init-build-env iot2000-build
 ```
 
 ```diff
---- conf/local.conf.old
-+++ conf/local.conf
+--- iot2000-build/conf/local.conf.old
++++ iot2000-build/conf/local.conf
 @@ -34,7 +34,7 @@
  #MACHINE ?= "edgerouter"
  #
