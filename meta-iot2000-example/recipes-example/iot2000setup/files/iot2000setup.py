@@ -45,7 +45,7 @@ def displayStartScreen():
 	menuItems = [	"Change Root Password", "Change Host Name",
 					"Expand File System", "Configure Network Interfaces",
 					"Set up OPKG Repository",
-					"Remove Unused Packages"]
+					"Remove Unused Packages", "Advanced Options -->"]
 		
 	if (device == "IOT2020"):
 		deviceIsIot2020 = True
@@ -86,26 +86,28 @@ def displayStartScreen():
 		configureOpkgRepository()
 	elif selection == 5:
 		removeUnusedPackages()
-	#elif selection == 6:
-	#	advancedOptions()
 	elif selection == 6:
+		advancedOptions()
+	elif selection == 7:
 		if (not deviceIsIot2020):
 			configureSerial()
 		elif (wifiEnabled and wifiInterfaceConfigured):
 			configureWLAN()
-	elif selection == 7:
+	elif selection == 8:
 		configureWLAN()
 
 def changeNodeRedAutoStart(status):
 	if (status == "on"):
 		fileName = "/etc/init.d/launch_node-red.sh"
 		initFile = open(fileName, 'w')
-		initFile.write("#!/bin/sh\n" + "/usr/bin/node /usr/lib/node_modules/node-red/red &")
+		initFile.write("#!/bin/sh\n" + "/usr/bin/node /usr/lib/node_modules/node-red/red >/dev/null &")
 		initFile.close()
 					
 		st = os.stat(fileName)
 		os.chmod(fileName, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+		subprocess.call("update-rc.d launch_node-red.sh defaults", shell=True, stdout=open(os.devnull, 'wb'))
 	elif (status == "off"):
+		subprocess.call("update-rc.d launch_node-red.sh remove", shell=True, stdout=open(os.devnull, 'wb'))
 		os.remove("/etc/init.d/launch_node-red.sh")
 		
 def changeSshServerSetting(status):
@@ -117,7 +119,10 @@ def changeSshServerSetting(status):
 		subprocess.call("update-rc.d -f sshd remove", shell=True, stdout=open(os.devnull, 'wb'))
 	
 def advancedOptions():
-	sshEnabled = os.path.isfile("/etc/rc0.d/K20sshd")
+	task = subprocess.Popen("/etc/init.d/sshd status", stdout=subprocess.PIPE, shell=True)
+	taskReturn = task.stdout.read().lstrip().rstrip()
+	sshEnabled = "running" in taskReturn
+	
 	noderedAutostartEnabled = os.path.isfile("/etc/init.d/launch_node-red.sh")
 	
 	bb = ButtonBar(gscreen, [("Done", "done", "ESC")])
@@ -132,7 +137,6 @@ def advancedOptions():
 	result = g.runOnce()
 	selectedOptions = ct.getSelection()
 
-	
 	noderedAutostartEnabledNew = "Auto Start node-red" in selectedOptions
 	sshEnabledNew = "SSH Server Enabled" in selectedOptions
 	
@@ -224,7 +228,6 @@ def getSerialModeForPort(port):
 	return 0
 	
 def configureSerial():
-
 	portAction, portSelection = ListboxChoiceWindow(
 		gscreen, 
 		"Configure Serial Mode", "Select the serial port you want to configure and press 'Enter'.", 
@@ -265,14 +268,16 @@ def configureSerial():
 			subprocess.Popen([switchTool, switchDeviceArg, switchModeArg], stdout=open(os.devnull, 'wb'))
 			
 			if (persistentReturn == "yes"):
-				
-				fileName = "/etc/init.d/set_serial_mode_" + portName + ".sh"
+				fileName = "set_serial_mode_" + portName + ".sh"
+				filePath = "/etc/init.d/" + fileName
 				initFile = open(fileName, 'w')
 				initFile.write("#!/bin/sh\n" + switchCommand)
 				initFile.close()
 				
 				st = os.stat(fileName)
 				os.chmod(fileName, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+				subprocess.call("update-rc.d " + fileName + " defaults", shell=True, stdout=open(os.devnull, 'wb'))
+
 				
 	displayStartScreen()
 
@@ -295,7 +300,6 @@ def changeHostName():
 	displayStartScreen()
 	
 def configureOpkgRepository():
-
 	ret = EntryWindow(
 		gscreen,
 		"Configure OPKG Repository",
@@ -485,7 +489,6 @@ iface wlan0 inet static
 	
 
 def expandFileSystem():
-	
 	subprocess.call("/etc/iot2000setup/expandfs.sh", stdout=open(os.devnull, 'wb')) 
 	task = subprocess.Popen("df -h | grep '/dev/root' | awk '{print $2}'", stdout=subprocess.PIPE, shell=True)
 	newPartitionSize = task.stdout.read().lstrip().rstrip()
