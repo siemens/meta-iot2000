@@ -94,7 +94,7 @@ $ bitbake core-image-minimal
 
 
 Booting the Image from SD card
-=================
+==============================
 
 Under Linux, insert an unused SD card. Assuming the SD card takes device
 /dev/mmcblk0, use dd to copy the image to it. For example:
@@ -110,9 +110,9 @@ the Password prompt and you should be in.
 
 
 Booting the Image from USB stick
-=================
+================================
 
-Under Linux, insert an unused USB stick. Assuming the USB stcik takes device
+Under Linux, insert an unused USB stick. Assuming the USB stick takes device
 /dev/sda, use dd to copy the image to it. For example:
 
 ```shell
