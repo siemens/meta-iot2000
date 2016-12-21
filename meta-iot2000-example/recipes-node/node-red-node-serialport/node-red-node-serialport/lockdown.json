@@ -1,0 +1,44 @@
+{
+  "bindings": {
+    "1.2.1": "14ad6113812d2d37d72e67b4cacb4bb726505f11"
+  },
+  "commander": {
+    "2.9.0": "9c99094176e12240cb22d6c5146098400fe0f7d4"
+  },
+  "debug": {
+    "2.4.4": "c04d17a654e9202464803f096153f70a6f31f4be"
+  },
+  "define-properties": {
+    "1.1.2": "83a73f2fea569898fb737193c8f873caf6d45c94"
+  },
+  "foreach": {
+    "2.0.5": "0bee005018aeb260d0a3af3ae658dd0136ec1b99"
+  },
+  "function-bind": {
+    "1.1.0": "16176714c801798e4e8f2cf7f7529467bb4a5771"
+  },
+  "graceful-readlink": {
+    "1.0.1": "4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
+  },
+  "immediate": {
+    "3.0.6": "9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
+  },
+  "lie": {
+    "3.1.0": "65e0139eaef9ae791a1f5c8c53692c8d3b4718f4"
+  },
+  "ms": {
+    "0.7.2": "ae25cf2512b3885a1d95d7f037868d8431124765"
+  },
+  "nan": {
+    "2.4.0": "fb3c59d45fe4effe215f0b890f8adf6eb32d2232"
+  },
+  "object-keys": {
+    "1.0.11": "c54601778ad560f1142ce0e01bcca8b56d13426d"
+  },
+  "object.assign": {
+    "4.0.4": "b1c9cc044ef1b9fe63606fc141abbb32e14730cc"
+  },
+  "serialport": {
+    "4.0.7": "421c618a8a612bd40cfa461b4a46154daf2229a5"
+  }
+}
