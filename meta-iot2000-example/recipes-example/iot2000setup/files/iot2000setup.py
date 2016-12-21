@@ -489,7 +489,11 @@ iface wlan0 inet static
 	
 
 def expandFileSystem():
+	gscreen.finish()
+	print(chr(27) + "[2J") # Clear console
+	print("\033[1;34mExpanding File System...\033[0m\n")
 	subprocess.call("/etc/iot2000setup/expandfs.sh", stdout=open(os.devnull, 'wb')) 
+	initScreen()
 	task = subprocess.Popen("df -h | grep '/dev/root' | awk '{print $2}'", stdout=subprocess.PIPE, shell=True)
 	newPartitionSize = task.stdout.read().lstrip().rstrip()
 
