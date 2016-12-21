@@ -7,6 +7,7 @@ SRC_URI += " \
     file://0004-serial-8250_pci-Fix-EXAR-feature-control-register-co.patch \
     file://0005-serial-8250_pci-Add-support-for-IOT2000-platform.patch \
     file://0006-x86-efi-Add-capsule-update-driver-for-Intel-Quark.patch \
+    file://0007-serial-8250_pci-Add-support-for-accessing-red-LED-vi.patch \
     file://iot2000.cfg"
 
 LINUX_VERSION_iot2000 = "${LINUX_VERSION_INTEL_COMMON}"

@@ -4,3 +4,4 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI_append = " file://arp.cfg"
+SRC_URI_append = " file://lsusb.cfg"
