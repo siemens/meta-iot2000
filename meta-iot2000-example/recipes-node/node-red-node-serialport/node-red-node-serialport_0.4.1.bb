@@ -276,7 +276,6 @@ S = "${WORKDIR}/npmpkg"
 
 SUMMARY = "Node-RED nodes to talk to serial ports"
 NPM_SHRINKWRAP := "${THISDIR}/${PN}/npm-shrinkwrap.json"
-NPM_LOCKDOWN := "${THISDIR}/${PN}/lockdown.json"
 
 inherit npm
 
