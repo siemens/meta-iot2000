@@ -17,7 +17,7 @@
           }
         },
         "debug": {
-          "version": "2.4.4",
+          "version": "2.5.1",
           "dependencies": {
             "ms": {
               "version": "0.7.2"
@@ -33,7 +33,7 @@
           }
         },
         "nan": {
-          "version": "2.4.0"
+          "version": "2.5.0"
         },
         "node-pre-gyp": {
           "version": "0.6.32",
@@ -306,7 +306,7 @@
                           }
                         },
                         "jsonpointer": {
-                          "version": "4.0.0"
+                          "version": "4.0.1"
                         },
                         "xtend": {
                           "version": "4.0.1"
