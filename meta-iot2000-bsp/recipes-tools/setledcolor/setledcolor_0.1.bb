@@ -6,12 +6,9 @@ SRC_URI = "file://setledcolor.py"
 
 S = "${WORKDIR}"
 
-FILES_${PN} += "${sysconfdir}/setledcolor/setledcolor.py \
-				${bindir}/setledcolor"
+FILES_${PN} += "${bindir}/setledcolor.py"
 
 do_install() {
-	install -d ${D}${sysconfdir}/setledcolor
 	install -d ${D}${bindir}
-	install -m 755 ${WORKDIR}/setledcolor.py ${D}${sysconfdir}/setledcolor/
-	ln -sf /etc/setledcolor/setledcolor.py ${D}${bindir}/setledcolor
+	install -m 755 ${WORKDIR}/setledcolor.py ${D}${bindir}/
 }
