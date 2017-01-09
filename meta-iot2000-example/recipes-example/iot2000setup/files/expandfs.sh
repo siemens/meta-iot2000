@@ -29,4 +29,5 @@ parted -ms $ROOT_DEVICE unit s -- mkpart primary ext4 $START_BLOCK -1
 partprobe $ROOT_DEVICE
 resize2fs $ROOT_PARTITION
 
-exit 0
+update-rc.d -f expandfs.sh remove
+rm /etc/init.d/expandfs.sh
