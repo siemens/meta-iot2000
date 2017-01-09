@@ -18,6 +18,10 @@ wifiEnabled = True
 wifiInterfaceConfigured = True
 deviceIsIot2020 = False
 
+class ansicolors:
+	clear = '\033[2J'
+	blue = '\033[1;34m'
+	reset = '\033[0m'
 def initScreen():
 	global gscreen
 	gscreen = SnackScreen()
@@ -43,7 +47,7 @@ def displayStartScreen():
 	
 	title = device + " Setup"
 	menuItems = [	"Change Root Password", "Change Host Name",
-					"Expand File System", "Configure Network Interfaces",
+					"Configure Network Interfaces",
 					"Set up OPKG Repository",
 					"Remove Unused Packages", "Advanced Options -->"]
 		
@@ -65,8 +69,8 @@ def displayStartScreen():
 	if (action == 'quit'):
 		gscreen.finish()
 		if (networkConfigurationChanged == True):
-			print(chr(27) + "[2J") # Clear console
-			print("\033[1;34mRestarting network services...\033[0m\n")
+			print(ansicolors.clear) # Clear console
+			print(ansicolors.blue + "Restarting network services..." + ansicolors.reset + "\n")
 			subprocess.call("/etc/init.d/networking restart", shell=True)
 			if (wifiEnabled):
 				subprocess.call("/sbin/ifdown wlan0", shell=True)
@@ -79,21 +83,19 @@ def displayStartScreen():
 	elif selection == 1:
 		changeHostName()
 	elif selection == 2:
-		expandFileSystem()
-	elif selection == 3:
 		configureNetworkInterfaces()
-	elif selection == 4:
+	elif selection == 3:
 		configureOpkgRepository()
-	elif selection == 5:
+	elif selection == 4:
 		removeUnusedPackages()
-	elif selection == 6:
+	elif selection == 5:
 		advancedOptions()
-	elif selection == 7:
+	elif selection == 6:
 		if (not deviceIsIot2020):
 			configureSerial()
 		elif (wifiEnabled and wifiInterfaceConfigured):
 			configureWLAN()
-	elif selection == 8:
+	elif selection == 7:
 		configureWLAN()
 
 def changeNodeRedAutoStart(status):
@@ -106,6 +108,7 @@ def changeNodeRedAutoStart(status):
 		st = os.stat(fileName)
 		os.chmod(fileName, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
 		subprocess.call("update-rc.d launch_node-red.sh defaults", shell=True, stdout=open(os.devnull, 'wb'))
+		subprocess.call("/usr/bin/node /usr/lib/node_modules/node-red/red >/dev/null &", shell=True, stdout=open(os.devnull, 'wb'))
 	elif (status == "off"):
 		subprocess.call("update-rc.d launch_node-red.sh remove", shell=True, stdout=open(os.devnull, 'wb'))
 		os.remove("/etc/init.d/launch_node-red.sh")
@@ -156,14 +159,14 @@ def advancedOptions():
 
 def changeRootPassword():
 	gscreen.finish()
-	print(chr(27) + "[2J") # Clear console 
+	print(ansicolors.clear) # Clear console 
 	
 	subprocess.call(["passwd", "root"])
 	displayStartScreen()
 
 def removeUnusedPackages():
 	### Edit here ###
-	packageList = ["galileo-target", "nodejs"] 	# Contains all potential 
+	packageList = ["galileo-target", "nodejs", "tcf-agent"] 	# Contains all potential 
 												# candidates for removal
 	###
 	
@@ -205,8 +208,8 @@ def removeUnusedPackages():
 		if (ret == "ok"):	
 			removeList = "/usr/bin/opkg --force-removal-of-dependent-packages remove " + removeList
 			gscreen.finish()
-			print(chr(27) + "[2J") # Clear console 
-			print("\033[1;34mRemoving selected packages...\033[0m\n")
+			print(ansicolors.clear) # Clear console 
+			print(ansicolors.blue + "Removing selected packages..." + ansicolors.reset + "\n")
 			subprocess.call(removeList, shell=True)
 
 	displayStartScreen()
@@ -487,24 +490,6 @@ iface wlan0 inet static
 
 	displayStartScreen()
 	
-
-def expandFileSystem():
-	gscreen.finish()
-	print(chr(27) + "[2J") # Clear console
-	print("\033[1;34mExpanding File System...\033[0m\n")
-	subprocess.call("/etc/iot2000setup/expandfs.sh", stdout=open(os.devnull, 'wb')) 
-	initScreen()
-	task = subprocess.Popen("df -h | grep '/dev/root' | awk '{print $2}'", stdout=subprocess.PIPE, shell=True)
-	newPartitionSize = task.stdout.read().lstrip().rstrip()
-
-	rv = ButtonChoiceWindow(
-				gscreen,
-				"Expand File System",
-				"Successfully expanded file system. New partition size is " + newPartitionSize + ".",
-				buttons=["OK"],
-				width=40)
-
-	displayStartScreen()
 
 displayStartScreen()	
 
