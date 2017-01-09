@@ -1,0 +1,67 @@
+From 8657e7469820c307b0861f9ffb93d496b92cbd0f Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 16 Jan 2017 19:44:54 +0100
+Subject: [PATCH 07/24] spi: pxa2xx: Factor out handle_bad_msg
+
+Commit b03124825b8612bf371e5b4ccc2cd812ed3c2dbb upstream.
+
+As suggested by Andy Shevchenko: Decouple this corner cause from the
+general handling logic in ssp_int.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-pxa2xx.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 082d447ad929..904439fa6a00 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -677,6 +677,20 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
+ 	return IRQ_HANDLED;
+ }
+ 
++static void handle_bad_msg(struct driver_data *drv_data)
++{
++	pxa2xx_spi_write(drv_data, SSCR0,
++			 pxa2xx_spi_read(drv_data, SSCR0) & ~SSCR0_SSE);
++	pxa2xx_spi_write(drv_data, SSCR1,
++			 pxa2xx_spi_read(drv_data, SSCR1) & ~drv_data->int_cr1);
++	if (!pxa25x_ssp_comp(drv_data))
++		pxa2xx_spi_write(drv_data, SSTO, 0);
++	write_SSSR_CS(drv_data, drv_data->clear_sr);
++
++	dev_err(&drv_data->pdev->dev,
++		"bad message state in interrupt handler\n");
++}
++
+ static irqreturn_t ssp_int(int irq, void *dev_id)
+ {
+ 	struct driver_data *drv_data = dev_id;
+@@ -717,20 +731,7 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
+ 		return IRQ_NONE;
+ 
+ 	if (!drv_data->cur_msg) {
+-
+-		pxa2xx_spi_write(drv_data, SSCR0,
+-				 pxa2xx_spi_read(drv_data, SSCR0)
+-				 & ~SSCR0_SSE);
+-		pxa2xx_spi_write(drv_data, SSCR1,
+-				 pxa2xx_spi_read(drv_data, SSCR1)
+-				 & ~drv_data->int_cr1);
+-		if (!pxa25x_ssp_comp(drv_data))
+-			pxa2xx_spi_write(drv_data, SSTO, 0);
+-		write_SSSR_CS(drv_data, drv_data->clear_sr);
+-
+-		dev_err(&drv_data->pdev->dev,
+-			"bad message state in interrupt handler\n");
+-
++		handle_bad_msg(drv_data);
+ 		/* Never fail */
+ 		return IRQ_HANDLED;
+ 	}
+-- 
+2.12.0
+
