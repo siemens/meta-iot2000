@@ -1,0 +1,41 @@
+From 26f491825d8b026c5257482b09736cc55da579ff Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Sat, 21 Jan 2017 10:06:38 +0100
+Subject: [PATCH 08/24] spi: pxa2xx: Prepare for edge-triggered interrupts
+
+Commit e51e9b93049f624c179bab2c651995bca22b5bb7 upstream.
+
+When using the a device with edge-triggered interrupts, such as MSIs,
+the interrupt handler has to ensure that there is a point in time during
+its execution where all interrupts sources are silent so that a new
+event can trigger a new interrupt again.
+
+This is achieved here by disabling all interrupt sources for a moment
+before processing them according to the status register. If a new
+interrupt should have arrived after we read the status, it will now
+re-trigger the interrupt, even in edge mode.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-pxa2xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 904439fa6a00..b52faa295698 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -730,6 +730,9 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
+ 	if (!(status & mask))
+ 		return IRQ_NONE;
+ 
++	pxa2xx_spi_write(drv_data, SSCR1, sccr1_reg & ~drv_data->int_cr1);
++	pxa2xx_spi_write(drv_data, SSCR1, sccr1_reg);
++
+ 	if (!drv_data->cur_msg) {
+ 		handle_bad_msg(drv_data);
+ 		/* Never fail */
+-- 
+2.12.0
+
