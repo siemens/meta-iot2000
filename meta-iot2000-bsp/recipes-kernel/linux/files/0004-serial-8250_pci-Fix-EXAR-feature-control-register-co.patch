@@ -1,7 +1,7 @@
-From 18e2b81bd782b546ec42d6eb53ff410f25066bb8 Mon Sep 17 00:00:00 2001
+From 0b33f9b93d5c2849bf49da1f47cc0cd95bdc25e0 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Tue, 26 Jul 2016 21:24:32 +0200
-Subject: [PATCH 4/6] serial: 8250_pci: Fix EXAR feature control register
+Subject: [PATCH 04/10] serial: 8250_pci: Fix EXAR feature control register
  constants
 
 According to the XR17V352 manual, bit 4 is IrDA control and bit 5 for
@@ -28,5 +28,5 @@ index 1e5ac4e7..cdb9f97 100644
  #define UART_FCTR_EXAR_TRGB	0x60	/* FIFO trigger table B */
  #define UART_FCTR_EXAR_TRGC	0x80	/* FIFO trigger table C */
 -- 
-2.1.4
+2.10.2
 

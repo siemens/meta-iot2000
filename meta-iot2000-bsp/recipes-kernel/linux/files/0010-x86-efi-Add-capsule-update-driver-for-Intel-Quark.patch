@@ -1,7 +1,7 @@
-From 61f4da6f1038910ec8c1908430d6e56113593a38 Mon Sep 17 00:00:00 2001
+From 8d09f126fdb68ae20fbfcc197f8332b36c1b63ea Mon Sep 17 00:00:00 2001
 From: Claudius Heine <ch@denx.de>
 Date: Wed, 31 Aug 2016 12:27:16 +0200
-Subject: [PATCH 6/6] x86: efi: Add capsule update driver for Intel Quark
+Subject: [PATCH 10/10] x86: efi: Add capsule update driver for Intel Quark
 
 Based on original patch by Chee Hong Ang.
 
@@ -354,5 +354,5 @@ index 0000000..488783f
 +
 +device_initcall(efi_capsule_update_init);
 -- 
-2.1.4
+2.10.2
 

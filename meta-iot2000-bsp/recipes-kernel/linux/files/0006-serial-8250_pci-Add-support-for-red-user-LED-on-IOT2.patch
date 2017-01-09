@@ -1,0 +1,152 @@
+From 86c5a0c7eb3ca003992c20a17c0bdfe0712f8fa4 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 9 Jan 2017 20:24:39 +0100
+Subject: [PATCH 06/10] serial: 8250_pci: Add support for red user LED on
+ IOT2040
+
+The IOT2040 has a red LED connected to one of the MPIOs of the EXAR
+on-board UARTs. Wire it up to the LED subsystem.
+
+Based on work by Frank Ehlis and Sascha Weisenberger.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ drivers/tty/serial/8250/8250_pci.c | 80 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 79 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/tty/serial/8250/8250_pci.c b/drivers/tty/serial/8250/8250_pci.c
+index c611abf..3f0719a 100644
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -23,6 +23,7 @@
+ #include <linux/bitops.h>
+ #include <linux/rational.h>
+ #include <linux/dmi.h>
++#include <linux/leds.h>
+ 
+ #include <asm/byteorder.h>
+ #include <asm/io.h>
+@@ -58,6 +59,7 @@ struct serial_private {
+ 	unsigned int		nr;
+ 	void __iomem		*remapped_bar[PCI_NUM_BAR_RESOURCES];
+ 	struct pci_serial_quirk	*quirk;
++	void			*quirk_private;
+ 	int			line[0];
+ };
+ 
+@@ -1819,6 +1821,14 @@ xr17v35x_has_slave(struct serial_private *priv)
+ 
+ /* IOT2000 MPIOs 8..15 */
+ #define IOT2000_UARTS_ENABLE		0x03
++#define IOT2000_UART_LED_RED		0x04
++
++#define IOT2000_UART_LEDFS_NAME		"mpio_uart_led:red:user"
++
++struct iot2000_serial_private {
++	u8 __iomem *membase;
++	struct led_classdev led;
++};
+ 
+ static int pci_iot2000_rs485_config(struct uart_port *port,
+ 				    struct serial_rs485 *rs485)
+@@ -1864,13 +1874,43 @@ static int pci_iot2000_rs485_config(struct uart_port *port,
+ 	return 0;
+ }
+ 
++static void iot2000_brightness_set(struct led_classdev *cdev,
++				   enum led_brightness brightness)
++{
++	struct iot2000_serial_private *iot2000_priv =
++		container_of(cdev, struct iot2000_serial_private, led);
++	u8 value;
++
++	value = readb(iot2000_priv->membase + UART_EXAR_MPIOLVL_15_8);
++	if (brightness == LED_OFF)
++		value &= ~IOT2000_UART_LED_RED;
++	else
++		value |= IOT2000_UART_LED_RED;
++	writeb(value, iot2000_priv->membase + UART_EXAR_MPIOLVL_15_8);
++}
++
++static enum led_brightness iot2000_brightness_get(struct led_classdev *cdev)
++{
++	struct iot2000_serial_private *iot2000_priv =
++		container_of(cdev, struct iot2000_serial_private, led);
++	u8 value;
++
++	value = readb(iot2000_priv->membase + UART_EXAR_MPIOLVL_15_8);
++	if (value & IOT2000_UART_LED_RED)
++		return LED_FULL;
++
++	return LED_OFF;
++}
++
+ static int
+ pci_xr17v35x_setup(struct serial_private *priv,
+ 		  const struct pciserial_board *board,
+ 		  struct uart_8250_port *port, int idx)
+ {
++	struct iot2000_serial_private *iot2000_priv = NULL;
+ 	bool is_iot2000;
+ 	u8 __iomem *p;
++	int ret;
+ 
+ 	p = pci_ioremap_bar(priv->dev, 0);
+ 	if (p == NULL)
+@@ -1916,7 +1956,44 @@ pci_xr17v35x_setup(struct serial_private *priv,
+ 	writeb(128, p + UART_EXAR_RXTRG);
+ 	iounmap(p);
+ 
+-	return pci_default_setup(priv, board, port, idx);
++	ret = pci_default_setup(priv, board, port, idx);
++	if (ret)
++		return ret;
++
++	/* on IOT2000, register the red LED attached to the MPIO */
++	if (is_iot2000 && idx == 0) {
++		iot2000_priv = kzalloc(sizeof(*iot2000_priv), GFP_KERNEL);
++		if (!iot2000_priv)
++			return -ENOMEM;
++
++		iot2000_priv->membase = port->port.membase;
++
++		iot2000_priv->led.name = IOT2000_UART_LEDFS_NAME;
++		iot2000_priv->led.max_brightness = 1;
++		iot2000_priv->led.brightness_set = iot2000_brightness_set;
++		iot2000_priv->led.brightness_get = iot2000_brightness_get;
++		iot2000_priv->led.default_trigger = "none";
++		ret = led_classdev_register(port->port.dev, &iot2000_priv->led);
++		if (ret) {
++			kfree(iot2000_priv);
++			return ret;
++		}
++
++		priv->quirk_private = iot2000_priv;
++	}
++
++	return 0;
++}
++
++void pci_xr17v35x_exit(struct pci_dev *dev)
++{
++	struct serial_private *priv = pci_get_drvdata(dev);
++	struct iot2000_serial_private *iot2000_priv = priv->quirk_private;
++
++	if (iot2000_priv) {
++		led_classdev_unregister(&iot2000_priv->led);
++		kfree(iot2000_priv);
++	}
+ }
+ 
+ #define PCI_DEVICE_ID_COMMTECH_4222PCI335 0x0004
+@@ -2568,6 +2645,7 @@ static struct pci_serial_quirk pci_serial_quirks[] __refdata = {
+ 		.subvendor	= PCI_ANY_ID,
+ 		.subdevice	= PCI_ANY_ID,
+ 		.setup		= pci_xr17v35x_setup,
++		.exit		= pci_xr17v35x_exit,
+ 	},
+ 	{
+ 		.vendor = PCI_VENDOR_ID_EXAR,
+-- 
+2.10.2
+
