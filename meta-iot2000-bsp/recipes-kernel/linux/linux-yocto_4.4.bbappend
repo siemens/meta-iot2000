@@ -11,7 +11,7 @@ SRC_URI += " \
     file://0008-spi-pxa2xx-Prepare-for-edge-triggered-interrupts.patch \
     file://0009-spi-pca2xx-pci-Allow-MSI.patch \
     file://0010-x86-efi-Add-capsule-update-driver-for-Intel-Quark.patch \
-    file://iot2000.cfg"
+    file://iot2000.scc"
 
 LINUX_VERSION_iot2000 = "${LINUX_VERSION_INTEL_COMMON}"
 COMPATIBLE_MACHINE_iot2000 = "iot2000"
