@@ -25,7 +25,7 @@ SRC_URI += " \
     file://0022-efi-capsule-loader-Redirect-calls-to-efi_capsule_set.patch \
     file://0023-efi-capsule-loader-Use-page-addresses-rather-than-st.patch \
     file://0024-efi-capsule-Add-support-for-Quark-security-header.patch \
-    file://iot2000.cfg"
+    file://iot2000.scc"
 
 LINUX_VERSION_iot2000 = "${LINUX_VERSION_INTEL_COMMON}"
 COMPATIBLE_MACHINE_iot2000 = "iot2000"
