@@ -1,12 +1,7 @@
 require  recipes-core/images/core-image-minimal.bb
+require recipes-core/images/wic-image.inc
 
 DESCRIPTION = "Example image for the IOT2000 platform"
-
-IMAGE_FSTYPES_append_iot2000 = " wic"
-
-do_image_wic[depends] += "${PN}:do_bootimg"
-
-WKS_FILE = "core-image-minimal.${MACHINE}.wks"
 
 #example features
 IMAGE_FEATURES += " package-management"
