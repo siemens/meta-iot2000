@@ -24,7 +24,7 @@ START_BLOCK=$(parted $ROOT_DEVICE -ms unit s p | grep "^2" | cut -f 2 -d: | rev 
 
 parted -ms $ROOT_DEVICE rm $PART_NUMBER
 
-parted -ms $ROOT_DEVICE unit s -- mkpart primary ext4 $START_BLOCK -1
+parted -ms $ROOT_DEVICE unit s -- mkpart primary ext3 $START_BLOCK -1
 
 partprobe $ROOT_DEVICE
 resize2fs $ROOT_PARTITION
