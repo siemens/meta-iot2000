@@ -4,7 +4,7 @@
 #
 # WARNING: the following LICENSE and LIC_FILES_CHKSUM values are best guesses - it is
 # your responsibility to verify that the values are complete and correct.
-LICENSE = "Unknown"
+LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=2c0cb74248cfa16e787ab1cf4c16e94e"
 
 SRC_URI = "npm://registry.npmjs.org;name=node-red-node-intel-gpio;version=${PV}"
@@ -17,4 +17,4 @@ NPM_LOCKDOWN := "${THISDIR}/${PN}/lockdown.json"
 
 inherit npm
 
-LICENSE_${PN} = "Unknown"
+LICENSE_${PN} = "Apache-2.0"
