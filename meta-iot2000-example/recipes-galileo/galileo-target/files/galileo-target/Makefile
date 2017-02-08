@@ -36,7 +36,7 @@ $(ODIR)/%.o: %.c $(DEPEND)
 	$(CC) -c -o $@ $< $(CFLAGS) $(CFLAGS_EXTRA)
 
 clloader: $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+	$(CC) -o $@ $^ $(LDFLAGS) $(LIBS)
 
 
 
@@ -50,7 +50,7 @@ $(RST_ODIR)/%.o: %.c $(RST_DEPEND)
 	$(CC) -c -o $@ $< $(CFLAGS) $(CFLAGS_EXTRA)
 
 galileo_sketch_reset: $(RST_OBJ)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+	$(CC) -o $@ $^ $(LDFLAGS) $(LIBS)
 
 .PHONY: clean
 
