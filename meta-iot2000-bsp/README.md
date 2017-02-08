@@ -11,20 +11,20 @@ This layer depends on:
 ```
   URI: git://git.yoctoproject.org/poky
   layers: meta, meta-yocto, meta-yocto-bsp
-  branch: krogoth
+  branch: morty
 
   URI: git://git.yoctoproject.org/meta-intel
   layers: meta-intel
-  branch: krogoth
+  branch: morty
 ```
 
 
 Building the meta-iot2000 BSP Layer
 ===================================
 
-This uses Yocto 2.1 (Krogoth) with the 4.4 Linux kernel provided by Yocto and
+This uses Yocto 2.2 (Morty) with the 4.4 Linux kernel provided by Yocto and
 the meta-intel layer. The build has be tested successfully on Debian 8 and
-OpenSuse 13.2, but other recent distros are expected to work as well.
+OpenSuse 42.2, but other recent distros are expected to work as well.
 
 ## Prepare:
 
@@ -32,20 +32,20 @@ For setting up your host pc see the following description:
 [3. Setting Up to Use the Yocto Project](http://www.yoctoproject.org/docs/2.1/mega-manual/mega-manual.html#yp-resources)
 
 ```shell
-$ git clone git://git.yoctoproject.org/poky.git poky -b krogoth
-$ git clone git://git.yoctoproject.org/meta-intel poky/meta-intel -b krogoth
+$ git clone git://git.yoctoproject.org/poky.git poky -b morty
+$ git clone git://git.yoctoproject.org/meta-intel poky/meta-intel -b morty
 ```
 
-For the exact revision, you have to checkout these versions:
+For using tested revisions, you have to checkout these versions:
 
 ```shell
-$ git -C poky checkout e59717e80f62
-$ git -C poky/meta-intel checkout 1f8dd1b00ce9
+$ git -C poky checkout 6a1f33cc40bf
+$ git -C poky/meta-intel checkout 6add41510412
 ```
 
 You may update to a newer Yocto versions as needed (e.g. to include security
 fixes), but be aware of potential breakages. Tests were performed only against
-2.1 and the specified meta-intel revision so far.
+the specified revisions so far.
 
 ## Download meta-iot2000 (unless already done):
 ```shell

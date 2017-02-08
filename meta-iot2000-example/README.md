@@ -8,25 +8,27 @@ This layer depends on:
 ```
   URI: git://git.yoctoproject.org/poky
   layers: meta, meta-yocto, meta-yocto-bsp
-  branch: krogoth
+  branch: morty
 
   URI: git://git.openembedded.org/meta-openembedded
   layers: meta-oe
-  branch: krogoth
+  branch: morty
 
   URI: git://git.yoctoproject.org/meta-intel
   layers: meta-intel
-  branch: krogoth
+  branch: morty
 
   URI: git://git.yoctoproject.org/meta-java
   layers: meta-java
-  branch: master
+  branch: morty
 
   URI: git://git.yoctoproject.org/meta-intel-iot-middleware
   layers: meta-intel-iot-middleware
   branch: master
 
-  https://github.com/imyller/meta-nodejs.git
+  URI: git://github.com/imyller/meta-nodejs
+  layers: meta-nodejs
+  branch: morty
 
   URI: git://github.com/siemens/meta-iot2000
   layers: meta-iot2000-bsp
@@ -46,17 +48,17 @@ additional / differing steps.
 Run additional commands to clone and checkout further dependencies.
 
 ```shell
-$ git clone git://git.openembedded.org/meta-openembedded poky/meta-oe -b krogoth
-$ git clone git://git.yoctoproject.org/meta-java poky/meta-java
+$ git clone git://git.openembedded.org/meta-openembedded poky/meta-oe -b morty
+$ git clone git://git.yoctoproject.org/meta-java poky/meta-java -b morty
 $ git clone git://git.yoctoproject.org/meta-intel-iot-middleware poky/meta-intel-iot-middleware -b master
-$ git clone git://github.com/imyller/meta-nodejs.git poky/meta-nodejs -b krogoth
+$ git clone git://github.com/imyller/meta-nodejs.git poky/meta-nodejs -b morty
 ```
 
 ```shell
-$ git -C poky/meta-oe checkout 55c8a76da5dc
-$ git -C poky/meta-java checkout a265b31ec7d0
+$ git -C poky/meta-oe checkout fe5c83312de1
+$ git -C poky/meta-java checkout 67e48693501b
 $ git -C poky/meta-intel-iot-middleware checkout fc8eabfa4fb5
-$ git -C poky/meta-nodejs checkout 3c2d7b61ba45
+$ git -C poky/meta-nodejs checkout 57e534dd8a53
 ```
 
 Then download meta-iot2000 (if not done already) and enter the build
@@ -81,8 +83,24 @@ environment.
    "
 ```
 
-This replaces the changes to conf/bblayers.conf documented in
-()[../meta-iot2000-bsp/README.md]. The changes to conf/local.conf are the same.
+```diff
+--- iot2000-build/conf/local.conf.old
++++ iot2000-build/conf/local.conf
+@@ -34,7 +34,9 @@
+ #MACHINE ?= "edgerouter"
+ #
+ # This sets the default machine to be qemux86 if no other machine is selected:
+-MACHINE ??= "qemux86"
++MACHINE ??= "iot2000"
++
++PACKAGE_CLASSES = "package_ipk"
+ 
+ #
+ # Where to place downloads
+```
+
+This replaces the changes to conf/bblayers.conf and conf/local.conf documented
+in [BSP readme](../meta-iot2000-bsp/README.md).
 
 #
 # SDK target architecture
