@@ -1,0 +1,56 @@
+From 235f5fb7d83dc9f4f896e7d469665162bae91b55 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Sun, 30 Jul 2017 09:45:41 +0200
+Subject: [PATCH 3/3] cmd/internal/obj/x86, cmd/compile/internal/x86: Add Intel
+ Quark workaround
+
+The Quark erratum #24 requires us to leave out any LOCK prefix from
+instructions that may cause segfaults. The GNU assembler has a special
+switch for that. We can add another GO386 mode: quark. It's identical to
+387, except that it tells the assembler to not generate any LOCK prefix.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ src/cmd/compile/internal/x86/galign.go | 2 +-
+ src/cmd/internal/obj/x86/asm6.go       | 7 +++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/src/cmd/compile/internal/x86/galign.go b/src/cmd/compile/internal/x86/galign.go
+index 2535e3e165..d4353cb639 100644
+--- a/src/cmd/compile/internal/x86/galign.go
++++ b/src/cmd/compile/internal/x86/galign.go
+@@ -52,7 +52,7 @@ func Main() {
+ 	gc.Thearch.REGMIN = x86.REG_AX
+ 	gc.Thearch.REGMAX = x86.REG_DI
+ 	switch v := obj.Getgo386(); v {
+-	case "387":
++	case "387", "quark":
+ 		gc.Thearch.FREGMIN = x86.REG_F0
+ 		gc.Thearch.FREGMAX = x86.REG_F7
+ 		gc.Thearch.Use387 = true
+diff --git a/src/cmd/internal/obj/x86/asm6.go b/src/cmd/internal/obj/x86/asm6.go
+index 4ed1d8790b..8168fc83ba 100644
+--- a/src/cmd/internal/obj/x86/asm6.go
++++ b/src/cmd/internal/obj/x86/asm6.go
+@@ -2015,11 +2015,18 @@ func span6(ctxt *obj.Link, s *obj.LSym) {
+ 	}
+ }
+ 
++var isQuark = (obj.Getgo386() == "quark")
++
+ func instinit() {
+ 	var c int
+ 
+ 	for i := 1; optab[i].as != 0; i++ {
+ 		c = int(optab[i].as)
++
++		if isQuark && c == ALOCK {
++			optab[i].op = [23]uint8{}
++		}
++
+ 		if opindex[c&obj.AMask] != nil {
+ 			log.Fatalf("phase error in optab: %d (%v)", i, obj.Aconv(c))
+ 		}
+-- 
+2.12.3
+

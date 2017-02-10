@@ -1,0 +1,1 @@
+go-cross_1.6-dummy.bb
