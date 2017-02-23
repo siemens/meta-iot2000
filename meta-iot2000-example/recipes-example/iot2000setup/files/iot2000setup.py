@@ -102,7 +102,7 @@ def changeNodeRedAutoStart(status):
 	if (status == "on"):
 		fileName = "/etc/init.d/launch_node-red.sh"
 		initFile = open(fileName, 'w')
-		initFile.write("#!/bin/sh\n" + "/usr/bin/node /usr/lib/node_modules/node-red/red >/dev/null &")
+		initFile.write("#!/bin/sh\n" + "su root -c \"/usr/bin/node /usr/lib/node_modules/node-red/red >/dev/null\" &")
 		initFile.close()
 					
 		st = os.stat(fileName)
