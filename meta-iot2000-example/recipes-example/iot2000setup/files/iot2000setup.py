@@ -98,21 +98,6 @@ def displayStartScreen():
 	elif selection == 7:
 		configureWLAN()
 
-def changeNodeRedAutoStart(status):
-	if (status == "on"):
-		fileName = "/etc/init.d/launch_node-red.sh"
-		initFile = open(fileName, 'w')
-		initFile.write("#!/bin/sh\n" + "su root -c \"/usr/bin/node /usr/lib/node_modules/node-red/red >/dev/null\" &")
-		initFile.close()
-					
-		st = os.stat(fileName)
-		os.chmod(fileName, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
-		subprocess.call("update-rc.d launch_node-red.sh defaults", shell=True, stdout=open(os.devnull, 'wb'))
-		subprocess.call("/usr/bin/node /usr/lib/node_modules/node-red/red >/dev/null &", shell=True, stdout=open(os.devnull, 'wb'))
-	elif (status == "off"):
-		subprocess.call("update-rc.d launch_node-red.sh remove", shell=True, stdout=open(os.devnull, 'wb'))
-		os.remove("/etc/init.d/launch_node-red.sh")
-		
 def changeSshServerSetting(status):
 	if (status == "on"):
 		subprocess.call("update-rc.d -f sshd defaults", shell=True, stdout=open(os.devnull, 'wb'))
@@ -120,19 +105,36 @@ def changeSshServerSetting(status):
 	elif (status == "off"):
 		subprocess.call("/etc/init.d/sshd stop", shell=True, stdout=open(os.devnull, 'wb'))
 		subprocess.call("update-rc.d -f sshd remove", shell=True, stdout=open(os.devnull, 'wb'))
-	
+
+def registerLaunchScript(status, fileName, scriptcontent):
+	if (status == "on"):
+		initFile = open("/etc/init.d/" + fileName, 'w')
+		initFile.write(scriptcontent)
+		initFile.close()
+
+		st = os.stat("/etc/init.d/" + fileName)
+		os.chmod("/etc/init.d/" + fileName, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+
+		subprocess.call("update-rc.d " + fileName + " defaults", shell=True, stdout=open(os.devnull, 'wb'))
+		subprocess.call("/etc/init.d/" + fileName, shell=True, stdout=open(os.devnull, 'wb'))
+	elif (status == "off"):
+		subprocess.call("update-rc.d " + fileName + " remove", shell=True, stdout=open(os.devnull, 'wb'))
+		os.remove("/etc/init.d/" + fileName)
+
 def advancedOptions():
 	task = subprocess.Popen("/etc/init.d/sshd status", stdout=subprocess.PIPE, shell=True)
 	taskReturn = task.stdout.read().lstrip().rstrip()
 	sshEnabled = "running" in taskReturn
 	
 	noderedAutostartEnabled = os.path.isfile("/etc/init.d/launch_node-red.sh")
+	mosquittoAutostartEnabled = os.path.isfile("/etc/init.d/launch_mosquitto.sh")
 	
 	bb = ButtonBar(gscreen, [("Done", "done", "ESC")])
 	ct = CheckboxTree(height = 7, scroll = 1,width=40)
 
 	ct.append("Auto Start node-red", selected=noderedAutostartEnabled)
 	ct.append("SSH Server Enabled", selected=sshEnabled)
+	ct.append("Auto Start Mosquitto Broker", selected=mosquittoAutostartEnabled)
 
 	g = GridForm(gscreen, "Advanced Options", 1, 4)
 	g.add(ct, 0, 1)
@@ -142,18 +144,30 @@ def advancedOptions():
 
 	noderedAutostartEnabledNew = "Auto Start node-red" in selectedOptions
 	sshEnabledNew = "SSH Server Enabled" in selectedOptions
+	mosquittoAutostartEnabledNew = "Auto Start Mosquitto Broker" in selectedOptions
 	
 	if (noderedAutostartEnabled != noderedAutostartEnabledNew):
 		if ("Auto Start node-red" in selectedOptions):
-			changeNodeRedAutoStart("on")
+			registerLaunchScript("on", "launch_node-red.sh", "#!/bin/sh\nsu root -c \"/usr/bin/node /usr/lib/node_modules/node-red/red >/dev/null\" &")
 		else:
-			changeNodeRedAutoStart("off")
+			registerLaunchScript("off", "launch_node-red.sh", "")
 			
 	if (sshEnabled != sshEnabledNew):
 		if ("SSH Server Enabled" in selectedOptions):
 			changeSshServerSetting("on")
 		else:
 			changeSshServerSetting("off")
+
+	if (mosquittoAutostartEnabled != mosquittoAutostartEnabledNew):
+		if ("Auto Start Mosquitto Broker" in selectedOptions):
+			registerLaunchScript("on", "launch_mosquitto.sh", "#!/bin/sh\nsu root -c \"/usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf -d &>/dev/null\" ")
+
+			fileName = "/etc/mosquitto/mosquitto.conf"
+			initFile = open(fileName, 'w')
+			initFile.write("user root")
+			initFile.close()
+		else:
+			registerLaunchScript("off", "launch_mosquitto.sh", "")
 
 	displayStartScreen()
 
