@@ -39,7 +39,7 @@ $ git clone git://git.yoctoproject.org/meta-intel poky/meta-intel -b krogoth
 For the exact revision, you have to checkout these versions:
 
 ```shell
-$ git -C poky checkout yocto-2.1
+$ git -C poky checkout b4df9df4624a
 $ git -C poky/meta-intel checkout 1f8dd1b00ce9
 ```
 
