@@ -53,9 +53,9 @@ $ git clone git://github.com/imyller/meta-nodejs.git poky/meta-nodejs -b krogoth
 ```
 
 ```shell
-$ git -C poky/meta-oe checkout 247b1267bbe9
-$ git -C poky/meta-java checkout 9edf7d5aa5bd
-$ git -C poky/meta-intel-iot-middleware checkout 821cf14c8304
+$ git -C poky/meta-oe checkout 55c8a76da5dc
+$ git -C poky/meta-java checkout a265b31ec7d0
+$ git -C poky/meta-intel-iot-middleware checkout fc8eabfa4fb5
 $ git -C poky/meta-nodejs checkout 3c2d7b61ba45
 ```
 
