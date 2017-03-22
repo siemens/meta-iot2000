@@ -6,4 +6,4 @@ part /boot --source bootimg-efi --sourceparams="loader=gummiboot" --ondisk mmcbl
 
 part / --source rootfs --ondisk mmcblk0 --fstype=ext3 --label platform --align 1024
 
-bootloader  --timeout=0  --append="console=ttyS1,115200n8 reboot=efi,warm rw LABEL=boot debugshell=5"
+bootloader  --timeout=0  --append="console=ttyS1,115200n8 reboot=efi,warm rw LABEL=boot debugshell=5 rootdelay=1"

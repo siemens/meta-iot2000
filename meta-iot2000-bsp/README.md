@@ -126,6 +126,6 @@ In addition, you have to change the boot config. On the first partition, navigat
 +++ loader/entries/boot.conf
 title boot
 linux /bzImage
--options LABEL=Boot root=/dev/mmcblk0p2 console=ttyS1,115200n8 reboot=efi,warm rw LABEL=boot debugshell=5
+-options LABEL=Boot root=/dev/mmcblk0p2 console=ttyS1,115200n8 reboot=efi,warm rw LABEL=boot debugshell=5 rootdelay=1
 +options LABEL=Boot root=/dev/sda2 console=ttyS1,115200n8 reboot=efi,warm rw LABEL=boot debugshell=5 rootdelay=1
 ```
