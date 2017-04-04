@@ -1,7 +1,7 @@
-From 90eae7abbc0e5addb47ed7833de29636b1557cf4 Mon Sep 17 00:00:00 2001
+From 7348794ded68cb2066e4906d9246ed8feb0d6109 Mon Sep 17 00:00:00 2001
 From: Sascha Weisenberger <sascha.weisenberger@siemens.com>
 Date: Wed, 6 Jul 2016 15:27:20 +0100
-Subject: [PATCH 1/6] stmmac: adding support for platform IOT2000
+Subject: [PATCH 01/10] stmmac: adding support for platform IOT2000
 
 IOT2000 covers both, IOT2020 and IOT2040, while only the IOT2040 has
 two LAN ports.
@@ -33,5 +33,5 @@ index d71a721..07e24ef 100644
  };
  
 -- 
-2.1.4
+2.10.2
 

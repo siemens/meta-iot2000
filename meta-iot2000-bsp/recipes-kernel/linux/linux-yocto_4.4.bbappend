@@ -6,9 +6,12 @@ SRC_URI += " \
     file://0003-serial-8250_pci-Use-symbolic-constants-for-EXAR-s-MP.patch \
     file://0004-serial-8250_pci-Fix-EXAR-feature-control-register-co.patch \
     file://0005-serial-8250_pci-Add-support-for-IOT2000-platform.patch \
-    file://0006-x86-efi-Add-capsule-update-driver-for-Intel-Quark.patch \
-    file://0007-serial-8250_pci-Add-support-for-accessing-red-LED-vi.patch \
-    file://iot2000.cfg"
+    file://0006-serial-8250_pci-Add-support-for-red-user-LED-on-IOT2.patch \
+    file://0007-spi-pxa2xx-Factor-out-handle_bad_msg.patch \
+    file://0008-spi-pxa2xx-Prepare-for-edge-triggered-interrupts.patch \
+    file://0009-spi-pca2xx-pci-Allow-MSI.patch \
+    file://0010-x86-efi-Add-capsule-update-driver-for-Intel-Quark.patch \
+    file://iot2000.scc"
 
 LINUX_VERSION_iot2000 = "${LINUX_VERSION_INTEL_COMMON}"
 COMPATIBLE_MACHINE_iot2000 = "iot2000"
