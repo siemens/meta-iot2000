@@ -47,6 +47,7 @@ Run additional commands to clone and checkout further dependencies.
 
 ```shell
 $ git clone git://git.openembedded.org/meta-openembedded poky/meta-oe -b krogoth
+$ git clone git://git.yoctoproject.org/meta-intel poky/meta-intel -b krogoth
 $ git clone git://git.yoctoproject.org/meta-java poky/meta-java
 $ git clone git://git.yoctoproject.org/meta-intel-iot-middleware poky/meta-intel-iot-middleware -b master
 $ git clone git://github.com/imyller/meta-nodejs.git poky/meta-nodejs -b krogoth
