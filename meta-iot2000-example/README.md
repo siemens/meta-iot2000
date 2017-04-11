@@ -56,6 +56,7 @@ $ git clone git://github.com/imyller/meta-nodejs.git poky/meta-nodejs -b krogoth
 $ git -C poky/meta-oe checkout 247b1267bbe9
 $ git -C poky/meta-java checkout 9edf7d5aa5bd
 $ git -C poky/meta-intel-iot-middleware checkout 821cf14c8304
+$ git -C poky/meta-nodejs checkout 3c2d7b61ba45
 ```
 
 Then download meta-iot2000 (if not done already) and enter the build
@@ -66,7 +67,7 @@ environment.
 ```diff
 --- iot2000-build/conf/bblayers.conf.old
 +++ iot2000-build/conf/bblayers.conf
-@@ -9,4 +9,10 @@
+@@ -9,4 +9,11 @@
    /home/build/poky/meta \
    /home/build/poky/meta-poky \
    /home/build/poky/meta-yocto-bsp \
@@ -74,6 +75,7 @@ environment.
 +  /home/build/poky/meta-intel \
 +  /home/build/poky/meta-java \
 +  /home/build/poky/meta-intel-iot-middleware \
++  /home/build/poky/meta-nodejs \
 +  /home/build/poky/meta-iot2000/meta-iot2000-bsp \
 +  /home/build/poky/meta-iot2000/meta-iot2000-example \
    "
