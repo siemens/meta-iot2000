@@ -1,4 +1,3 @@
-require  recipes-core/images/core-image-minimal.bb
 require recipes-core/images/wic-image.inc
 
 DESCRIPTION = "Example image for the IOT2000 platform"
