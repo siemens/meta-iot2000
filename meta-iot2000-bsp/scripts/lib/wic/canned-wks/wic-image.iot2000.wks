@@ -1,5 +1,5 @@
-# short-description: Create an Galileo Gen 1/2 disk image
-# long-description: Creates a partitioned EFI disk image for Intel Galileo Gen 1/2,
+# short-description: Create an IOT2000 disk image
+# long-description: Creates a partitioned EFI disk image for the SIMATIC IOT2000
 # that the user can directly dd to boot media.
 
 part /boot --source bootimg-efi --sourceparams="loader=gummiboot" --ondisk mmcblk0 --label msdos --active --align 1024
