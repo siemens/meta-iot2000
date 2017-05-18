@@ -1,5 +1,5 @@
 SUMMARY = "Collection of firmware files for popular wifi devices"
-LICENSE = "MIT"
+LICENSE = "Firmware-iwlwifi_firmware & Firmware-broadcom_bcm43xx"
 
 inherit packagegroup
 
