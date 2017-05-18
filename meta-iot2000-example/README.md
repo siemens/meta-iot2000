@@ -102,12 +102,6 @@ environment.
 This replaces the changes to conf/bblayers.conf and conf/local.conf documented
 in [BSP readme](../meta-iot2000-bsp/README.md).
 
-#
-# SDK target architecture
-```
-
-This configures yocto to use the ipk format to build the image itself, so opkg knows which packages are already installed.
-
 ## Create Example Image:
 
 ```shell
