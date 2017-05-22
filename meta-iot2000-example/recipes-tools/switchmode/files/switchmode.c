@@ -24,10 +24,11 @@
 
 static void print_usage(char *name)
 {
-	printf("Usage: %s DEVICE MODE [-t|--terminate]\n"
+	printf("Usage: %s DEVICE [MODE [-t|--terminate]]\n"
 	       "\n"
 	       "DEVICE\t\tThe device for which you want to switch the mode.\n"
 	       "MODE\t\tThe mode you want to use: rs232, rs485, or rs422.\n"
+	       "\t\tIf omitted, the current mode will be printed.\n"
 	       "\n"
 	       "Optional arguments:\n"
 	       " -t, --terminate\tTerminate the RS422 or RS485 bus.\n"
@@ -54,6 +55,21 @@ static void print_mode(struct serial_rs485 *rs485conf)
 	}
 
 	printf("%s%s\n", mode, terminate);
+}
+
+static int get_mode(int file, char *device)
+{
+	struct serial_rs485 rs485conf;
+
+	if (ioctl(file, TIOCGRS485, &rs485conf) < 0) {
+		perror("Error");
+		return 1;
+	}
+
+	printf("Mode of %s: ", device);
+	print_mode(&rs485conf);
+
+	return 0;
 }
 
 static int set_mode(int file, char *device, char *mode, char *option)
@@ -102,7 +118,7 @@ int main(int argc, char *argv[])
 {
 	int file, ret;
 
-	if (argc < 3 || argc > 4) {
+	if (argc < 2 || argc > 4) {
 		print_usage(argv[0]);
 		return 2;
 	}
@@ -113,7 +129,10 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	ret = set_mode(file, argv[1], argv[2], argv[3]);
+	if (argc == 2)
+		ret = get_mode(file, argv[1]);
+	else
+		ret = set_mode(file, argv[1], argv[2], argv[3]);
 
 	close(file);
 
