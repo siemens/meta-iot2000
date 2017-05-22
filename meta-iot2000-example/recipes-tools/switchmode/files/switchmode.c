@@ -1,8 +1,9 @@
 /*
- * Copyright (c) Siemens AG, 2016
+ * Copyright (c) Siemens AG, 2017
  *
  * Authors:
- *  Sascha Weisenberger <sascha.weisenberger@siemens.com>.
+ *  Sascha Weisenberger <sascha.weisenberger@siemens.com>
+ *  Jan Kiszka <jan.kiszka@siemens.com>
  *
  * This file is subject to the terms and conditions of the MIT License.  See
  * COPYING.MIT file in the top-level directory.
@@ -18,8 +19,7 @@
 #include <string.h>
 #include <unistd.h>
 
-
-void printUsage(char * name)
+static void print_usage(char *name)
 {
 	printf("Usage:\n");
 	printf("%s device mode\n", name);
@@ -27,13 +27,12 @@ void printUsage(char * name)
 	printf("mode\t\t\tThe mode you want to use (rs232, rs485, rs422)\n");
 	printf("\n");
 	printf("example: %s /dev/ttyS2 rs232", name);
-
 }
 
-int main(int argc, char** argv)
+int main(int argc, char *argv[])
 {
-	char* device;
-	char* mode;
+	char *device;
+	char *mode;
 	struct serial_rs485 rs485conf;
 	int file;
 
@@ -41,42 +40,37 @@ int main(int argc, char** argv)
 	mode = argv[2];
 	rs485conf.flags = 0;
 
-	if(3 != argc)
-	{
-		printUsage(argv[0]);
+	if (argc != 3) {
+		print_usage(argv[0]);
 		return -EINVAL;
 	}
 
 	file = open(device, O_RDWR);
-	if (file < 0)
-	{
+	if (file < 0) {
 		perror("Error");
 		return -errno;
 	}
 
-	if(0 == strcasecmp("rs232", mode))
+	if (strcasecmp("rs232", mode) == 0)
 		rs485conf.flags |= SER_RS485_RX_DURING_TX;
-	if(0 == strcasecmp("rs485", mode))
+	if (strcasecmp("rs485", mode) == 0)
 		rs485conf.flags |= SER_RS485_ENABLED;
-	if(0 == strcasecmp("rs422", mode))
+	if (strcasecmp("rs422", mode) == 0)
 		rs485conf.flags |= (SER_RS485_ENABLED | SER_RS485_RX_DURING_TX);
 
-	if(0 == rs485conf.flags)
-	{
+	if (rs485conf.flags == 0) {
 		fprintf(stderr, "No valid mode \"%s\"", mode);
 		close(file);
 		return -EINVAL;
 	}
 
-	if (ioctl (file, TIOCSRS485, &rs485conf) < 0)
-	{
+	if (ioctl(file, TIOCSRS485, &rs485conf) < 0) {
 		perror("Error");
 		close(file);
 		return -errno;
 	}
 
-	if (close (file) < 0)
-	{
+	if (close(file) < 0) {
 		perror("Error");
 		return -errno;
 	}
