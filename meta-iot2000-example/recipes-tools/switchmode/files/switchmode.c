@@ -18,33 +18,45 @@
 #include <string.h>
 #include <unistd.h>
 
+#ifndef SER_RS485_TERMINATE_BUS
+#define SER_RS485_TERMINATE_BUS		(1 << 5)
+#endif
+
 static void print_usage(char *name)
 {
-	printf("Usage: %s DEVICE MODE\n"
+	printf("Usage: %s DEVICE MODE [-t|--terminate]\n"
 	       "\n"
 	       "DEVICE\t\tThe device for which you want to switch the mode.\n"
 	       "MODE\t\tThe mode you want to use: rs232, rs485, or rs422.\n"
 	       "\n"
-	       "Example: %s /dev/ttyS2 rs232\n", name, name);
+	       "Optional arguments:\n"
+	       " -t, --terminate\tTerminate the RS422 or RS485 bus.\n"
+	       "\n"
+	       "Example: %s /dev/ttyS2 rs485 --terminate\n", name, name);
 }
 
 static void print_mode(struct serial_rs485 *rs485conf)
 {
-	const char *mode;
+	const char *mode, *terminate;
 
 	if (!(rs485conf->flags & SER_RS485_ENABLED)) {
 		mode = "RS232";
+		terminate = "";
 	} else {
 		if (rs485conf->flags & SER_RS485_RX_DURING_TX)
 			mode = "RS422";
 		else
 			mode = "RS485";
+		if (rs485conf->flags & SER_RS485_TERMINATE_BUS)
+			terminate = ", terminating";
+		else
+			terminate = ", non-terminating";
 	}
 
-	printf("%s\n", mode);
+	printf("%s%s\n", mode, terminate);
 }
 
-static int set_mode(int file, char *device, char *mode)
+static int set_mode(int file, char *device, char *mode, char *option)
 {
 	struct serial_rs485 rs485conf;
 
@@ -57,6 +69,22 @@ static int set_mode(int file, char *device, char *mode)
 	} else if (strcasecmp("rs232", mode) != 0) {
 		fprintf(stderr, "Invalid mode \"%s\"\n", mode);
 		return 2;
+	}
+
+	if (option) {
+		if (strcmp(option, "-t") == 0 ||
+		    strcmp(option, "--terminate") == 0) {
+			if (!(rs485conf.flags & SER_RS485_ENABLED)) {
+				fprintf(stderr,
+					"Termination not supported in RS232 "
+					"mode\n");
+				return 2;
+			}
+			rs485conf.flags |= SER_RS485_TERMINATE_BUS;
+		} else {
+			fprintf(stderr, "Invalid option \"%s\"\n", option);
+			return 2;
+		}
 	}
 
 	if (ioctl(file, TIOCSRS485, &rs485conf) < 0) {
@@ -74,7 +102,7 @@ int main(int argc, char *argv[])
 {
 	int file, ret;
 
-	if (argc != 3) {
+	if (argc < 3 || argc > 4) {
 		print_usage(argv[0]);
 		return 2;
 	}
@@ -85,7 +113,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	ret = set_mode(file, argv[1], argv[2]);
+	ret = set_mode(file, argv[1], argv[2], argv[3]);
 
 	close(file);
 
