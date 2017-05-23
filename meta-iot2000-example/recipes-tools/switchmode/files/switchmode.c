@@ -21,12 +21,12 @@
 
 static void print_usage(char *name)
 {
-	printf("Usage:\n");
-	printf("%s device mode\n", name);
-	printf("device\t\t\tThe device you for which you want to switch the mode (e.g. /dev/ttyS2)\n");
-	printf("mode\t\t\tThe mode you want to use (rs232, rs485, rs422)\n");
-	printf("\n");
-	printf("example: %s /dev/ttyS2 rs232", name);
+	printf("Usage: %s DEVICE MODE\n"
+	       "\n"
+	       "DEVICE\t\tThe device for which you want to switch the mode.\n"
+	       "MODE\t\tThe mode you want to use: rs232, rs485, or rs422.\n"
+	       "\n"
+	       "Example: %s /dev/ttyS2 rs232\n", name, name);
 }
 
 int main(int argc, char *argv[])
