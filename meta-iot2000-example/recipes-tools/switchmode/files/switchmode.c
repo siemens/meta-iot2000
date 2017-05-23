@@ -14,7 +14,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
-#include <errno.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -42,13 +41,13 @@ int main(int argc, char *argv[])
 
 	if (argc != 3) {
 		print_usage(argv[0]);
-		return -EINVAL;
+		return 2;
 	}
 
 	file = open(device, O_RDWR);
 	if (file < 0) {
 		perror("Error");
-		return -errno;
+		return 1;
 	}
 
 	if (strcasecmp("rs232", mode) == 0)
@@ -61,18 +60,18 @@ int main(int argc, char *argv[])
 	if (rs485conf.flags == 0) {
 		fprintf(stderr, "No valid mode \"%s\"", mode);
 		close(file);
-		return -EINVAL;
+		return 2;
 	}
 
 	if (ioctl(file, TIOCSRS485, &rs485conf) < 0) {
 		perror("Error");
 		close(file);
-		return -errno;
+		return 1;
 	}
 
 	if (close(file) < 0) {
 		perror("Error");
-		return -errno;
+		return 1;
 	}
 
 	printf("Successfully set %s to %s\n", device, mode);
