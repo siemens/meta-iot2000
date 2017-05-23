@@ -28,27 +28,11 @@ static void print_usage(char *name)
 	       "Example: %s /dev/ttyS2 rs232\n", name, name);
 }
 
-int main(int argc, char *argv[])
+static int set_mode(int file, char *device, char *mode)
 {
-	char *device;
-	char *mode;
 	struct serial_rs485 rs485conf;
-	int file;
 
-	device = argv[1];
-	mode = argv[2];
 	rs485conf.flags = 0;
-
-	if (argc != 3) {
-		print_usage(argv[0]);
-		return 2;
-	}
-
-	file = open(device, O_RDWR);
-	if (file < 0) {
-		perror("Error");
-		return 1;
-	}
 
 	if (strcasecmp("rs485", mode) == 0) {
 		rs485conf.flags |= SER_RS485_ENABLED;
@@ -61,15 +45,32 @@ int main(int argc, char *argv[])
 
 	if (ioctl(file, TIOCSRS485, &rs485conf) < 0) {
 		perror("Error");
-		close(file);
-		return 1;
-	}
-
-	if (close(file) < 0) {
-		perror("Error");
 		return 1;
 	}
 
 	printf("Successfully set %s to %s\n", device, mode);
+
 	return 0;
+}
+
+int main(int argc, char *argv[])
+{
+	int file, ret;
+
+	if (argc != 3) {
+		print_usage(argv[0]);
+		return 2;
+	}
+
+	file = open(argv[1], O_RDWR);
+	if (file < 0) {
+		perror("Error");
+		return 1;
+	}
+
+	ret = set_mode(file, argv[1], argv[2]);
+
+	close(file);
+
+	return ret;
 }
