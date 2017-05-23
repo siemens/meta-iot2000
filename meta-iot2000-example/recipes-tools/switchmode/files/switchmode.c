@@ -50,16 +50,12 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	if (strcasecmp("rs232", mode) == 0)
-		rs485conf.flags |= SER_RS485_RX_DURING_TX;
-	if (strcasecmp("rs485", mode) == 0)
+	if (strcasecmp("rs485", mode) == 0) {
 		rs485conf.flags |= SER_RS485_ENABLED;
-	if (strcasecmp("rs422", mode) == 0)
-		rs485conf.flags |= (SER_RS485_ENABLED | SER_RS485_RX_DURING_TX);
-
-	if (rs485conf.flags == 0) {
-		fprintf(stderr, "No valid mode \"%s\"", mode);
-		close(file);
+	} else if (strcasecmp("rs422", mode) == 0) {
+		rs485conf.flags |= SER_RS485_ENABLED | SER_RS485_RX_DURING_TX;
+	} else if (strcasecmp("rs232", mode) != 0) {
+		fprintf(stderr, "Invalid mode \"%s\"\n", mode);
 		return 2;
 	}
 
