@@ -28,6 +28,22 @@ static void print_usage(char *name)
 	       "Example: %s /dev/ttyS2 rs232\n", name, name);
 }
 
+static void print_mode(struct serial_rs485 *rs485conf)
+{
+	const char *mode;
+
+	if (!(rs485conf->flags & SER_RS485_ENABLED)) {
+		mode = "RS232";
+	} else {
+		if (rs485conf->flags & SER_RS485_RX_DURING_TX)
+			mode = "RS422";
+		else
+			mode = "RS485";
+	}
+
+	printf("%s\n", mode);
+}
+
 static int set_mode(int file, char *device, char *mode)
 {
 	struct serial_rs485 rs485conf;
@@ -48,7 +64,8 @@ static int set_mode(int file, char *device, char *mode)
 		return 1;
 	}
 
-	printf("Successfully set %s to %s\n", device, mode);
+	printf("Successfully set %s to ", device);
+	print_mode(&rs485conf);
 
 	return 0;
 }
