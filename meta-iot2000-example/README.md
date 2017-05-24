@@ -18,10 +18,6 @@ This layer depends on:
   layers: meta-intel
   branch: morty
 
-  URI: git://git.yoctoproject.org/meta-java
-  layers: meta-java
-  branch: morty
-
   URI: git://git.yoctoproject.org/meta-intel-iot-middleware
   layers: meta-intel-iot-middleware
   branch: master
@@ -49,14 +45,12 @@ Run additional commands to clone and checkout further dependencies.
 
 ```shell
 $ git clone git://git.openembedded.org/meta-openembedded poky/meta-oe -b morty
-$ git clone git://git.yoctoproject.org/meta-java poky/meta-java -b morty
 $ git clone git://git.yoctoproject.org/meta-intel-iot-middleware poky/meta-intel-iot-middleware -b master
 $ git clone git://github.com/imyller/meta-nodejs.git poky/meta-nodejs -b morty
 ```
 
 ```shell
 $ git -C poky/meta-oe checkout fe5c83312de1
-$ git -C poky/meta-java checkout 67e48693501b
 $ git -C poky/meta-intel-iot-middleware checkout fc8eabfa4fb5
 $ git -C poky/meta-nodejs checkout 57e534dd8a53
 ```
@@ -69,13 +63,12 @@ environment.
 ```diff
 --- iot2000-build/conf/bblayers.conf.old
 +++ iot2000-build/conf/bblayers.conf
-@@ -9,4 +9,11 @@
+@@ -9,4 +9,10 @@
    /home/build/poky/meta \
    /home/build/poky/meta-poky \
    /home/build/poky/meta-yocto-bsp \
 +  /home/build/poky/meta-oe/meta-oe \
 +  /home/build/poky/meta-intel \
-+  /home/build/poky/meta-java \
 +  /home/build/poky/meta-intel-iot-middleware \
 +  /home/build/poky/meta-nodejs \
 +  /home/build/poky/meta-iot2000/meta-iot2000-bsp \

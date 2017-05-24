@@ -6,4 +6,5 @@ PV="1.0.1"
 SRC_URI = "git://github.com/intel-iot-devkit/upm.git"
 SRCREV="a2698fd560c9fa7917de33a65601bea50d218481"
 
-RDEPENDS_${PN}-java = "java2-runtime mraa-java"
+PACKAGES := "${@oe_filter_out('${PN}-java', '${PACKAGES}', d)}"
+PACKAGECONFIG = "nodejs python"
