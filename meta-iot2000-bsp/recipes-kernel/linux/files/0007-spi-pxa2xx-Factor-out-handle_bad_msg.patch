@@ -1,7 +1,7 @@
-From 8657e7469820c307b0861f9ffb93d496b92cbd0f Mon Sep 17 00:00:00 2001
+From fd5837ca7accfcdfa68d44ab38359d1fd0a6f142 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Mon, 16 Jan 2017 19:44:54 +0100
-Subject: [PATCH 07/24] spi: pxa2xx: Factor out handle_bad_msg
+Subject: [PATCH 07/27] spi: pxa2xx: Factor out handle_bad_msg
 
 Commit b03124825b8612bf371e5b4ccc2cd812ed3c2dbb upstream.
 

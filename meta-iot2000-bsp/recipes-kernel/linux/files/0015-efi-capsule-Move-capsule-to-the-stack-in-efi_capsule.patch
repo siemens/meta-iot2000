@@ -1,7 +1,7 @@
-From 98ef19806feeed22087f57a72adc731bb3738ee5 Mon Sep 17 00:00:00 2001
+From 13110f0357554bb359de56f7f330a7425557b044 Mon Sep 17 00:00:00 2001
 From: Matt Fleming <matt@codeblueprint.co.uk>
 Date: Fri, 6 May 2016 22:39:29 +0100
-Subject: [PATCH 15/24] efi/capsule: Move 'capsule' to the stack in
+Subject: [PATCH 15/27] efi/capsule: Move 'capsule' to the stack in
  efi_capsule_supported()
 
 Commit fb7a84cac03541f4da18dfa25b3f4767d4efc6fc upstream.

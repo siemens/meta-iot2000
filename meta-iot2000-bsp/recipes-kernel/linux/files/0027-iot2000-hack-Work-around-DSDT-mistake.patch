@@ -1,0 +1,44 @@
+From c9125348a22f695fa543c96e8f6beca8cb26d6d7 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Thu, 25 May 2017 11:09:42 +0200
+Subject: [PATCH 27/27] iot2000-hack: Work around DSDT mistake
+
+Until we have a new firmware revision, fix up the incorrect GPIO
+interrupt pin in software.
+
+Nothing for upstream.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ drivers/gpio/gpiolib-acpi.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index cbbb67a6f1d6..ec1a092e9911 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -10,6 +10,7 @@
+  * published by the Free Software Foundation.
+  */
+ 
++#include <linux/dmi.h>
+ #include <linux/errno.h>
+ #include <linux/gpio.h>
+ #include <linux/gpio/consumer.h>
+@@ -408,6 +409,13 @@ static int acpi_find_gpio(struct acpi_resource *ares, void *data)
+ 		if (pin_index >= agpio->pin_table_length)
+ 			return 1;
+ 
++		if (!strcmp(dmi_get_system_info(DMI_BOARD_NAME),
++			    "SIMATIC IOT2000") &&
++		    !strcmp(agpio->resource_source.string_ptr,
++			    "\\_SB.PCI0.GIP0.GPO") &&
++		    agpio->pin_table[pin_index] == 9)
++			agpio->pin_table[pin_index] = 1;
++
+ 		lookup->desc = acpi_get_gpiod(agpio->resource_source.string_ptr,
+ 					      agpio->pin_table[pin_index]);
+ 		lookup->info.gpioint =
+-- 
+2.12.0
+

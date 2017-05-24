@@ -1,7 +1,7 @@
-From 26f491825d8b026c5257482b09736cc55da579ff Mon Sep 17 00:00:00 2001
+From 7f9a454ea467bb1ee31cf77ce1c7e0aa1950d6d1 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Sat, 21 Jan 2017 10:06:38 +0100
-Subject: [PATCH 08/24] spi: pxa2xx: Prepare for edge-triggered interrupts
+Subject: [PATCH 08/27] spi: pxa2xx: Prepare for edge-triggered interrupts
 
 Commit e51e9b93049f624c179bab2c651995bca22b5bb7 upstream.
 

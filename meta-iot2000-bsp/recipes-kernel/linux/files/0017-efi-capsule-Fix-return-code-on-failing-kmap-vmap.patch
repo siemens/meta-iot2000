@@ -1,7 +1,7 @@
-From 546b5a493facd8034d102f2d19b58a6f9c4f0e82 Mon Sep 17 00:00:00 2001
+From 986a04d80e757e09a5b69761c04af9443f44805d Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Fri, 24 Mar 2017 18:34:14 +0100
-Subject: [PATCH 17/24] efi/capsule: Fix return code on failing kmap/vmap
+Subject: [PATCH 17/27] efi/capsule: Fix return code on failing kmap/vmap
 
 If kmap or vmap fail, it means we ran out of memory. There are no
 user-provided addressed involved that would justify EFAULT.

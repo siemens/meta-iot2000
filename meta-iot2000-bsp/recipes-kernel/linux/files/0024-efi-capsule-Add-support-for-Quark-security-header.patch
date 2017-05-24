@@ -1,7 +1,7 @@
-From 9d47caf5e47a6c175193c63a8ad023e555b331aa Mon Sep 17 00:00:00 2001
+From b36534fedba5c188eefabf9a8fbbf4dd39495605 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Fri, 24 Mar 2017 18:34:20 +0100
-Subject: [PATCH 24/24] efi/capsule: Add support for Quark security header
+Subject: [PATCH 24/27] efi/capsule: Add support for Quark security header
 
 The firmware for Quark X102x prepends a security header to the capsule
 which is needed to support the mandatory secure boot on this processor.

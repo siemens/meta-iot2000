@@ -1,7 +1,7 @@
-From c0c7566ac2d8671ef4cb4c47130a462d26000e7a Mon Sep 17 00:00:00 2001
+From 0b78ae582a7991832e13f01e25991a6287b5cd47 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Tue, 26 Jul 2016 21:00:59 +0200
-Subject: [PATCH 03/24] serial: 8250_pci: Use symbolic constants for EXAR's
+Subject: [PATCH 03/27] serial: 8250_pci: Use symbolic constants for EXAR's
  MPIO registers
 
 Commit b6fce7382d72274336aeafe6e44da755a371ed32 upstream.
@@ -14,10 +14,10 @@ Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
  1 file changed, 34 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/tty/serial/8250/8250_pci.c b/drivers/tty/serial/8250/8250_pci.c
-index 029de3f99752..6d8d7ebc8412 100644
+index 83ff1724ec79..4df43fae4234 100644
 --- a/drivers/tty/serial/8250/8250_pci.c
 +++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -1754,6 +1754,19 @@ static int pci_eg20t_init(struct pci_dev *dev)
+@@ -1755,6 +1755,19 @@ static int pci_eg20t_init(struct pci_dev *dev)
  #define PCI_DEVICE_ID_EXAR_XR17V4358	0x4358
  #define PCI_DEVICE_ID_EXAR_XR17V8358	0x8358
  
@@ -37,7 +37,7 @@ index 029de3f99752..6d8d7ebc8412 100644
  static int
  pci_xr17c154_setup(struct serial_private *priv,
  		  const struct pciserial_board *board,
-@@ -1796,18 +1809,18 @@ pci_xr17v35x_setup(struct serial_private *priv,
+@@ -1797,18 +1810,18 @@ pci_xr17v35x_setup(struct serial_private *priv,
  	 * Setup Multipurpose Input/Output pins.
  	 */
  	if (idx == 0) {
@@ -68,7 +68,7 @@ index 029de3f99752..6d8d7ebc8412 100644
  	}
  	writeb(0x00, p + UART_EXAR_8XMODE);
  	writeb(UART_FCTR_EXAR_TRGD, p + UART_EXAR_FCTR);
-@@ -1843,20 +1856,20 @@ pci_fastcom335_setup(struct serial_private *priv,
+@@ -1844,20 +1857,20 @@ pci_fastcom335_setup(struct serial_private *priv,
  		switch (priv->dev->device) {
  		case PCI_DEVICE_ID_COMMTECH_4222PCI335:
  		case PCI_DEVICE_ID_COMMTECH_4224PCI335:

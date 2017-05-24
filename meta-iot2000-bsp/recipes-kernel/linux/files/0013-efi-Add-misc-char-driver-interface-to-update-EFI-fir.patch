@@ -1,7 +1,7 @@
-From 7b681e4aa70dedfa3cf963b1f4b54ac79205d8e5 Mon Sep 17 00:00:00 2001
+From d11fee242c86754daf76f76b6adab7ccddd1834e Mon Sep 17 00:00:00 2001
 From: "Kweh, Hock Leong" <hock.leong.kweh@intel.com>
 Date: Mon, 25 Apr 2016 21:07:01 +0100
-Subject: [PATCH 13/24] efi: Add misc char driver interface to update EFI
+Subject: [PATCH 13/27] efi: Add misc char driver interface to update EFI
  firmware
 
 Commit 65117f1aa1b2d145fd5ca376bde642794d0aae1b upstream.
