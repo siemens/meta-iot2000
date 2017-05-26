@@ -122,6 +122,10 @@ int main(int argc, char *argv[])
 		print_usage(argv[0]);
 		return 2;
 	}
+	if (!strcmp(argv[1], "--help")) {
+		print_usage(argv[0]);
+		return 0;
+	}
 
 	file = open(argv[1], O_RDWR);
 	if (file < 0) {
