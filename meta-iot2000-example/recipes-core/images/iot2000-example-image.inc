@@ -1,4 +1,4 @@
-require recipes-core/images/wic-image.inc
+require recipes-core/images/core-image-iot2000.inc
 
 DESCRIPTION = "Example image for the IOT2000 platform"
 
@@ -7,7 +7,6 @@ IMAGE_FEATURES += " package-management"
 IMAGE_FEATURES += " dev-pkgs"
 IMAGE_FEATURES += " eclipse-debug"
 IMAGE_FEATURES += " tools-sdk"
-IMAGE_INSTALL_append = " switchmode"
 IMAGE_INSTALL_append = " opkg"
 IMAGE_INSTALL_append = " imageversionfile"
 IMAGE_INSTALL_append = " modules-load-entries"
