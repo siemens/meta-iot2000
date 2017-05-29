@@ -7,7 +7,7 @@ import os
 
 def redled(state):
  redLedFile = "/sys/class/leds/mpio_uart_led:red:user/brightness"
- if(not os.path.isfile(redledFile)):
+ if(not os.path.isfile(redLedFile)):
   print("Red LED not available")
   return
  file = open(redLedFile,'w')
