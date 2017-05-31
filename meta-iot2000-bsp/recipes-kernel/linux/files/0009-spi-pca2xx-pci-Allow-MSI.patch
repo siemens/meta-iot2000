@@ -1,7 +1,7 @@
-From ac9541b16e2d027fdbb3ee8341758fc225ed45b7 Mon Sep 17 00:00:00 2001
+From e8bc5d5bb5b203ffe4a1266aa84dcfb740842f4a Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Mon, 26 Sep 2016 08:52:49 +0200
-Subject: [PATCH 09/24] spi: pca2xx-pci: Allow MSI
+Subject: [PATCH 09/27] spi: pca2xx-pci: Allow MSI
 
 Backport of 64e02cb0bdfc7cef0a01e2ad4d567fdc0a74450e upstream.
 

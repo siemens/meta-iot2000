@@ -1,7 +1,7 @@
-From 102b7f7111f51aff0a28443e441ebfba1c94aa8f Mon Sep 17 00:00:00 2001
+From 1bbe1e85d8f2dd2ad8ed3b120f04ea7f48d5a28e Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Fri, 24 Mar 2017 18:34:17 +0100
-Subject: [PATCH 20/24] efi/capsule: Adjust return type of
+Subject: [PATCH 20/27] efi/capsule: Adjust return type of
  efi_capsule_setup_info
 
 We actually expect int at the caller and never return any size

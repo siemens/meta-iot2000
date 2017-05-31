@@ -1,7 +1,7 @@
-From aebd5545d29f2381f5125d3e7e3e5906e3e9bb6b Mon Sep 17 00:00:00 2001
+From 6a03e25a705c8d59bb9a849b9eee13f04b0a7b1d Mon Sep 17 00:00:00 2001
 From: Matt Fleming <matt@codeblueprint.co.uk>
 Date: Mon, 25 Apr 2016 21:07:00 +0100
-Subject: [PATCH 12/24] x86/efi: Force EFI reboot to process pending capsules
+Subject: [PATCH 12/27] x86/efi: Force EFI reboot to process pending capsules
 
 Commit 87615a34d561ef59bd0cffc73256a21220dfdffd upstream.
 

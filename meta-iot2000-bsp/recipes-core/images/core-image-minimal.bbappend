@@ -1,1 +1,1 @@
-require wic-image.inc
+require core-image-iot2000.inc

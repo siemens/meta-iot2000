@@ -1,7 +1,7 @@
-From a36c37a1a1d53ebf59a2aeef95f9b488bb8aa971 Mon Sep 17 00:00:00 2001
+From 78c076f026667f9a94592c54339b21af5ae09201 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Tue, 26 Jul 2016 20:31:09 +0200
-Subject: [PATCH 02/24] serial: uapi: Add support for bus termination
+Subject: [PATCH 02/27] serial: uapi: Add support for bus termination
 
 The Siemens IOT2000 comes with a RS485 interface that allows to enable
 or disable bus termination via software. Add a bit to the flags field of

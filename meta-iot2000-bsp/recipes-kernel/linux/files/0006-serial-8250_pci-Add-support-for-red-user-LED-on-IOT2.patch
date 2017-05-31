@@ -1,7 +1,7 @@
-From a31749d02460ae21cdd285aef0041d35a9ee104f Mon Sep 17 00:00:00 2001
+From ef914549f1cbf53abf2720d8f5d163125484a000 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Mon, 9 Jan 2017 20:24:39 +0100
-Subject: [PATCH 06/24] serial: 8250_pci: Add support for red user LED on
+Subject: [PATCH 06/27] serial: 8250_pci: Add support for red user LED on
  IOT2040
 
 The IOT2040 has a red LED connected to one of the MPIOs of the EXAR
@@ -15,7 +15,7 @@ Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
  1 file changed, 79 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/tty/serial/8250/8250_pci.c b/drivers/tty/serial/8250/8250_pci.c
-index c611abfd0560..3f0719abfdc6 100644
+index 1a918f924313..5cd4fb8cb20b 100644
 --- a/drivers/tty/serial/8250/8250_pci.c
 +++ b/drivers/tty/serial/8250/8250_pci.c
 @@ -23,6 +23,7 @@
@@ -26,15 +26,15 @@ index c611abfd0560..3f0719abfdc6 100644
  
  #include <asm/byteorder.h>
  #include <asm/io.h>
-@@ -58,6 +59,7 @@ struct serial_private {
- 	unsigned int		nr;
+@@ -59,6 +60,7 @@ struct serial_private {
  	void __iomem		*remapped_bar[PCI_NUM_BAR_RESOURCES];
  	struct pci_serial_quirk	*quirk;
+ 	const struct pciserial_board *board;
 +	void			*quirk_private;
  	int			line[0];
  };
  
-@@ -1819,6 +1821,14 @@ xr17v35x_has_slave(struct serial_private *priv)
+@@ -1820,6 +1822,14 @@ xr17v35x_has_slave(struct serial_private *priv)
  
  /* IOT2000 MPIOs 8..15 */
  #define IOT2000_UARTS_ENABLE		0x03
@@ -49,7 +49,7 @@ index c611abfd0560..3f0719abfdc6 100644
  
  static int pci_iot2000_rs485_config(struct uart_port *port,
  				    struct serial_rs485 *rs485)
-@@ -1864,13 +1874,43 @@ static int pci_iot2000_rs485_config(struct uart_port *port,
+@@ -1867,13 +1877,43 @@ static int pci_iot2000_rs485_config(struct uart_port *port,
  	return 0;
  }
  
@@ -93,7 +93,7 @@ index c611abfd0560..3f0719abfdc6 100644
  
  	p = pci_ioremap_bar(priv->dev, 0);
  	if (p == NULL)
-@@ -1916,7 +1956,44 @@ pci_xr17v35x_setup(struct serial_private *priv,
+@@ -1919,7 +1959,44 @@ pci_xr17v35x_setup(struct serial_private *priv,
  	writeb(128, p + UART_EXAR_RXTRG);
  	iounmap(p);
  
@@ -139,7 +139,7 @@ index c611abfd0560..3f0719abfdc6 100644
  }
  
  #define PCI_DEVICE_ID_COMMTECH_4222PCI335 0x0004
-@@ -2568,6 +2645,7 @@ static struct pci_serial_quirk pci_serial_quirks[] __refdata = {
+@@ -2571,6 +2648,7 @@ static struct pci_serial_quirk pci_serial_quirks[] __refdata = {
  		.subvendor	= PCI_ANY_ID,
  		.subdevice	= PCI_ANY_ID,
  		.setup		= pci_xr17v35x_setup,

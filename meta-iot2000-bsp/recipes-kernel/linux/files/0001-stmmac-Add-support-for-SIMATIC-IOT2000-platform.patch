@@ -1,7 +1,7 @@
-From caa8a42fcfcfc015d9b500f05ab2fb8cb0250eb1 Mon Sep 17 00:00:00 2001
+From 702a99a0434380b1b7ce1b9045a71fbc30b436bb Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Wed, 6 Jul 2016 15:27:20 +0100
-Subject: [PATCH 01/24] stmmac: Add support for SIMATIC IOT2000 platform
+Subject: [PATCH 01/27] stmmac: Add support for SIMATIC IOT2000 platform
 
 The IOT2000 is industrial controller platform, derived from the Intel
 Galileo Gen2 board. The variant IOT2020 comes with one LAN port, the

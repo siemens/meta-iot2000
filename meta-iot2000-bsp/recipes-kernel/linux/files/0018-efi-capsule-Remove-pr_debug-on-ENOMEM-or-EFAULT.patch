@@ -1,7 +1,7 @@
-From 6562cb70d20a64df71ee0d941140e417e70a2a2f Mon Sep 17 00:00:00 2001
+From 6a1dbce069aa3ff38d2ec6fedb37a7802e946ff2 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Fri, 24 Mar 2017 18:34:15 +0100
-Subject: [PATCH 18/24] efi/capsule: Remove pr_debug on ENOMEM or EFAULT
+Subject: [PATCH 18/27] efi/capsule: Remove pr_debug on ENOMEM or EFAULT
 
 Both cases are not worth a debug log message - the error code is telling
 enough.

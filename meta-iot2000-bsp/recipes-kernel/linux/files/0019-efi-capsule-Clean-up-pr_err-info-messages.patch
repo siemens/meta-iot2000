@@ -1,7 +1,7 @@
-From 0ea46e56a81f83c8e74c42b750b87f208ae468ba Mon Sep 17 00:00:00 2001
+From 99bed124420afaaa6aea9a80440e7fa80b27177b Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Fri, 24 Mar 2017 18:34:16 +0100
-Subject: [PATCH 19/24] efi/capsule: Clean up pr_err/info messages
+Subject: [PATCH 19/27] efi/capsule: Clean up pr_err/info messages
 
 Avoid __func__, improve the information provided by some of the
 messages.

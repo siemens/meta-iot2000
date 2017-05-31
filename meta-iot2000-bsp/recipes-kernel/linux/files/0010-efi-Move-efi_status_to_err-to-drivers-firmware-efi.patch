@@ -1,7 +1,7 @@
-From ff3708bdc145ddbb09e5f1e3969ef8c43b2990dc Mon Sep 17 00:00:00 2001
+From b553ed1d8ee69dfde08677c0843dc2931c3c3ad0 Mon Sep 17 00:00:00 2001
 From: Matt Fleming <matt@codeblueprint.co.uk>
 Date: Mon, 25 Apr 2016 21:06:58 +0100
-Subject: [PATCH 10/24] efi: Move efi_status_to_err() to drivers/firmware/efi/
+Subject: [PATCH 10/27] efi: Move efi_status_to_err() to drivers/firmware/efi/
 
 Commit 806b0351c9ff9890c1ef0ba2c46237baef49ac79 upstream.
 

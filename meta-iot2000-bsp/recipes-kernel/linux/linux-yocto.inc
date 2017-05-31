@@ -25,6 +25,9 @@ SRC_URI += " \
     file://0022-efi-capsule-loader-Redirect-calls-to-efi_capsule_set.patch \
     file://0023-efi-capsule-loader-Use-page-addresses-rather-than-st.patch \
     file://0024-efi-capsule-Add-support-for-Quark-security-header.patch \
+    file://0025-mfd-intel_quark_i2c_gpio-Use-dmi_system_id-table-for.patch \
+    file://0026-mfd-intel_quark_i2c_gpio-Add-support-for-SIMATIC-IOT.patch \
+    file://0027-iot2000-hack-Work-around-DSDT-mistake.patch \
     file://iot2000.scc"
 
 LINUX_VERSION_iot2000 = "${LINUX_VERSION_INTEL_COMMON}"

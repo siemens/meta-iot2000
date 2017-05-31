@@ -1,7 +1,7 @@
-From 8c174bc4c3b40fc3bcfddef833e65b257031047e Mon Sep 17 00:00:00 2001
+From bf59e06db6790038f4f4d25f641393d6e707907c Mon Sep 17 00:00:00 2001
 From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Date: Tue, 28 Mar 2017 12:49:56 +0100
-Subject: [PATCH 21/24] efi/capsule-loader: Use a cached copy of the capsule
+Subject: [PATCH 21/27] efi/capsule-loader: Use a cached copy of the capsule
  header
 
 Instead of kmapping the capsule data twice, copy the capsule header

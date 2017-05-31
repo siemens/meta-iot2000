@@ -1,7 +1,7 @@
-From f5017659038f0a6d9d0f01eada9130adc40dbd94 Mon Sep 17 00:00:00 2001
+From 1aa79e59dad5141bc7e9f5ff12e1c2b361268314 Mon Sep 17 00:00:00 2001
 From: Matt Fleming <matt@codeblueprint.co.uk>
 Date: Fri, 6 May 2016 22:39:27 +0100
-Subject: [PATCH 14/24] efi/capsule: Make efi_capsule_pending() lockless
+Subject: [PATCH 14/27] efi/capsule: Make efi_capsule_pending() lockless
 
 Commit 62075e581802ea1842d5d3c490a7e46330bdb9e1 upstream.
 

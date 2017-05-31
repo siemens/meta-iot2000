@@ -1,7 +1,7 @@
-From 95825c6a747d6e36531bdc9d68a4c4e75f83f166 Mon Sep 17 00:00:00 2001
+From 30e7ad8198b22063c242d6f349d1e9d948e4d34d Mon Sep 17 00:00:00 2001
 From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Date: Tue, 28 Mar 2017 18:09:39 +0100
-Subject: [PATCH 23/24] efi/capsule-loader: Use page addresses rather than
+Subject: [PATCH 23/27] efi/capsule-loader: Use page addresses rather than
  struct page pointers
 
 To give some leeway to code that handles non-standard capsule headers,

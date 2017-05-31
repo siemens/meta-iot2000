@@ -1,7 +1,7 @@
-From eb95dbe894e49db38f43dca5d122741671f6c505 Mon Sep 17 00:00:00 2001
+From c5a04515ef38824a5f426e5d1b3f53ce2e34ceba Mon Sep 17 00:00:00 2001
 From: Austin Christ <austinwc@codeaurora.org>
 Date: Thu, 11 Aug 2016 11:42:00 +0100
-Subject: [PATCH 16/24] efi/capsule: Allocate whole capsule into virtual memory
+Subject: [PATCH 16/27] efi/capsule: Allocate whole capsule into virtual memory
 
 Commit 6862e6ad95e984991a6ceec592cf67831658f928 upstream.
 

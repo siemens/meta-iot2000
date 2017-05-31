@@ -1,7 +1,7 @@
-From 81a9788df8ff3fe44f2420fdfcb942ee28737676 Mon Sep 17 00:00:00 2001
+From 2ace954358c4da794a73156bc701c3ecb0b33f19 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Tue, 26 Jul 2016 21:24:32 +0200
-Subject: [PATCH 04/24] serial: 8250_pci: Fix EXAR feature control register
+Subject: [PATCH 04/27] serial: 8250_pci: Fix EXAR feature control register
  constants
 
 According to the XR17V352 manual, bit 4 is IrDA control and bit 5 for

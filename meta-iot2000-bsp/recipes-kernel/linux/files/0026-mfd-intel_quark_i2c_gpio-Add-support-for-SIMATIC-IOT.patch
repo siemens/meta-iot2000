@@ -1,0 +1,45 @@
+From 2b8b5ae2e33e47057261aa0f5bb38b6b6e69bcee Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Sat, 6 May 2017 07:10:36 +0200
+Subject: [PATCH 26/27] mfd: intel_quark_i2c_gpio: Add support for SIMATIC
+ IOT2000 platform
+
+The SIMATIC IOT2020 and IOT2040 are derived from the Galileo Gen2 board
+and share its I2C frequency.
+
+Signed-off-by: Sascha Weisenberger <sascha.weisenberger@siemens.com>
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ drivers/mfd/intel_quark_i2c_gpio.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/drivers/mfd/intel_quark_i2c_gpio.c b/drivers/mfd/intel_quark_i2c_gpio.c
+index 57d4396dab5d..1c09604978d3 100644
+--- a/drivers/mfd/intel_quark_i2c_gpio.c
++++ b/drivers/mfd/intel_quark_i2c_gpio.c
+@@ -73,6 +73,22 @@ static const struct dmi_system_id dmi_platform_info[] = {
+ 		},
+ 		.driver_data = (void *)400000,
+ 	},
++	{
++		.matches = {
++			DMI_EXACT_MATCH(DMI_BOARD_NAME, "SIMATIC IOT2000"),
++			DMI_EXACT_MATCH(DMI_BOARD_ASSET_TAG,
++					"6ES7647-0AA00-0YA2"),
++		},
++		.driver_data = (void *)400000,
++	},
++	{
++		.matches = {
++			DMI_EXACT_MATCH(DMI_BOARD_NAME, "SIMATIC IOT2000"),
++			DMI_EXACT_MATCH(DMI_BOARD_ASSET_TAG,
++					"6ES7647-0AA00-1YA2"),
++		},
++		.driver_data = (void *)400000,
++	},
+ 	{}
+ };
+ 
+-- 
+2.12.0
+

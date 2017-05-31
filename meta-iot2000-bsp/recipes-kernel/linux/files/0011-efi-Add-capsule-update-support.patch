@@ -1,7 +1,7 @@
-From d6e6f68eaf3ed6ac90bdb3bc20bda02ae94c32fb Mon Sep 17 00:00:00 2001
+From 62694114a8052ff871f0cdc86034e4711f7b7579 Mon Sep 17 00:00:00 2001
 From: Matt Fleming <matt@codeblueprint.co.uk>
 Date: Mon, 25 Apr 2016 21:06:59 +0100
-Subject: [PATCH 11/24] efi: Add 'capsule' update support
+Subject: [PATCH 11/27] efi: Add 'capsule' update support
 
 Commit f0133f3c5b8bb34ec4dec50c27e7a655aeee8935 upstream.
 

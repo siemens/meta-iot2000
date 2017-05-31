@@ -1,7 +1,7 @@
-From 65e1a8389867b929e76ffe8be4254c4bd97fcfdb Mon Sep 17 00:00:00 2001
+From cb0b223e1c31d240e6a883851fb84b66dc820cbf Mon Sep 17 00:00:00 2001
 From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Date: Tue, 28 Mar 2017 13:06:57 +0100
-Subject: [PATCH 22/24] efi/capsule-loader: Redirect calls to
+Subject: [PATCH 22/27] efi/capsule-loader: Redirect calls to
  efi_capsule_setup_info via weak alias
 
 To allow platform specific code to hook into the capsule loading
