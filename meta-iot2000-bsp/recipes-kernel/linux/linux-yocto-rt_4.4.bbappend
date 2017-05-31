@@ -1,4 +1,4 @@
-require linux-yocto.inc
+require linux-yocto-iot2000.inc
 
 SRC_URI += " \
     file://defconfig"

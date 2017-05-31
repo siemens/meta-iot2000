@@ -1,4 +1,4 @@
-require linux-yocto.inc
+require linux-yocto-iot2000.inc
 
 LINUX_VERSION_INTEL_COMMON = "4.4.60"
 SRCREV_META_INTEL_COMMON = "d6733af2080f8c0775569adc0826eb0c8954fc5e"
