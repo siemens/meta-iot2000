@@ -1,0 +1,68 @@
+#! /bin/sh
+#
+# Copyright (c) Siemens AG, 2017
+#
+# Authors:
+#  Jan Kiszka <jan.kiszka@siemens.com>
+#
+# derived from: Sysvinit is Copyright (C) 1991-2004 Miquel van Smoorenburg
+#
+# This work is licensed under the terms of the GNU GPL, version 2.  See
+# the COPYING.GPLv2 file in the top-level directory.
+#
+
+### BEGIN INIT INFO
+# Provides:          ntpd
+# Required-Start:    $network
+# Should-Start:
+# Required-Stop:     $network
+# Should-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start NTP client
+# Description:
+### END INIT INFO
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+DESC="NTP client"
+NAME="ntpd.busybox"
+
+PIDFILE=/var/run/ntpd.pid
+DAEMON=/usr/sbin/ntpd
+
+daemon=
+
+. /etc/init.d/functions || exit 1
+
+#
+# Function that starts the device
+#
+do_start() {
+	start-stop-daemon -q -S -m -p $PIDFILE -b -x $DAEMON
+}
+
+#
+# Function that stops the daemon/service
+#
+do_stop() {
+	start-stop-daemon -q -K -p $PIDFILE -s USR1
+	rm $PIDFILE -f
+}
+
+case "$1" in
+start)
+	do_start
+	;;
+stop)
+	do_stop
+	;;
+restart)
+	do_stop
+	do_start
+	;;
+*)
+	echo "Usage: $0 {start|stop|restart}" >&2
+	exit 3
+	;;
+esac
