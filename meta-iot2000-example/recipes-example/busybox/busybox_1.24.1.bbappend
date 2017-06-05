@@ -5,6 +5,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI_append = " file://arp.cfg"
 SRC_URI_append = " file://lsusb.cfg"
+SRC_URI_append = " file://nc.cfg"
 SRC_URI_append = " file://ntpclient.cfg"
 SRC_URI_append = " file://ntp.conf"
 SRC_URI_append = " file://ntpd.busybox"
