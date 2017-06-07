@@ -1,0 +1,25 @@
+image: kasproject/kas:0.11.0
+
+variables:
+  GIT_STRATEGY: clone
+
+.template: &template
+  stage: build
+  script:
+    # define these proxy variables in your CI/CD settings as needed
+    - export http_proxy=$HTTP_PROXY
+    - export https_proxy=$HTTPS_PROXY
+    - export ftp_proxy=$FTP_PROXY
+    - export no_proxy=$NO_PROXY
+    - cd ..
+    - kas build meta-iot2000/$KAS_CONFIG
+
+bsp:
+  <<: *template
+  variables:
+    KAS_CONFIG: meta-iot2000-bsp/kas.yml
+
+example-image:
+  <<: *template
+  variables:
+    KAS_CONFIG: meta-iot2000-example/kas.yml
