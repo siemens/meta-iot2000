@@ -23,7 +23,7 @@ Building the meta-iot2000 BSP Layer
 ===================================
 
 This uses Yocto 2.2 (Morty) with the 4.4 Linux kernel provided by Yocto and
-the meta-intel layer. The build has be tested successfully on Debian 8 and
+the meta-intel layer. The build has been tested successfully on Debian 8 and
 OpenSuse 42.2, but other recent distros are expected to work as well.
 
 ## Prepare:
