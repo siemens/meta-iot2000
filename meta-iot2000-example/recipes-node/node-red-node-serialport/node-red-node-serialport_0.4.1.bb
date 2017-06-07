@@ -280,6 +280,10 @@ NPM_SHRINKWRAP := "${THISDIR}/${PN}/npm-shrinkwrap.json"
 inherit npm
 
 do_compile_append() {
+	export http_proxy="${http_proxy}"
+	export https_proxy="${https_proxy}"
+	export no_proxy="${no_proxy}"
+
 	npm rebuild --build-from-source --arch=${TARGET_ARCH}
 }
 
