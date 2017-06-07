@@ -1,0 +1,24 @@
+header:
+  version: 2
+  includes:
+    - file: meta-iot2000-bsp/kas.yml
+      repo: meta-iot2000
+
+target: iot2000-example-image
+
+repos:
+  meta-iot2000:
+    layers:
+      meta-iot2000-example:
+
+  meta-intel-iot-middleware:
+    url: https://git.yoctoproject.org/git/meta-intel-iot-middleware
+    refspec: fc8eabfa4fb54802d3f97123b9d2954450175e33
+
+  meta-nodejs:
+    url: https://github.com/imyller/meta-nodejs
+    refspec: eec531e97a17bfd406f3bf76dee4057dcf5286a4
+
+local_conf_header:
+  package_ipk: |
+    PACKAGE_CLASSES = "package_ipk"
