@@ -23,8 +23,9 @@ Building the meta-iot2000 BSP Layer
 ===================================
 
 This uses Yocto 2.2 (Morty) with the 4.4 Linux kernel provided by Yocto and
-the meta-intel layer. The build has been tested successfully on Debian 8 and
-OpenSuse 42.2, but other recent distros are expected to work as well.
+the meta-intel layer. The build has successfully been tested on Debian 8,
+OpenSuse 42.2 and Fedora 25 but other recent distros are expected to work as
+well.
 
 ## Prepare:
 
@@ -34,6 +35,7 @@ For setting up your host pc see the following description:
 ```shell
 $ git clone git://git.yoctoproject.org/poky.git poky -b morty
 $ git clone git://git.yoctoproject.org/meta-intel poky/meta-intel -b morty
+$ git clone http://git.openembedded.org/meta-openembedded poky/meta-openembedded
 ```
 
 For using tested revisions, you have to checkout these versions:
@@ -41,6 +43,7 @@ For using tested revisions, you have to checkout these versions:
 ```shell
 $ git -C poky checkout 6a1f33cc40bf
 $ git -C poky/meta-intel checkout 6add41510412
+$ git -C poky/meta-openembedded checkout fe5c83312de1
 ```
 
 You may update to a newer Yocto versions as needed (e.g. to include security
@@ -63,10 +66,11 @@ $ source poky/oe-init-build-env iot2000-build
 ```diff
 --- iot2000-build/conf/bblayers.conf.old
 +++ iot2000-build/conf/bblayers.conf
-@@ -9,4 +9,6 @@
+@@ -9,4 +9,7 @@
    /home/build/poky/meta \
    /home/build/poky/meta-poky \
    /home/build/poky/meta-yocto-bsp \
++  /home/build/poky/meta-openembedded/meta-oe \
 +  /home/build/poky/meta-intel \
 +  /home/build/poky/meta-iot2000/meta-iot2000-bsp \
    "
