@@ -5,6 +5,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI_append = " file://arp.cfg"
 SRC_URI_append = " file://lsusb.cfg"
+SRC_URI_append = " file://nc.cfg"
 SRC_URI_append = " file://ntpclient.cfg"
 SRC_URI_append = " file://ntp.conf"
 SRC_URI_append = " file://ntpd.busybox"
@@ -13,8 +14,6 @@ inherit update-rc.d
 
 INITSCRIPT_PACKAGES = "${PN}"
 INITSCRIPT_NAME = "ntpd.busybox"
-
-RDEPENDS_${PN} += "tzdata"
 
 do_install_append() {
 	install -d ${D}${sysconfdir}

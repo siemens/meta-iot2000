@@ -1,9 +1,9 @@
 {
   "name": "node-red-dashboard",
-  "version": "2.1.0",
+  "version": "2.3.11",
   "dependencies": {
     "serve-static": {
-      "version": "1.11.1",
+      "version": "1.12.3",
       "dependencies": {
         "encodeurl": {
           "version": "1.0.1"
@@ -15,13 +15,13 @@
           "version": "1.3.1"
         },
         "send": {
-          "version": "0.14.1",
+          "version": "0.15.3",
           "dependencies": {
             "debug": {
-              "version": "2.2.0",
+              "version": "2.6.7",
               "dependencies": {
                 "ms": {
-                  "version": "0.7.1"
+                  "version": "2.0.0"
                 }
               }
             },
@@ -38,22 +38,25 @@
               "version": "1.0.3"
             },
             "etag": {
-              "version": "1.7.0"
+              "version": "1.8.0"
             },
             "fresh": {
-              "version": "0.3.0"
+              "version": "0.5.0"
             },
             "http-errors": {
-              "version": "1.5.0",
+              "version": "1.6.1",
               "dependencies": {
+                "depd": {
+                  "version": "1.1.0"
+                },
                 "inherits": {
-                  "version": "2.0.1"
+                  "version": "2.0.3"
                 },
                 "setprototypeof": {
-                  "version": "1.0.1"
+                  "version": "1.0.3"
                 },
                 "statuses": {
-                  "version": "1.3.0"
+                  "version": "1.3.1"
                 }
               }
             },
@@ -61,7 +64,7 @@
               "version": "1.3.4"
             },
             "ms": {
-              "version": "0.7.1"
+              "version": "2.0.0"
             },
             "on-finished": {
               "version": "2.3.0",
@@ -75,26 +78,34 @@
               "version": "1.2.0"
             },
             "statuses": {
-              "version": "1.3.0"
+              "version": "1.3.1"
             }
           }
         }
       }
     },
     "socket.io": {
-      "version": "1.5.1",
+      "version": "1.7.4",
       "dependencies": {
+        "debug": {
+          "version": "2.3.3",
+          "dependencies": {
+            "ms": {
+              "version": "0.7.2"
+            }
+          }
+        },
         "engine.io": {
-          "version": "1.7.2",
+          "version": "1.8.4",
           "dependencies": {
             "accepts": {
               "version": "1.3.3",
               "dependencies": {
                 "mime-types": {
-                  "version": "2.1.12",
+                  "version": "2.1.15",
                   "dependencies": {
                     "mime-db": {
-                      "version": "1.24.0"
+                      "version": "1.27.0"
                     }
                   }
                 },
@@ -104,21 +115,24 @@
               }
             },
             "base64id": {
-              "version": "0.1.0"
+              "version": "1.0.0"
+            },
+            "cookie": {
+              "version": "0.3.1"
             },
             "debug": {
-              "version": "2.2.0",
+              "version": "2.3.3",
               "dependencies": {
                 "ms": {
-                  "version": "0.7.1"
+                  "version": "0.7.2"
                 }
               }
             },
             "engine.io-parser": {
-              "version": "1.3.1",
+              "version": "1.3.2",
               "dependencies": {
                 "after": {
-                  "version": "0.8.1"
+                  "version": "0.8.2"
                 },
                 "arraybuffer.slice": {
                   "version": "0.0.6"
@@ -130,7 +144,7 @@
                   "version": "0.0.4"
                 },
                 "has-binary": {
-                  "version": "0.1.6",
+                  "version": "0.1.7",
                   "dependencies": {
                     "isarray": {
                       "version": "0.0.1"
@@ -143,7 +157,7 @@
               }
             },
             "ws": {
-              "version": "1.1.1",
+              "version": "1.1.4",
               "dependencies": {
                 "options": {
                   "version": "0.0.6"
@@ -155,47 +169,33 @@
             }
           }
         },
-        "socket.io-parser": {
-          "version": "2.3.1",
+        "has-binary": {
+          "version": "0.1.7",
           "dependencies": {
-            "debug": {
-              "version": "2.2.0",
-              "dependencies": {
-                "ms": {
-                  "version": "0.7.1"
-                }
-              }
-            },
-            "json3": {
-              "version": "3.3.2"
-            },
-            "component-emitter": {
-              "version": "1.1.2"
-            },
             "isarray": {
               "version": "0.0.1"
             }
           }
         },
-        "socket.io-client": {
-          "version": "1.5.1",
+        "object-assign": {
+          "version": "4.1.0"
+        },
+        "socket.io-adapter": {
+          "version": "0.5.0",
           "dependencies": {
             "debug": {
-              "version": "2.2.0",
+              "version": "2.3.3",
               "dependencies": {
                 "ms": {
-                  "version": "0.7.1"
+                  "version": "0.7.2"
                 }
               }
             },
-            "engine.io-client": {
-              "version": "1.7.2",
+            "socket.io-parser": {
+              "version": "2.3.1",
               "dependencies": {
                 "component-emitter": {
                   "version": "1.1.2"
-                },
-                "component-inherit": {
-                  "version": "0.0.3"
                 },
                 "debug": {
                   "version": "2.2.0",
@@ -205,11 +205,58 @@
                     }
                   }
                 },
+                "isarray": {
+                  "version": "0.0.1"
+                },
+                "json3": {
+                  "version": "3.3.2"
+                }
+              }
+            }
+          }
+        },
+        "socket.io-client": {
+          "version": "1.7.4",
+          "dependencies": {
+            "backo2": {
+              "version": "1.0.2"
+            },
+            "component-bind": {
+              "version": "1.0.0"
+            },
+            "component-emitter": {
+              "version": "1.2.1"
+            },
+            "debug": {
+              "version": "2.3.3",
+              "dependencies": {
+                "ms": {
+                  "version": "0.7.2"
+                }
+              }
+            },
+            "engine.io-client": {
+              "version": "1.8.4",
+              "dependencies": {
+                "component-emitter": {
+                  "version": "1.2.1"
+                },
+                "component-inherit": {
+                  "version": "0.0.3"
+                },
+                "debug": {
+                  "version": "2.3.3",
+                  "dependencies": {
+                    "ms": {
+                      "version": "0.7.2"
+                    }
+                  }
+                },
                 "engine.io-parser": {
-                  "version": "1.3.1",
+                  "version": "1.3.2",
                   "dependencies": {
                     "after": {
-                      "version": "0.8.1"
+                      "version": "0.8.2"
                     },
                     "arraybuffer.slice": {
                       "version": "0.0.6"
@@ -221,7 +268,7 @@
                       "version": "0.0.4"
                     },
                     "has-binary": {
-                      "version": "0.1.6",
+                      "version": "0.1.7",
                       "dependencies": {
                         "isarray": {
                           "version": "0.0.1"
@@ -240,7 +287,7 @@
                   "version": "0.0.1"
                 },
                 "parsejson": {
-                  "version": "0.0.1",
+                  "version": "0.0.3",
                   "dependencies": {
                     "better-assert": {
                       "version": "1.0.2",
@@ -253,7 +300,7 @@
                   }
                 },
                 "parseqs": {
-                  "version": "0.0.2",
+                  "version": "0.0.5",
                   "dependencies": {
                     "better-assert": {
                       "version": "1.0.2",
@@ -266,7 +313,7 @@
                   }
                 },
                 "parseuri": {
-                  "version": "0.0.4",
+                  "version": "0.0.5",
                   "dependencies": {
                     "better-assert": {
                       "version": "1.0.2",
@@ -279,7 +326,7 @@
                   }
                 },
                 "ws": {
-                  "version": "1.1.1",
+                  "version": "1.1.2",
                   "dependencies": {
                     "options": {
                       "version": "0.0.6"
@@ -290,41 +337,10 @@
                   }
                 },
                 "xmlhttprequest-ssl": {
-                  "version": "1.5.1"
+                  "version": "1.5.3"
                 },
                 "yeast": {
                   "version": "0.1.2"
-                }
-              }
-            },
-            "component-bind": {
-              "version": "1.0.0"
-            },
-            "component-emitter": {
-              "version": "1.2.0"
-            },
-            "object-component": {
-              "version": "0.0.3"
-            },
-            "socket.io-parser": {
-              "version": "2.3.1",
-              "dependencies": {
-                "debug": {
-                  "version": "2.2.0",
-                  "dependencies": {
-                    "ms": {
-                      "version": "0.7.1"
-                    }
-                  }
-                },
-                "json3": {
-                  "version": "3.3.2"
-                },
-                "component-emitter": {
-                  "version": "1.1.2"
-                },
-                "isarray": {
-                  "version": "0.0.1"
                 }
               }
             },
@@ -339,8 +355,11 @@
             "indexof": {
               "version": "0.0.1"
             },
+            "object-component": {
+              "version": "0.0.3"
+            },
             "parseuri": {
-              "version": "0.0.4",
+              "version": "0.0.5",
               "dependencies": {
                 "better-assert": {
                   "version": "1.0.2",
@@ -352,17 +371,39 @@
                 }
               }
             },
+            "socket.io-parser": {
+              "version": "2.3.1",
+              "dependencies": {
+                "component-emitter": {
+                  "version": "1.1.2"
+                },
+                "debug": {
+                  "version": "2.2.0",
+                  "dependencies": {
+                    "ms": {
+                      "version": "0.7.1"
+                    }
+                  }
+                },
+                "isarray": {
+                  "version": "0.0.1"
+                },
+                "json3": {
+                  "version": "3.3.2"
+                }
+              }
+            },
             "to-array": {
               "version": "0.1.4"
-            },
-            "backo2": {
-              "version": "1.0.2"
             }
           }
         },
-        "socket.io-adapter": {
-          "version": "0.4.0",
+        "socket.io-parser": {
+          "version": "2.3.1",
           "dependencies": {
+            "component-emitter": {
+              "version": "1.1.2"
+            },
             "debug": {
               "version": "2.2.0",
               "dependencies": {
@@ -371,41 +412,11 @@
                 }
               }
             },
-            "socket.io-parser": {
-              "version": "2.2.2",
-              "dependencies": {
-                "debug": {
-                  "version": "0.7.4"
-                },
-                "json3": {
-                  "version": "3.2.6"
-                },
-                "component-emitter": {
-                  "version": "1.1.2"
-                },
-                "isarray": {
-                  "version": "0.0.1"
-                },
-                "benchmark": {
-                  "version": "1.0.0"
-                }
-              }
-            }
-          }
-        },
-        "has-binary": {
-          "version": "0.1.7",
-          "dependencies": {
             "isarray": {
               "version": "0.0.1"
-            }
-          }
-        },
-        "debug": {
-          "version": "2.2.0",
-          "dependencies": {
-            "ms": {
-              "version": "0.7.1"
+            },
+            "json3": {
+              "version": "3.3.2"
             }
           }
         }
