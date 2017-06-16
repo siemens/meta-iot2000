@@ -15,8 +15,6 @@ inherit update-rc.d
 INITSCRIPT_PACKAGES = "${PN}"
 INITSCRIPT_NAME = "ntpd.busybox"
 
-RDEPENDS_${PN} += "tzdata"
-
 do_install_append() {
 	install -d ${D}${sysconfdir}
 	install -m 0644 ${WORKDIR}/ntp.conf ${D}${sysconfdir}/
