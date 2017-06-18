@@ -35,7 +35,7 @@ For setting up your host pc see the following description:
 ```shell
 $ git clone git://git.yoctoproject.org/poky.git poky -b morty
 $ git clone git://git.yoctoproject.org/meta-intel poky/meta-intel -b morty
-$ git clone http://git.openembedded.org/meta-openembedded poky/meta-openembedded
+$ git clone http://git.openembedded.org/meta-openembedded poky/meta-openembedded -b morty
 ```
 
 For using tested revisions, you have to checkout these versions:
