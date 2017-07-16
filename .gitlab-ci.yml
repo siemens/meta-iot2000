@@ -23,3 +23,8 @@ example-image:
   <<: *template
   variables:
     KAS_CONFIG: meta-iot2000-example/kas.yml
+
+example-image-with-docker:
+  <<: *template
+  variables:
+    KAS_CONFIG: meta-iot2000-example/kas-with-docker.yml
