@@ -1,0 +1,9 @@
+#!/bin/sh
+if [ "$1" == build ]; then
+	shift
+	export GOARCH="386"
+	export GO386="quark"
+	go.bin build -a "$@"
+else
+	go.bin "$@"
+fi
