@@ -1,0 +1,19 @@
+header:
+  version: "0.10"
+  includes:
+    - kas.yml
+
+repos:
+  meta-virtualization:
+    url: https://git.yoctoproject.org/git/meta-virtualization
+    refspec: 1beb18840539f0366b6a5f20bcff98c99534c496
+
+  meta-openembedded:
+    layers:
+      meta-networking:
+      meta-python:
+      meta-filesystems:
+
+local_conf_header:
+  docker: |
+    IMAGE_INSTALL_append = " docker"
