@@ -2,7 +2,7 @@
 
 set -eu
 
-PART_NUMBER=2
+PART_NUMBER=3
 
 case $(mount | grep "on / ") in
 /dev/mmcblk0*)

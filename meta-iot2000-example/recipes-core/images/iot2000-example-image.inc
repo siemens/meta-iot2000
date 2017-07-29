@@ -1,5 +1,7 @@
 require recipes-core/images/core-image-iot2000.inc
 
+WKS_FILE = "example-image.${MACHINE}.wks"
+
 DESCRIPTION = "Example image for the IOT2000 platform"
 
 #example features
