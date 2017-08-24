@@ -1,1 +1,1 @@
-bootloader  --timeout=0  --append="console=ttyS1,115200n8 reboot=efi,warm rw debugshell=5 rootwait"
+bootloader --ptable gpt --append="console=ttyS1,115200n8 earlyprintk initrd=acpi-upgrades-iot2000.cpio"
