@@ -16,6 +16,10 @@ repos:
       meta-poky:
       meta-yocto-bsp:
 
+  meta-efibootguard:
+    url: https://github.com/siemens/meta-efibootguard
+    refspec: a703d073f02bcb7c537a74debd7437b4261e0816
+
   meta-openembedded:
     url: http://git.openembedded.org/meta-openembedded
     refspec: 4cd3a39f22a2712bfa8fc657d09fe2c7765a4005
