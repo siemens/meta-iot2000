@@ -16,6 +16,10 @@ repos:
     url: https://github.com/ninox92/meta-nodejs
     refspec: 7e90d506488036cf1c490d1ac1086675eb2805b6
 
+  meta-efibootguard:
+    url: https://github.com/siemens/meta-efibootguard
+    refspec: 0d8218a7693b80c4672abde206ac89b941c74737
+
 local_conf_header:
   package_ipk: |
     PACKAGE_CLASSES = "package_ipk"
