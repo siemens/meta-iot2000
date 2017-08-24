@@ -21,6 +21,10 @@ repos:
       meta-networking:
       meta-python:
 
+  meta-efibootguard:
+    url: https://github.com/siemens/meta-efibootguard
+    refspec: 858bdf29a4c7f91f61b6bc30df02235a25016f0b
+
 local_conf_header:
   package_ipk: |
     PACKAGE_CLASSES = "package_ipk"
