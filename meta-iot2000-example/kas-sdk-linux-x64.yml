@@ -1,0 +1,16 @@
+header:
+  version: 3
+  includes:
+    - file: meta-iot2000-example/kas.yml
+      repo: meta-iot2000
+
+task: populate_sdk
+
+repos:
+  meta-iot2000:
+    layers:
+      meta-iot2000-example:
+
+local_conf_header:
+  sdk_machine: |
+    SDKMACHINE ?= "x86_64"

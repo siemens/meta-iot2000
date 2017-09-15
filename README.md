@@ -63,6 +63,12 @@ file instead:
 $ kas build meta-iot2000-bsp/kas.yml
 ```
 
+You can also reproduce the Windows or Linux SDK this way:
+
+```shell
+$ kas build meta-iot2000-example/sdk-kas-windows-i586.yml
+$ kas build meta-iot2000-example/sdk-kas-linux-x86.yml
+```
 
 Docker Build
 ------------
