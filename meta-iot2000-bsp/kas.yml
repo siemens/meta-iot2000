@@ -1,7 +1,9 @@
 header:
-  version: 2
+  version: 3
 
-machine:  iot2000
+machine: iot2000
+
+task: build
 
 repos:
   meta-iot2000:
