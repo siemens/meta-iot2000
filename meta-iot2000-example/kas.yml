@@ -4,6 +4,7 @@ header:
     - file: meta-iot2000-bsp/kas.yml
       repo: meta-iot2000
 
+distro: poky-iot2000
 target: iot2000-example-image
 
 repos:
