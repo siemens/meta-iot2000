@@ -1,4 +1,4 @@
-image: kasproject/kas:0.11.0
+image: kasproject/kas:0.14.0
 
 variables:
   GIT_STRATEGY: clone
@@ -13,13 +13,21 @@ variables:
     - export no_proxy=$NO_PROXY
     - cd ..
     - kas build meta-iot2000/$KAS_CONFIG
+    - xz -c -T0 build/tmp/deploy/images/iot2000/$DEPLOY_IMAGE.wic > $CI_PROJECT_NAME/$DEPLOY_IMAGE.xz
+  artifacts:
+    name: "${CI_JOB_NAME}-${CI_COMMIT_SHA::12}"
+    paths:
+      - $DEPLOY_IMAGE.xz
+    expire_in: 1 week
 
 bsp:
   <<: *template
   variables:
     KAS_CONFIG: meta-iot2000-bsp/kas.yml
+    DEPLOY_IMAGE: core-image-minimal-iot2000
 
 example-image:
   <<: *template
   variables:
     KAS_CONFIG: meta-iot2000-example/kas.yml
+    DEPLOY_IMAGE: iot2000-example-image-iot2000
