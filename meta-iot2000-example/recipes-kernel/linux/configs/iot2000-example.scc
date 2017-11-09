@@ -1,0 +1,2 @@
+define KFEATURE_DESCRIPTION "IOT2000 example image kernel options"
+kconf hardware iot2000-example.cfg
