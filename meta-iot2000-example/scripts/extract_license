@@ -1,0 +1,42 @@
+#!/bin/bash
+#
+# Copyright (c) Siemens AG, 2017
+#
+# Authors:
+#  Le Jin <le.jin@siemens.com>
+#
+# This file is subject to the terms and conditions of the MIT License.  See
+# COPYING.MIT file in the top-level directory.
+#
+# Extract and combine license files
+# Eg:
+#    extract_license build/tmp/deploy/licenses license.dat
+#
+
+function get_dir_list()
+{
+    dir=$(find $1/* -type d -printf "%f\n")
+    echo $dir
+}
+
+function get_file_list()
+{
+    file=$(find $1/* -maxdepth 1 -type f -printf "%f\n")
+    echo $file
+}
+
+dir_path="${1:?Please provide license directory path}"
+output_path="${2:?Please provide output file path}"
+dir_list=$(get_dir_list $dir_path)
+truncate $output_path --size 0
+for dir in $dir_list; do
+    echo "Component: "$dir >> $output_path
+    file_list=$(get_file_list $dir_path"/"$dir"/")
+    for file in $file_list; do
+        file_path=$dir/$file
+        echo "File: "$file_path >> $output_path
+        cat $dir_path/$file_path >> $output_path
+        echo "__________" >> $output_path
+    done
+    echo "**********" >> $output_path
+done
