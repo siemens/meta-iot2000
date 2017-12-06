@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 import mraa
 import sys
@@ -43,7 +43,7 @@ if x % 2 == 0:
 else:
     greenled(1)
 
-if x / 2 == 0:
+if x // 2 == 0:
     redled(0)
 else:
     redled(1)
