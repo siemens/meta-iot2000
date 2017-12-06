@@ -27,16 +27,26 @@ def greenled(state):
         ledpin.write(0)
 
 
-if len(sys.argv) < 2:
+def usage():
     print("Usage: " + sys.argv[0] + " color")
     print("color:")
-    print("0\t\tout")
-    print("1\t\tgreen")
-    print("2\t\tred")
-    print("3\t\torange")
+    print("\t0 | off")
+    print("\t1 | green")
+    print("\t2 | red")
+    print("\t3 | orange")
     sys.exit()
 
-x = int(sys.argv[1])
+
+if len(sys.argv) < 2:
+    usage()
+
+try:
+    x = {'off': 0, 'green': 1, 'red': 2, 'orange': 3}[sys.argv[1]]
+except KeyError:
+    try:
+        x = int(sys.argv[1])
+    except ValueError:
+        usage()
 
 if x % 2 == 0:
     greenled(0)
