@@ -12,13 +12,9 @@ repos:
     layers:
       meta-iot2000-example:
 
-  meta-intel-iot-middleware:
-    url: https://git.yoctoproject.org/git/meta-intel-iot-middleware
-    refspec: fc8eabfa4fb54802d3f97123b9d2954450175e33
-
   meta-nodejs:
-    url: https://github.com/imyller/meta-nodejs
-    refspec: eec531e97a17bfd406f3bf76dee4057dcf5286a4
+    url: https://github.com/ninox92/meta-nodejs
+    refspec: 7e90d506488036cf1c490d1ac1086675eb2805b6
 
 local_conf_header:
   package_ipk: |

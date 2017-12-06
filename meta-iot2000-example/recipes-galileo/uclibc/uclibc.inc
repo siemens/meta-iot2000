@@ -17,7 +17,6 @@ file://${S}/test/regex/testregex.c;beginline=1;endline=31;md5=234efb227d0a40677f
 require uclibc-config.inc
 
 PATH_prepend = "${STAGING_BINDIR_TOOLCHAIN}.${STAGINGCC}:"
-TOOLCHAIN_OPTIONS = " --sysroot=${STAGING_DIR_TCBOOTSTRAP}"
 
 # siteconfig.bbclass runs configure which needs a working compiler
 # For the compiler to work we need a working libc yet libc isn't
@@ -106,7 +105,7 @@ python () {
                  "/^### CROSS$/a\\\n%s\n" %
                   ("\\n".join(["CROSS_COMPILER_PREFIX=\"${TARGET_PREFIX}\"",
                         "UCLIBC_EXTRA_CFLAGS=\"${UCLIBC_EXTRA_CFLAGS}\"",
-                         "KERNEL_HEADERS=\"${STAGING_INCDIR}\"",
+                         "KERNEL_HEADERS=\"${S}/include\"",
                          "RUNTIME_PREFIX=\"/\"",
                          "DEVEL_PREFIX=\"/${prefix}\"",
                          "SHARED_LIB_LOADER_PREFIX=\"/lib\"",
@@ -125,14 +124,12 @@ python () {
                    "/^### ABI$/a\\\nCONFIG_%s=y\n\n" % ("${UCLIBC_ABI}"))
 }
 
-python do_patch_append() {
-    import subprocess
-    subprocess.call("ln -sf ${STAGING_INCDIR}/linux ${S}/include/linux", shell=True)
-    subprocess.call("ln -sf ${STAGING_INCDIR}/asm ${S}/include/asm", shell=True)
-}
-
 do_configure() {
         rm -f ${S}/.config
+
+        ln -sf ${STAGING_INCDIR}/linux ${S}/include/linux
+        ln -sf ${STAGING_INCDIR}/asm ${S}/include/asm
+        ln -sf ${STAGING_INCDIR}/asm-generic ${S}/include/asm-generic
 
         # OpenEmbedded splits the uClibc.config in two parts:
         # uClibc.machine, uClibc.distro

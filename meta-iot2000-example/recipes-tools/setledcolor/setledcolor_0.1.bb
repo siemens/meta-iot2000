@@ -8,7 +8,7 @@ S = "${WORKDIR}"
 
 FILES_${PN} += "${bindir}/setledcolor.py"
 
-RDEPENDS_${PN} = "python-mraa"
+RDEPENDS_${PN} = "python3-mraa"
 
 do_install() {
 	install -d ${D}${bindir}

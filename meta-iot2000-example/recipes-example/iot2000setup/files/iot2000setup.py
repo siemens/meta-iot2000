@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 from __future__ import absolute_import, print_function, unicode_literals
 
 from snack import *
@@ -108,7 +108,7 @@ class TopMenu:
 
 class OsSettings:
 	def __init__(self, topmenu):
-		self.currentHostname = subprocess.check_output("hostname")
+		self.currentHostname = subprocess.check_output("hostname").decode()
 		self.topmenu = topmenu
 		self.finish = False
 	def show(self):
@@ -317,8 +317,8 @@ class SoftwareSettings:
 		# Iterate through list of removal candidates and check if they are 
 		# actually installed.
 		task = subprocess.Popen("/usr/bin/opkg list-installed", stdout=subprocess.PIPE, shell=True)
-		installedPackages = task.stdout.read()
-		
+		installedPackages = task.stdout.read().decode()
+
 		numberOfRemovablePackages = 0
 		for package in packageList:
 			if (package in installedPackages):
@@ -358,7 +358,7 @@ class SoftwareSettings:
 		self.finish = True
 	def changeAutostart(self):
 		task = subprocess.Popen("/etc/init.d/sshd status", stdout=subprocess.PIPE, shell=True)
-		taskReturn = task.stdout.read().lstrip().rstrip()
+		taskReturn = task.stdout.read().decode().lstrip().rstrip()
 		sshEnabled = "running" in taskReturn
 		
 		noderedAutostartEnabled = os.path.isfile("/etc/init.d/launch_node-red.sh")
