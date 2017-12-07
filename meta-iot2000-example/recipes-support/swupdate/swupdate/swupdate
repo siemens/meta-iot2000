@@ -1,0 +1,38 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          swupdate
+# Required-Start:    $local_fs
+# Should-Start:
+# Required-Stop:     $local_fs
+# Should-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start swupdate application
+### END INIT INFO
+
+# Note: This is an empty init script to substitute meta-swupdate's default
+# init script. We don't want a web-server to be started. This way
+# the efibootguard compatible swupdate config can be used with the original
+# meta-swupdate recipe
+
+case "$1" in
+start)
+	true
+	;;
+stop)
+	true
+	;;
+status)
+	true
+	;;
+restart)
+	true
+	;;
+try-restart|force-reload)
+	true
+	;;
+*)
+	true
+	;;
+esac
+
