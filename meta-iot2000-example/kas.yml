@@ -20,6 +20,10 @@ repos:
     url: https://github.com/siemens/meta-efibootguard
     refspec: 0d8218a7693b80c4672abde206ac89b941c74737
 
+  meta-swupdate:
+    url: https://github.com/sbabic/meta-swupdate
+    refspec: 145736d31a557a4ee0ec1746ab14fec5eeb0a667
+
 local_conf_header:
   package_ipk: |
     PACKAGE_CLASSES = "package_ipk"

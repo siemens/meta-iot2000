@@ -1,0 +1,75 @@
+#
+# Automatically generated file; DO NOT EDIT.
+# Swupdate Configuration
+#
+CONFIG_HAVE_DOT_CONFIG=y
+
+#
+# Swupdate Settings
+#
+
+#
+# General Configuration
+#
+# CONFIG_SYSTEMD is not set
+# CONFIG_SCRIPTS is not set
+# CONFIG_HW_COMPATIBILITY is not set
+CONFIG_SW_VERSIONS_FILE="/etc/sw-versions"
+
+#
+# Socket Paths
+#
+CONFIG_SOCKET_CTRL_PATH="/tmp/sockinstctrl"
+CONFIG_SOCKET_PROGRESS_PATH="/tmp/swupdateprog"
+CONFIG_SOCKET_REMOTE_HANDLER_DIRECTORY="/tmp/"
+# CONFIG_MTD is not set
+# CONFIG_LUA is not set
+# CONFIG_FEATURE_SYSLOG is not set
+
+#
+# Build Options
+#
+CONFIG_CROSS_COMPILE=""
+CONFIG_SYSROOT=""
+CONFIG_EXTRA_CFLAGS=""
+CONFIG_EXTRA_LDFLAGS=""
+CONFIG_EXTRA_LDLIBS=""
+
+#
+# Debugging Options
+#
+# CONFIG_DEBUG is not set
+# CONFIG_WERROR is not set
+# CONFIG_NOCLEANUP is not set
+CONFIG_BOOTLOADER_EBG=y
+# CONFIG_UBOOT is not set
+# CONFIG_BOOTLOADER_NONE is not set
+# CONFIG_BOOTLOADER_GRUB is not set
+# CONFIG_DOWNLOAD is not set
+# CONFIG_HASH_VERIFY is not set
+# CONFIG_SIGNED_IMAGES is not set
+# CONFIG_ENCRYPTED_IMAGES is not set
+# CONFIG_SURICATTA is not set
+# CONFIG_WEBSERVER is not set
+
+#
+# Archival Features
+#
+CONFIG_GUNZIP=y
+
+#
+# Parser Features
+#
+CONFIG_LIBCONFIG=y
+CONFIG_PARSERROOT=""
+# CONFIG_JSON is not set
+# CONFIG_SETSWDESCRIPTION is not set
+
+#
+# Image Handlers
+#
+CONFIG_RAW=y
+# CONFIG_SHELLSCRIPTHANDLER is not set
+CONFIG_ARCHIVE=y
+# CONFIG_REMOTE_HANDLER is not set
+CONFIG_BOOTLOADERHANDLER=y
