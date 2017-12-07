@@ -5,4 +5,4 @@ do_bootimg[depends] += "acpi-upgrades:do_deploy"
 
 IMAGE_INSTALL_append = " switchmode"
 
-DEPENDS += "gptfdisk-native"
+DEPENDS += "gptfdisk-native efibootguard-native"
