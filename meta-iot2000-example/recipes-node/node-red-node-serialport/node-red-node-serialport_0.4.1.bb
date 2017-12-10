@@ -287,7 +287,7 @@ SRC_URI = "npm://registry.npmjs.org;name=node-red-node-serialport;version=${PV}"
 NPM_SHRINKWRAP := "${THISDIR}/${PN}/npm-shrinkwrap.json"
 NPM_LOCKDOWN := "${THISDIR}/${PN}/lockdown.json"
 
-inherit npm
+inherit npm-manual-inst
 
 do_compile_append() {
 	export http_proxy="${http_proxy}"
