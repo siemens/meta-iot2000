@@ -872,7 +872,7 @@ SRC_URI = "npm://registry.npmjs.org;name=node-red;version=${PV}"
 NPM_SHRINKWRAP := "${THISDIR}/${PN}/npm-shrinkwrap.json"
 NPM_LOCKDOWN := "${THISDIR}/${PN}/lockdown.json"
 
-inherit npm
+inherit npm-manual-inst
 
 # Must be set after inherit npm since that itself sets S
 S = "${WORKDIR}/npmpkg"
