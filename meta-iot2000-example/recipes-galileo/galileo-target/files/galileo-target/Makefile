@@ -82,5 +82,5 @@ install: $(GALILEO_TGT_LOADER) $(GALILEO_TGT_RESET_HANDLER) install-scripts
 DESTDIR ?= build
 
 install-scripts:
-	rsync -a scripts/ ${DESTDIR}
-
+	install -d $(DESTDIR)/$(CLN_GALILEO)
+	install -m 0755 scripts/${CLN_GALILEO}/* $(DESTDIR)/$(CLN_GALILEO)
