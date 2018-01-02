@@ -7,11 +7,7 @@ require linux-cip_4.4.inc
 FILESEXTRAPATHS_prepend := "${THISDIR}/configs:${THISDIR}/patches:"
 
 SRC_URI += " \
-    file://0001-iot2000-hack-Work-around-DSDT-mistake.patch \
-    file://0002-iot2000-hack-Adjust-pca9685-gpio-base-for-legacy-com.patch \
-    file://0003-iot2000-hack-gpio-pca953x-provide-GPIO-base-based-on.patch \
-    file://0004-iot2000-hack-gpio-pca953x-add-drive-property.patch \
-    file://0005-iot2000-hack-pwm-pca-9685-Provide-chip-level-pwm_per.patch \
+    ${KERNEL_PATCHES} \
     file://defconfig"
 
 PV = "${LINUX_VERSION}"

@@ -1,0 +1,39 @@
+From 2fb20a434404d954740556b56466365587c33cfc Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 26 Sep 2016 08:52:49 +0200
+Subject: [PATCH 1/2] spi: pca2xx-pci: Allow MSI
+
+Backport of 64e02cb0bdfc7cef0a01e2ad4d567fdc0a74450e upstream.
+
+Now that the core is ready for edge-triggered interrupts, we can safely
+allow the PCI versions that provide this to enable the feature and,
+thus, have less shared interrupts.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ drivers/spi/spi-pxa2xx-pci.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index ac0658ead1b9..0a9be3b6538a 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -156,10 +156,14 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ 		dev_err(&dev->dev, "failed to ioremap() registers\n");
+ 		return -EIO;
+ 	}
+-	ssp->irq = dev->irq;
+ 	ssp->port_id = (c->port_id >= 0) ? c->port_id : dev->devfn;
+ 	ssp->type = c->type;
+ 
++	pci_set_master(dev);
++
++	pci_enable_msi(dev);
++	ssp->irq = dev->irq;
++
+ 	snprintf(buf, sizeof(buf), "pxa2xx-spi.%d", ssp->port_id);
+ 	ssp->clk = clk_register_fixed_rate(&dev->dev, buf , NULL,
+ 					CLK_IS_ROOT, c->max_clk_rate);
+-- 
+2.13.6
+
