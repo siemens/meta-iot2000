@@ -1,7 +1,7 @@
-From c9125348a22f695fa543c96e8f6beca8cb26d6d7 Mon Sep 17 00:00:00 2001
+From 75207d42598077e0b9d3cf9207310b104959dcb0 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 25 May 2017 11:09:42 +0200
-Subject: [PATCH 27/27] iot2000-hack: Work around DSDT mistake
+Subject: [PATCH 1/5] iot2000-hack: Work around DSDT mistake
 
 Until we have a new firmware revision, fix up the incorrect GPIO
 interrupt pin in software.
@@ -14,7 +14,7 @@ Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
  1 file changed, 8 insertions(+)
 
 diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index cbbb67a6f1d6..ec1a092e9911 100644
+index 16a7b6816744..304855b3ecb8 100644
 --- a/drivers/gpio/gpiolib-acpi.c
 +++ b/drivers/gpio/gpiolib-acpi.c
 @@ -10,6 +10,7 @@
@@ -40,5 +40,5 @@ index cbbb67a6f1d6..ec1a092e9911 100644
  					      agpio->pin_table[pin_index]);
  		lookup->info.gpioint =
 -- 
-2.12.0
+2.13.6
 

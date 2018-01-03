@@ -1,2 +1,0 @@
-define KFEATURE_DESCRIPTION "IOT2000 Kernel Options"
-kconf hardware iot2000.cfg

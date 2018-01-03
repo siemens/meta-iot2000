@@ -1,7 +1,7 @@
-From e8bc5d5bb5b203ffe4a1266aa84dcfb740842f4a Mon Sep 17 00:00:00 2001
+From 2fb20a434404d954740556b56466365587c33cfc Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Mon, 26 Sep 2016 08:52:49 +0200
-Subject: [PATCH 09/27] spi: pca2xx-pci: Allow MSI
+Subject: [PATCH 1/2] spi: pca2xx-pci: Allow MSI
 
 Backport of 64e02cb0bdfc7cef0a01e2ad4d567fdc0a74450e upstream.
 
@@ -15,7 +15,7 @@ Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 562ffc1282bc..0b1c9c4aa355 100644
+index ac0658ead1b9..0a9be3b6538a 100644
 --- a/drivers/spi/spi-pxa2xx-pci.c
 +++ b/drivers/spi/spi-pxa2xx-pci.c
 @@ -156,10 +156,14 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
@@ -35,5 +35,5 @@ index 562ffc1282bc..0b1c9c4aa355 100644
  	ssp->clk = clk_register_fixed_rate(&dev->dev, buf , NULL,
  					CLK_IS_ROOT, c->max_clk_rate);
 -- 
-2.12.0
+2.13.6
 

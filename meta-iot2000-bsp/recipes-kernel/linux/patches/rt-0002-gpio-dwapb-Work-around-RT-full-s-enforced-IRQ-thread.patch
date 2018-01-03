@@ -1,0 +1,52 @@
+From 162379965182fa0cdd447ac462c3f3b8fb7377d8 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Wed, 3 Jan 2018 15:32:56 +0100
+Subject: [PATCH 2/2] gpio: dwapb: Work around RT-full's enforced IRQ threading
+ side effects
+
+Under RT-full, dwapb_irq_handler will run in a threaded IRQ. However,
+generic_handle_irq expect us to call it with IRQs disabled.
+Documentation/gpio/driver.txt suggest to use fake raw spinlock around
+generic_handle_irq in order to call the latter with interrupts off.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ drivers/gpio/gpio-dwapb.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/gpio/gpio-dwapb.c b/drivers/gpio/gpio-dwapb.c
+index fcd5b0acfc72..dad75d594f76 100644
+--- a/drivers/gpio/gpio-dwapb.c
++++ b/drivers/gpio/gpio-dwapb.c
+@@ -81,6 +81,7 @@ struct dwapb_gpio {
+ 	struct dwapb_gpio_port	*ports;
+ 	unsigned int		nr_ports;
+ 	struct irq_domain	*domain;
++	raw_spinlock_t		wa_rt_lock;
+ };
+ 
+ static inline struct dwapb_gpio_port *
+@@ -135,8 +136,11 @@ static u32 dwapb_do_irq(struct dwapb_gpio *gpio)
+ 	while (irq_status) {
+ 		int hwirq = fls(irq_status) - 1;
+ 		int gpio_irq = irq_find_mapping(gpio->domain, hwirq);
++		unsigned long wa_flags;
+ 
++		raw_spin_lock_irqsave(&gpio->wa_rt_lock, wa_flags);
+ 		generic_handle_irq(gpio_irq);
++		raw_spin_unlock_irqrestore(&gpio->wa_rt_lock, wa_flags);
+ 		irq_status &= ~BIT(hwirq);
+ 
+ 		if ((irq_get_trigger_type(gpio_irq) & IRQ_TYPE_SENSE_MASK)
+@@ -541,6 +545,8 @@ static int dwapb_gpio_probe(struct platform_device *pdev)
+ 	if (!gpio)
+ 		return -ENOMEM;
+ 
++	raw_spin_lock_init(&gpio->wa_rt_lock);
++
+ 	gpio->dev = &pdev->dev;
+ 	gpio->nr_ports = pdata->nports;
+ 
+-- 
+2.13.6
+

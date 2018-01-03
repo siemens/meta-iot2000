@@ -34,11 +34,11 @@ variables:
       - $DEPLOY_SDK
     expire_in: 1 week
 
-bsp:
+bsp-rt:
   <<: *build-and-deploy-image
   variables:
-    KAS_CONFIG: meta-iot2000-bsp/kas.yml
-    DEPLOY_IMAGE: core-image-minimal-iot2000
+    KAS_CONFIG: meta-iot2000-bsp/kas-rt.yml
+    DEPLOY_IMAGE: core-image-rt-iot2000
 
 example-image:
   <<: *build-and-deploy-image
