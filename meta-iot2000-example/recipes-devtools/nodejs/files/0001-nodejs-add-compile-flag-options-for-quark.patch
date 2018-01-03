@@ -1,4 +1,4 @@
-From 010db0c4ed2f5c8ba301cd25be0fa4bf16352661 Mon Sep 17 00:00:00 2001
+From f4095014ee7acfda5d235cbbc6830e28f8633be0 Mon Sep 17 00:00:00 2001
 From: Sascha Weisenberger <sascha.weisenberger@siemens.com>
 Date: Fri, 24 Feb 2017 09:53:25 -0600
 Subject: [PATCH] nodejs: add compile flag options for quark
@@ -9,18 +9,19 @@ Signed-off-by: Sascha Weisenberger <sascha.weisenberger@siemens.com>
  1 file changed, 3 insertions(+)
 
 diff --git a/configure b/configure
-index 42dac5f..59f3eff 100644
+index 10d46159a8..4bfabe9e98 100755
 --- a/configure
 +++ b/configure
-@@ -891,6 +891,9 @@ def configure_v8(o):
-   o['variables']['v8_optimized_debug'] = 0  # Compile with -O0 in debug builds.
+@@ -972,6 +972,9 @@ def configure_v8(o):
    o['variables']['v8_random_seed'] = 0  # Use a random seed for hash tables.
    o['variables']['v8_use_snapshot'] = 'false' if options.without_snapshot else 'true'
+   o['variables']['v8_trace_maps'] = 1 if options.trace_maps else 0
 +  target_arch = options.dest_cpu or host_arch
 +  if target_arch in ('ia32'):
-+    o['variables']['v8_target_arch']= 'x87'
++    o['variables']['v8_target_arch'] = 'x87'
    o['variables']['node_use_v8_platform'] = b(not options.without_v8_platform)
    o['variables']['node_use_bundled_v8'] = b(not options.without_bundled_v8)
    o['variables']['force_dynamic_crt'] = 1 if options.shared else 0
 -- 
-2.1.4
+2.13.6
+
