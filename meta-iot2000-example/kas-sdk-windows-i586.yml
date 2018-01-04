@@ -1,16 +1,11 @@
 header:
   version: 3
   includes:
-    - file: meta-iot2000-example/kas.yml
-      repo: meta-iot2000
+    - kas.yml
 
 task: populate_sdk
 
 repos:
-  meta-iot2000:
-    layers:
-      meta-iot2000-example:
-
   meta-mingw:
     url: https://git.yoctoproject.org/git/meta-mingw
     refspec: 58dda8440c1943c15ee750eb40f0fc651e316f51
