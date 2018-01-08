@@ -1,0 +1,29 @@
+software =
+{
+     version = "0.1.0";
+     bootenv: ({
+              name = "kernelfile";
+              value = "C:BOOT1:bzImage";
+            },
+            {
+              name = "kernelparams";
+              value = "root=/dev/mmcblk0p3 console=ttyS1,115200 earlyprintk";
+            },
+            {
+              name = "watchdog_timeout_sec";
+              value = "60";
+            }
+     );
+     images: ({
+              filename = "iot2000-example-image-iot2000.ext4.gz";
+              device = "/dev/mmcblk0p3";
+              compressed = true;
+     });
+     files: ({
+              filename = "bzImage";
+	      path = "bzImage";
+	      device = "/dev/mmcblk0p5";
+	      filesystem = "vfat";
+     });
+}
+
