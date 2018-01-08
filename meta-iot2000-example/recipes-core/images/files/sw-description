@@ -1,0 +1,18 @@
+software =
+{
+     version = "0.1.0";
+     images: ({
+              filename = "iot2000-example-image-swu-iot2000.ext4.gz";
+              device = "mmcblk0p4,mmcblk0p5";
+              type = "roundrobin";
+              compressed = true;
+     });
+     files: ({
+              filename = "bzImage";
+              path = "bzImage";
+              type = "kernel";
+              device = "mmcblk0p2,mmcblk0p3";
+              filesystem = "vfat";
+     });
+}
+
