@@ -1,0 +1,7 @@
+header:
+  version: 2
+  includes:
+    - kas.yml
+
+target: iot2000-update-image
+
