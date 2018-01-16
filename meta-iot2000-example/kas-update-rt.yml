@@ -1,0 +1,10 @@
+header:
+  version: 2
+  includes:
+    - kas.yml
+
+target: iot2000-update-image
+
+local_conf_header:
+  rt_kernel: |
+    PREFERRED_PROVIDER_virtual/kernel = "linux-cip-rt"
