@@ -37,3 +37,6 @@ IMAGE_INSTALL_append = " tzdata-africa tzdata-americas tzdata-antarctica"
 IMAGE_INSTALL_append = " tzdata-arctic tzdata-asia tzdata-atlantic"
 IMAGE_INSTALL_append = " tzdata-australia tzdata-europe tzdata-pacific"
 IMAGE_INSTALL_append = " cronie"
+
+# The following is needed for correct EFI deployment
+do_image_wic[depends] += "${PN}:do_bootimg"
