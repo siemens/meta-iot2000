@@ -43,3 +43,6 @@ IMAGE_INSTALL_append = " ofono ofono-tests"
 IMAGE_INSTALL_append = " connman connman-tools connman-tests connman-client"
 
 DEPENDS += "gptfdisk-native efibootguard-native"
+
+# The following is needed for correct EFI deployment
+do_image_wic[depends] += "${PN}:do_bootimg"
