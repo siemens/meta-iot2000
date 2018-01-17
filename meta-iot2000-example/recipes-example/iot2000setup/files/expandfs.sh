@@ -2,30 +2,74 @@
 
 set -eu
 
-PART_NUMBER=3
+THIS_SCRIPT="$(basename $0)"
+
+log () {
+	echo ${THIS_SCRIPT}: $1 > /dev/kmsg
+}
+
+disable () {
+	log "Deactivating this automatic resizer"
+	update-rc.d -f expandfs.sh remove
+}
 
 case $(mount | grep "on / ") in
 /dev/mmcblk0*)
 	ROOT_DEVICE="/dev/mmcblk0"
-	ROOT_PARTITION="/dev/mmcblk0p$PART_NUMBER"
+	EXPAND_PARTITION="/dev/mmcblk0p"
 	;;
 /dev/sda*)
 	ROOT_DEVICE="/dev/sda"
-	ROOT_PARTITION="/dev/sda$PART_NUMBER"
+	EXPAND_PARTITION="/dev/sda"
 	;;
 *)
-	echo "Cannot determine boot device."
+	log "Cannot determine root device."
+	disable
 	exit 1
 	;;
 esac
 
-START_BLOCK=$(parted $ROOT_DEVICE -ms unit s p | grep "^$PART_NUMBER" | cut -f 2 -d: | sed "s/s$//")
+log "Fixing backup GPT position"
+parted ${ROOT_DEVICE} print Fix
 
-parted -ms $ROOT_DEVICE rm $PART_NUMBER
+LAST_PART="$(parted ${ROOT_DEVICE} -ms unit s p | tail -n 1 | cut -d ':' -f 1)"
+if [ "x${LAST_PART}" == "x" ]
+then
+	log "Cannot find last partition of root device."
+	disable
+	exit 1
+fi
 
-parted -ms $ROOT_DEVICE unit s -- mkpart primary ext3 $START_BLOCK -1
+EXPAND_PARTITION="${EXPAND_PARTITION}${LAST_PART}"
 
-partprobe $ROOT_DEVICE
-resize2fs $ROOT_PARTITION
+MAXSIZE="$(parted ${ROOT_DEVICE} -s unit MB print list | grep Disk | cut -d' ' -f 3 | tr -d MB)"
+if [ "x${MAXSIZE}" == "x" ]
+then
+	log "Error obtaining maximum partition size"
+	disable
+	exit 1
+fi
 
-update-rc.d -f expandfs.sh remove
+log "Resizing ${EXPAND_PARTITION} to maximum"
+parted ${ROOT_DEVICE} -s resizepart ${LAST_PART} ${MAXSIZE}M
+res=$?
+if [ $res -ne 0 ]
+then
+	log "Error resizing partition"
+	disable
+	exit 1
+fi
+
+partprobe ${ROOT_DEVICE}
+
+log "Resizing file system on ${EXPAND_PARTITION}"
+resize2fs ${EXPAND_PARTITION}
+res=$?
+if [ $res -ne 0 ]
+then
+	log "Error resizing file system"
+	disable
+	exit 1
+fi
+
+disable
