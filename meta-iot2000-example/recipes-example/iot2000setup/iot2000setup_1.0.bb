@@ -11,7 +11,7 @@ FILES_${PN} += " \
 	${bindir}/iot2000setup \
 "
 
-RDEPENDS_${PN} += "libnewt-python python3-mraa"
+RDEPENDS_${PN} += "libnewt-python python3-mraa util-linux-sfdisk"
 INITSCRIPT_NAME = "expandfs.sh"
 INITSCRIPT_PARAMS = "defaults 10"
 
