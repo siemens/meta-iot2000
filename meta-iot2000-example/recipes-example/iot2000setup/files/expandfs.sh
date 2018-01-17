@@ -1,31 +1,29 @@
 #!/bin/sh
 
-set -eu
+THIS_SCRIPT="$(basename $0)"
 
-PART_NUMBER=3
+log () {
+	echo ${THIS_SCRIPT}: $1 > /dev/kmsg
+}
 
-case $(mount | grep "on / ") in
-/dev/mmcblk0*)
-	ROOT_DEVICE="/dev/mmcblk0"
-	ROOT_PARTITION="/dev/mmcblk0p$PART_NUMBER"
-	;;
-/dev/sda*)
-	ROOT_DEVICE="/dev/sda"
-	ROOT_PARTITION="/dev/sda$PART_NUMBER"
-	;;
-*)
-	echo "Cannot determine boot device."
-	exit 1
-	;;
-esac
+disable () {
+	log "Deactivating this automatic resizer"
+	update-rc.d -f expandfs.sh remove
+}
 
-START_BLOCK=$(parted $ROOT_DEVICE -ms unit s p | grep "^$PART_NUMBER" | cut -f 2 -d: | sed "s/s$//")
+ROOT_DEVICE=$(findmnt / -o source -n | sed 's/p\?[0-9]*$//')
+LAST_PART=$(sfdisk -d ${ROOT_DEVICE} | tail -1 | awk '{print $1}')
 
-parted -ms $ROOT_DEVICE rm $PART_NUMBER
+log "Resizing last partition"
+sfdisk -d ${ROOT_DEVICE} 2>/dev/null | grep -v last-lba | \
+	sed 's|\('${LAST_PART}' .*, \)size=[^,]*, |\1|' | \
+	sfdisk --force ${ROOT_DEVICE} 2>&1 | logger -t ${THIS_SCRIPT}
 
-parted -ms $ROOT_DEVICE unit s -- mkpart primary ext3 $START_BLOCK -1
+log "Informing kernel about new partitioning"
+partprobe > /dev/null
 
-partprobe $ROOT_DEVICE
-resize2fs $ROOT_PARTITION
+log "Online-Resizing file system"
+resize2fs ${LAST_PART} 2>&1 | logger -t ${THIS_SCRIPT}
 
-update-rc.d -f expandfs.sh remove
+log "Disabling this init script"
+disable
