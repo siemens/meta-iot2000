@@ -47,3 +47,6 @@ IMAGE_INSTALL_append += "efibootguard-tools"
 DEPENDS += "gptfdisk-native efibootguard-native"
 
 IMAGE_INSTALL_append = " persiststore"
+
+# The following is needed for correct EFI deployment
+do_image_wic[depends] += "${PN}:do_bootimg"
