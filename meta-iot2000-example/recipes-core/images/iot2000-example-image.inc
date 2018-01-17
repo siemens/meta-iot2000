@@ -43,3 +43,9 @@ IMAGE_INSTALL_append = " ofono ofono-tests"
 IMAGE_INSTALL_append = " connman connman-tools connman-tests connman-client"
 
 DEPENDS += "gptfdisk-native efibootguard-native"
+
+# The following is needed for correct EFI deployment so that the boot files
+# needed for the EFI partition are already deployed before the wic image is
+# created, since the python plugin used by the wic image wants to copy these
+# files.
+do_image_wic[depends] += "${PN}:do_bootimg"
