@@ -50,9 +50,10 @@ Furthermore, install the kas build tool:
 $ pip3 install kas
 ```
 
-Now you can build the example image like this:
+**_Warning:_** Make sure that the working directory (meta-iot2000) is located on a native Linux file system such as ext4, xfs, btrfs, etc. NTFS is known to **not** work.
 
-**_Warning:_** Make sure that the working directory (meta-iot2000) is located in a EXT4 partion.   
+Now you can build the example image like this:
+   
 ```shell
 $ kas build meta-iot2000-example/kas.yml
 ```
