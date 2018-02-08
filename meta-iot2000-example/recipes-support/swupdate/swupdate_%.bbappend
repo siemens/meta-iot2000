@@ -1,5 +1,11 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/swupdate:"
 
-SRCREV = "abad107582ab6230af3eb74d15227a1daa699e6d"
+SRCREV = "012374087c747f05216a7f002e4b8a34bc142c52"
+
+SRC_URI += "file://swupdate_handlers.lua"
 
 DEPENDS += "efibootguard"
+
+do_configure_prepend () {
+        cp ${WORKDIR}/swupdate_handlers.lua ${S}
+}
