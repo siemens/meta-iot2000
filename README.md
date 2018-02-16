@@ -36,6 +36,10 @@ There are two recommended ways to build one of the provided images, may they
 be original or already customized: natively on a Linux machine or inside a
 Docker container.
 
+**Note:** Before starting the build, make sure that your working directory is
+located on a native Linux file system such as ext4, xfs, btrfs, etc. NTFS is
+known to **not** work.
+
 
 Native Build
 ------------
@@ -69,6 +73,7 @@ You can also reproduce the Windows or Linux SDK this way:
 $ kas build meta-iot2000-example/sdk-kas-windows-i586.yml
 $ kas build meta-iot2000-example/sdk-kas-linux-x86.yml
 ```
+
 
 Docker Build
 ------------
