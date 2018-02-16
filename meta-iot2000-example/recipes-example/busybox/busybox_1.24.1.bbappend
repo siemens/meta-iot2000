@@ -3,17 +3,23 @@
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI_append = " file://arp.cfg"
-SRC_URI_append = " file://lsusb.cfg"
-SRC_URI_append = " file://nc.cfg"
-SRC_URI_append = " file://ntpclient.cfg"
-SRC_URI_append = " file://ntp.conf"
-SRC_URI_append = " file://ntpd.busybox"
+SRC_URI += "file://arp.cfg"
+SRC_URI += "file://lsusb.cfg"
+SRC_URI += "file://nc.cfg"
+SRC_URI += "file://ntpclient.cfg"
+SRC_URI += "file://ntp.conf"
+SRC_URI += "file://ntpd.busybox"
 
-inherit update-rc.d
+PACKAGES =+ "${PN}-ntpd"
 
-INITSCRIPT_PACKAGES = "${PN}"
-INITSCRIPT_NAME = "ntpd.busybox"
+INITSCRIPT_PACKAGES += "${PN}-ntpd"
+INITSCRIPT_NAME_${PN}-ntpd = "ntpd.busybox"
+
+FILES_${PN}-ntpd = "${sysconfdir}/init.d/ntpd.busybox ${sysconfdir}/ntp.conf"
+
+CONFFILES_${PN}-ntpd = "${sysconfdir}/ntp.conf"
+
+RRECOMMENDS_${PN} += "${PN}-ntpd"
 
 do_install_append() {
 	install -d ${D}${sysconfdir}
