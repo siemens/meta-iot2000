@@ -54,8 +54,10 @@ Furthermore, install the kas build tool:
 $ pip3 install kas
 ```
 
-Now you can build the example image like this:
+**_Warning:_** Make sure that the working directory (meta-iot2000) is located on a native Linux file system such as ext4, xfs, btrfs, etc. NTFS is known to **not** work. Please check [here](https://stackoverflow.com/questions/36387647/bitbake-fails-at-do-compile-in-gcc-runtime-5-2-0-r0) and [here](https://github.com/siemens/meta-iot2000/issues/73) for the discussion about this issue.
 
+Now you can build the example image like this:
+   
 ```shell
 $ kas build meta-iot2000-example/kas.yml
 ```
