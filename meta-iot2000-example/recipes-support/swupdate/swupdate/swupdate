@@ -22,7 +22,7 @@ fi
 case "$1" in
     start)
         echo "Starting swupdate daemon"
-        /sbin/start-stop-daemon -S -x /usr/bin/swupdate -- -l 5 -u "-t default -u $HAWKBITURL -i $DEVICENAME" 2>&1 | logger -t swprv &
+        /sbin/start-stop-daemon -S -x /usr/bin/swupdate -- -l 5 -f /etc/swupdate.cfg -u "" 2>&1 | logger -t swprv &
         echo "done."
     ;;
     stop)
