@@ -67,11 +67,18 @@ do_install_append() {
 	ln -s libstdc++.so.6.0.21 "${D}${INSTDIR}/usr/lib/libstdc++.so.6"
 }
 
+PRIVATE_LIBS_${PN}-libcrypt = "libcrypt.so.1"
+PRIVATE_LIBS_${PN}-libnsl = "libnsl.so.1"
+PRIVATE_LIBS_${PN}-librt = "librt.so.1"
+PRIVATE_LIBS_${PN}-libutil = "libutil.so.1"
+
 FILES_${PN}-binlibs = "${INSTDIR}/lib/libgcc_s.so* ${INSTDIR}/usr/lib/libstdc++.so*"
+PRIVATE_LIBS_${PN}-binlibs = "libstdc++.so.6.0.21 libstdc++.so.6 libgcc_s.so.1"
 
 PACKAGES_append = " ${PN}-binlibs"
 
 INSANE_SKIP_${PN} += "already-stripped"
+INSANE_SKIP_${PN}-binlibs += "build-deps"
 
 export V="1"
 
