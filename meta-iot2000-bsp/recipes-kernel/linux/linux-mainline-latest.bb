@@ -1,9 +1,10 @@
 DESCRIPTION = "Linux Kernel for IOT2000 using latest mainline kernel"
 SECTION = "kernel"
-LICENSE = "GPLv2"
-LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
 include recipes-kernel/linux/linux-yocto.inc
+
+LICENSE = "GPLv2"
+LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/configs:${THISDIR}/patches:"
 
