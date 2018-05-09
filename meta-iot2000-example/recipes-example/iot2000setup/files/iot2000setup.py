@@ -29,7 +29,7 @@ interfacesConfig = """# /etc/network/interfaces -- configuration file for ifup(8
 auto lo
 iface lo inet loopback
 
-"""	
+"""
 dhcpTemplate = """auto [interfaceName]
 iface [interfaceName] inet dhcp
 
@@ -38,7 +38,7 @@ staticTemplate = """auto [interfaceName]
 iface [interfaceName] inet static
 	address [ip]
 	netmask 255.255.255.0
-	
+
 """
 
 wirelessDhcpTemplate = """allow-hotplug wlan0
@@ -76,10 +76,9 @@ src/gz iot2000 http://[host]/ipk/iot2000
 apnHeaderStr = "        AccessPointName = "
 userHeaderStr = "        Username = "
 pwdHeaderStr = "        Password = "
-	
+
 class TopMenu:
 	def __init__(self):
-		
 		# Use dmidecode to determine device type (IOT2040/IOT2000)
 		task = subprocess.Popen("/usr/sbin/dmidecode -t 11 | awk 'NR==8' | cut -f 2 -d :", stdout=subprocess.PIPE, shell=True)
 		device = task.stdout.read().decode().lstrip().rstrip()
@@ -87,6 +86,7 @@ class TopMenu:
 		self.deviceIsIot2020 = False
 		if (device == "IOT2020"):
 			self.deviceIsIot2020 = True
+
 	def show(self):
 		self.gscreen = SnackScreen()
 
@@ -97,7 +97,7 @@ class TopMenu:
 
 		if (not self.deviceIsIot2020):
 			menuItems.append(("Peripherals", Peripherals(self)))
-			
+
 		title = "IOT2000 Setup"
 
 		action, selection = ListboxChoiceWindow(
@@ -117,6 +117,7 @@ class OsSettings:
 		self.currentHostname = subprocess.check_output("hostname").decode()
 		self.topmenu = topmenu
 		self.finish = False
+
 	def show(self):
 		while(True and not self.finish):
 			action, selection = ListboxChoiceWindow(
@@ -128,6 +129,7 @@ class OsSettings:
 			if(action == 'back'):
 				return
 			selection()
+
 	def ChangeHostname(self):
 		ret = EntryWindow(
 			self.topmenu.gscreen,
@@ -143,6 +145,7 @@ class OsSettings:
 			with open("/etc/hostname", "w") as textfile:
 				textfile.write(ret[1][0].rstrip())
 			self.finish = True
+
 	def ChangePassword(self):
 		self.topmenu.gscreen.finish()
 		print(ansicolors.clear) # Clear console 
@@ -163,6 +166,7 @@ class Networking:
 		self.networkInterfaces = {'eth0': '', 'eth1': '', 'wlan0': ''}
 		self.cellularInterface = []
 		self.cellularSimInfo = {}
+
 	def show(self):
 		self.reconfigWifi = False
 		self.interfaceFileChange = False
@@ -208,10 +212,10 @@ class Networking:
 		wpa_conf = readFileLines("/etc/wpa_supplicant.conf", 4)
 		self.cellularInterface = iot2000Connman.getCellularTechnology()
 		infoText = "Interface config:" + "\n" \
-				   + self.newSettingsFile \
-				   + "wlan0 config: " + "\n" \
-				   + "".join(wpa_conf) + "\n" \
-				   + "cellular: " + str(cellularEnabled) + "\n" + "\n".join(self.cellularInterface)
+				+ self.newSettingsFile \
+				+ "wlan0 config: " + "\n" \
+				+ "".join(wpa_conf) + "\n" \
+				+ "cellular: " + str(cellularEnabled) + "\n" + "\n".join(self.cellularInterface)
 		ret = ButtonChoiceWindow(
 			self.topmenu.gscreen,
 			"Press OK to enable New Config",
@@ -326,7 +330,6 @@ class Networking:
 		elif pinStr == "none":
 			reconfigPin = False
 
-		#
 		title = "Configure Cellular"
 		infoText = "SIM Setting for modem " + self.cellularSimInfo['ModemPath']
 		ret = EntryWindow(
@@ -443,6 +446,7 @@ class SoftwareSettings:
 	def __init__(self, topmenu):
 		self.topmenu = topmenu
 		self.finish = False
+
 	def show(self):
 		while(True and not self.finish):
 			action, selection = ListboxChoiceWindow(
@@ -453,6 +457,7 @@ class SoftwareSettings:
 			if(action == 'back'):
 				return
 			selection()
+
 	def setRepo(self):
 		ret = EntryWindow(
 			self.topmenu.gscreen,
@@ -468,15 +473,16 @@ class SoftwareSettings:
 		opkgConfig = repoFileTemplate.replace("[host]", ret[1][0].rstrip())
 		with open("/etc/opkg/iot2000.conf", "w") as textfile:
 			textfile.write(opkgConfig)
-		
+
 		self.topmenu.gscreen.finish()
 		print(ansicolors.clear) # Clear console
 		print(ansicolors.reset)
 		finish = True
+
 	def changePackages(self):
 		### Edit here ###
-		packageList = ["galileo-target", "nodejs", "tcf-agent"] 	# Contains all potential 
-		# candidates for removal
+		# Contains all potential candidates for removal
+		packageList = ["galileo-target", "nodejs", "tcf-agent"]
 		###
 		
 		bb = ButtonBar(self.topmenu.gscreen, (("Ok", "ok"), ("Cancel", "cancel")))
@@ -514,24 +520,25 @@ class SoftwareSettings:
 			"Are you sure you want to remove the following packages: \n\n" + removeList,
 			buttons=[("OK", "ok"), ("Cancel", "cancel", "ESC")],
 			width=40)
-		
+
 		if (ret != "ok"):
 			return
-			
+
 		removeList = "/usr/bin/opkg --force-removal-of-dependent-packages remove " + removeList
 		self.topmenu.gscreen.finish()
 		print(ansicolors.clear)
 		print(ansicolors.reset)
 		subprocess.call(removeList, shell=True)
 		self.finish = True
+
 	def changeAutostart(self):
 		task = subprocess.Popen("/etc/init.d/sshd status", stdout=subprocess.PIPE, shell=True)
 		taskReturn = task.stdout.read().decode().lstrip().rstrip()
 		sshEnabled = "running" in taskReturn
-		
+
 		noderedAutostartEnabled = os.path.isfile("/etc/init.d/launch_node-red.sh")
 		mosquittoAutostartEnabled = os.path.isfile("/etc/init.d/launch_mosquitto.sh")
-		
+
 		bb = ButtonBar(self.topmenu.gscreen, [("Done", "done", "ESC")])
 		ct = CheckboxTree(height = 7, scroll = 1,width=40)
 
@@ -548,13 +555,13 @@ class SoftwareSettings:
 		noderedAutostartEnabledNew = "Auto Start node-red" in selectedOptions
 		sshEnabledNew = "SSH Server Enabled" in selectedOptions
 		mosquittoAutostartEnabledNew = "Auto Start Mosquitto Broker" in selectedOptions
-		
+
 		if (noderedAutostartEnabled != noderedAutostartEnabledNew):
 			if ("Auto Start node-red" in selectedOptions):
 				self.registerLaunchScript("on", "launch_node-red.sh", "#!/bin/sh\nsu root -c \"/usr/bin/node /usr/lib/node_modules/node-red/red >/dev/null\" &")
 			else:
 				self.registerLaunchScript("off", "launch_node-red.sh", "")
-				
+
 		if (sshEnabled != sshEnabledNew):
 			if ("SSH Server Enabled" in selectedOptions):
 				changeSshServerSetting("on")
@@ -571,6 +578,7 @@ class SoftwareSettings:
 				initFile.close()
 			else:
 				self.registerLaunchScript("off", "launch_mosquitto.sh", "")
+
 	def changeSshServerSetting(self, status):
 		if (status == "on"):
 			subprocess.call("update-rc.d -f sshd defaults", shell=True, stdout=open(os.devnull, 'wb'))
@@ -598,6 +606,7 @@ class Peripherals:
 		self.topmenu = topmenu
 		self.finish = False
 		self.comPortsPresent = os.path.isdir("/dev/ttyS2")
+
 	def show(self):
 		menuItems = [("Configure External COM Ports", self.configureComPorts), ("Show I/O Configuration", self.showIoConfiguration), ("Enable I2C on Pins A4 & A5", self.enableI2c), ("Enable SPI on Pins D10-D13", self.enableSpi), ("Enable UART0 on Pins D0 & D1", self.enableUart0)]
 		while(True and not self.finish):
@@ -609,19 +618,19 @@ class Peripherals:
 			if(action == 'back'):
 				return
 			selection()
-			
+
 	def enableUart0(self):	
 		u=mraa.Uart(0)
 		self.showIoConfiguration()
-		
+
 	def enableSpi(self):
 		s=mraa.Spi(0)
 		self.showIoConfiguration()
-		
+
 	def enableI2c(self):
 		x = mraa.I2c(0)
 		self.showIoConfiguration()
-			
+
 	def showIoConfiguration(self):
 		s = "       Pin     |  Function\n   ------------+------------\n"
 		for i in range(0,20):
@@ -678,25 +687,25 @@ class Peripherals:
 				if (self.getPinValue(44) == 1):
 						s = s + "|   SPI MOSI"
 				else:
-					s = s + "|   GPIO"			
+					s = s + "|   GPIO"
 			elif (i == 12):
 				if (self.getPinValue(46) == 1):
 					s = s + "|   SPI MISO"
 				else:
-					s = s + "|   GPIO"		
+					s = s + "|   GPIO"
 			elif (i == 13):
 				if (self.getPinValue(46) == 1):
 					s = s + "|   SPI SCK"
 				else:
-					s = s + "|   GPIO"				
+					s = s + "|   GPIO"
 			elif (i == 14):
-				s = s + "|   GPIO/ADC0"	
+				s = s + "|   GPIO/ADC0"
 			elif (i == 15):
-				s = s + "|   GPIO/ADC1"	
+				s = s + "|   GPIO/ADC1"
 			elif (i == 16):
-				s = s + "|   GPIO/ADC2"	
+				s = s + "|   GPIO/ADC2"
 			elif (i == 17):	
-				s = s + "|   GPIO/ADC3"	
+				s = s + "|   GPIO/ADC3"
 			elif (i == 18):	
 				if (self.getPinValue(60) == 1):
 					if (self.getPinValue(78) == 1):
@@ -704,7 +713,7 @@ class Peripherals:
 					else:
 						s = s + "|   ADC4"
 				else:
-					s = s + "|   I2C SDA"				
+					s = s + "|   I2C SDA"
 			elif (i == 19):	
 				if (self.getPinValue(60) == 1):
 					if (self.getPinValue(79) == 1):
@@ -712,52 +721,51 @@ class Peripherals:
 					else:
 						s = s + "|   ADC5"
 				else:
-					s = s + "|   I2C SCL"	
-			
+					s = s + "|   I2C SCL"
+
 			s += "\n"
-			
+
 		rv = ButtonChoiceWindow( 
 				self.topmenu.gscreen, 
 				"I/O Configuration Overview", 
 				s, 
 				buttons=["Back"], 
 				width=40) 
-		
+
 	def exportPin(self, pin):
 		subprocess.call('echo -n "' + str(pin) + '" > /sys/class/gpio/export', shell=True, stderr=open(os.devnull, 'wb'), stdout=open(os.devnull, 'wb'))
-		
+
 	def pinDirection(self, pin, direction):
 		if (direction == "in" or direction == "out"):
 			subprocess.call('echo -n "' + str(direction) + '" > /sys/class/gpio/gpio' + str(pin) + '/direction', shell=True, stderr=open(os.devnull, 'wb'), stdout=open(os.devnull, 'wb'))
-	
+
 	def getPinValue(self, pin):
-		self.exportPin(pin)		
+		self.exportPin(pin)
 		return int(check_output(["cat", '/sys/class/gpio/gpio' + str(pin) +'/value']))		
-			
-			
+	
 	def configureComPorts(self):
 		portAction, portSelection = ListboxChoiceWindow(
-			self.topmenu.gscreen, 
-			"Configure Serial Mode", "Select the serial port you want to configure and press 'Enter'.", 
-			["X30", "X31"], 
+			self.topmenu.gscreen,
+			"Configure Serial Mode", "Select the serial port you want to configure and press 'Enter'.",
+			["X30", "X31"],
 			[('Cancel', 'cancel', 'ESC')])
 		if (portSelection == 0):
 			portName = "X30"
 		else:
 			portName = "X31"
-		
+
 		currentMode = self.getSerialModeForPort(portName)
 
 		if (portAction == "cancel"):
 			return
 		modes = ["RS232", "RS485", "RS422"]
-		
+
 		modeAction, modeSelection = ListboxChoiceWindow(
 			self.topmenu.gscreen, 
-			"Configure Serial Mode", "Select a mode.", 
+			"Configure Serial Mode", "Select a mode.",
 			modes, 
 			[('Cancel', 'cancel', 'ESC')], default=currentMode)
-		
+
 		if (modeAction == "cancel"):
 			return
 		persistentReturn = ButtonChoiceWindow(
@@ -767,32 +775,33 @@ class Peripherals:
 			buttons=[("Yes", "yes"), ("No", "no", "ESC")],
 			width=40)
 		switchTool = '/usr/bin/switchserialmode'
-		
+
 		if (portSelection == 0):
 			switchDeviceArg = '/dev/ttyS2'
 		else:
 			switchDeviceArg = '/dev/ttyS3'
-		
+
 		switchModeArg = modes[modeSelection].lower()
 		switchCommand = switchTool + " " + switchDeviceArg + " " + switchModeArg
 		subprocess.Popen([switchTool, switchDeviceArg, switchModeArg], stdout=open(os.devnull, 'wb'))
-		
+
 		if (persistentReturn == "yes"):
 			fileName = "set_serial_mode_" + portName + ".sh"
 			filePath = "/etc/init.d/" + fileName
 			initFile = open(filePath, 'w')
 			initFile.write("#!/bin/sh\n" + switchCommand)
 			initFile.close()
-			
+
 			st = os.stat(filePath)
 			os.chmod(filePath, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
 			subprocess.call("update-rc.d " + fileName + " defaults", shell=True, stdout=open(os.devnull, 'wb'))
+
 	def getSerialModeForPort(self, port):
 		fileName = "/etc/init.d/set_serial_mode_" + port + ".sh"
 		if (os.path.isfile(fileName)):
 			lines = [line.rstrip('\n') for line in open(fileName)]
 			selectedMode = lines[1].split()[2]
-			
+
 			if selectedMode == "rs232":
 				return 0
 			elif selectedMode == "rs485":
@@ -909,7 +918,7 @@ class connmanManager:
 		print("The Cellular need initialization")
 		internetContext = apn+" "+user+" "+pwd
 		subprocess.call("/usr/lib/ofono/test/create-internet-context " + internetContext, shell=True,
-						stderr=open(os.devnull, 'wb'))
+				stderr=open(os.devnull, 'wb'))
 		subprocess.call("/usr/lib/ofono/test/online-modem", shell=True, stderr=open(os.devnull, 'wb'))
 		time.sleep(3)
 
@@ -936,7 +945,7 @@ class connmanManager:
 		# get cellular service
 		self.getCellularContext()
 		subprocess.call("/usr/bin/connmanctl disconnect " + self.cellularContext, shell=True,
-						stderr=open(os.devnull, 'wb'))
+				stderr=open(os.devnull, 'wb'))
 
 	def configPin(self, pinCode, pinStr, path):
 		pinArgs = path + " " + pinStr + " " + pinCode
@@ -945,14 +954,9 @@ class connmanManager:
 		subprocess.call("/usr/lib/ofono/test/unlock-pin "+pinArgs, shell=True,
 						stderr=open(os.devnull, 'wb'))
 
-
-
-
-
 iot2000Connman = connmanManager()
 
 #repoFileTemplate
 mainwindow = TopMenu()
 while(True):
 	mainwindow.show()
-
