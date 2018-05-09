@@ -200,13 +200,15 @@ class Networking:
 
 		# Show sub-config
 		if eth0Enabled:
-			self.showEthConfig("eth0")
+			proceed = self.showEthConfig("eth0")
 		if eth1Enabled:
-			self.showEthConfig("eth1")
+			proceed = self.showEthConfig("eth1")
 		if wifiEnabled:
-			self.showWifiConfig("wlan0")
+			proceed = self.showWifiConfig("wlan0")
 		if cellularEnabled:
-			self.showCellularConfig()
+			proceed = self.showCellularConfig()
+		if not proceed:
+			return
 
 		# Show new config
 		wpa_conf = readFileLines("/etc/wpa_supplicant.conf", 4)
@@ -270,10 +272,12 @@ class Networking:
 			None)
 
 		if (ret[0] == "cancel"):
-			return
+			return False
 
 		# Update eth config
 		self.updateNewInterfaceConfig(interface, ret[1][0].rstrip(), settings[0][1])
+
+		return True
 
 	def showWifiConfig(self, interface):
 		title = "Configure " + interface
@@ -289,7 +293,7 @@ class Networking:
 			None)
 
 		if (ret[0] == "cancel"):
-			return
+			return False
 
 		# Update wifi interace
 		self.updateNewInterfaceConfig(interface, ret[1][0].rstrip(), settings[0][1])
@@ -310,6 +314,8 @@ class Networking:
 		wpaFile = open(fileName, 'w')
 		wpaFile.write(wpaConfig)
 		wpaFile.close()
+
+		return True
 
 	def showCellularConfig(self):
 		settings = []
@@ -343,7 +349,7 @@ class Networking:
 			None)
 
 		if (ret[0] == "cancel"):
-			return
+			return False
 
 		# Update APN config?
 		for i in range(len(apnDict)):
@@ -361,6 +367,8 @@ class Networking:
 			self.cellularInterface = iot2000Connman.getCellularTechnology()
 
 		iot2000Connman.connectCellular(ret[1][0].rstrip(), ret[1][1].rstrip(), ret[1][2].rstrip())
+
+		return True
 
 	def getInterfaceConfig(self, interface):
 		lines = [line.rstrip('\n') for line in open('/etc/network/interfaces')]
