@@ -363,6 +363,8 @@ class Networking:
 		lines = [line.rstrip('\n') for line in open('/etc/network/interfaces')]
 		searchString = "auto " + interface
 		for lineNumber in range(0, len(lines) - 1):
+			if lines[lineNumber].startswith('#'):
+				continue
 			if (searchString in lines[lineNumber]):
 				splitLine = lines[lineNumber].split()
 
