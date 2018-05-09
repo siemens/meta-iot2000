@@ -337,7 +337,8 @@ class Networking:
 			reconfigPin = False
 
 		title = "Configure Cellular"
-		infoText = "SIM Setting for modem " + self.cellularSimInfo['ModemPath']
+		infoText = "SIM Setting for modem " + self.cellularSimInfo['ModemPath'] \
+			+ "\n(leave empty when in doubt)"
 		ret = EntryWindow(
 			self.topmenu.gscreen,
 			title,
