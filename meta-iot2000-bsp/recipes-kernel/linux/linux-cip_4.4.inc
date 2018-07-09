@@ -3,8 +3,8 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
 SRC_URI = " \
     git://git.kernel.org/pub/scm/linux/kernel/git/bwh/linux-cip;protocol=https"
-SRCREV = "4c5667275f97ea63c597f946df0ecba2ef0d6801"
-LINUX_VERSION = "4.4.126-cip22"
+SRCREV = "31e672f83ef8d2bd2e390a94a2b5904c17d053f6"
+LINUX_VERSION = "4.4.138-cip25"
 
 KERNEL_PATCHES = " \
     file://0001-iot2000-hack-Work-around-DSDT-mistake.patch \
