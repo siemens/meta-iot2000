@@ -16,6 +16,10 @@ repos:
     url: https://github.com/ninox92/meta-nodejs
     refspec: 7e90d506488036cf1c490d1ac1086675eb2805b6
 
+  meta-openembedded:
+    layers:
+      meta-python:
+
 local_conf_header:
   package_ipk: |
     PACKAGE_CLASSES = "package_ipk"
