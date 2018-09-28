@@ -13,8 +13,8 @@ SRC_URI = " \
     file://rt-0002-gpio-dwapb-Work-around-RT-full-s-enforced-IRQ-thread.patch \
     file://defconfig \
     file://iot2000-cip-rt.scc"
-SRCREV = "e5981d0d0add6277de1ddc94cf67e78a9557aea4"
-LINUX_VERSION .= "-rt19"
+SRCREV = "f91c5e39c7d6c8abb875b51ee36df09e6d8e74fb"
+LINUX_VERSION .= "-rt20"
 
 PV = "${LINUX_VERSION}"
 
