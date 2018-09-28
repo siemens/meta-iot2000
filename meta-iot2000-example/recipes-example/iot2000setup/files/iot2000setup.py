@@ -95,8 +95,7 @@ class TopMenu:
 			("Networking", Networking(self)), 
 			("Software", SoftwareSettings(self))]
 
-		if (not self.deviceIsIot2020):
-			menuItems.append(("Peripherals", Peripherals(self)))
+		menuItems.append(("Peripherals", Peripherals(self)))
 
 		title = "IOT2000 Setup"
 
@@ -617,7 +616,9 @@ class Peripherals:
 		self.comPortsPresent = os.path.isdir("/dev/ttyS2")
 
 	def show(self):
-		menuItems = [("Configure External COM Ports", self.configureComPorts), ("Show I/O Configuration", self.showIoConfiguration), ("Enable I2C on Pins A4 & A5", self.enableI2c), ("Enable SPI on Pins D10-D13", self.enableSpi), ("Enable UART0 on Pins D0 & D1", self.enableUart0)]
+		menuItems = [("Show I/O Configuration", self.showIoConfiguration), ("Enable I2C on Pins A4 & A5", self.enableI2c), ("Enable SPI on Pins D10-D13", self.enableSpi), ("Enable UART0 on Pins D0 & D1", self.enableUart0)]
+		if (not self.topmenu.deviceIsIot2020):
+			menuItems.insert(0, ("Configure External COM Ports", self.configureComPorts))
 		while(True and not self.finish):
 			action, selection = ListboxChoiceWindow(
 				self.topmenu.gscreen, 
