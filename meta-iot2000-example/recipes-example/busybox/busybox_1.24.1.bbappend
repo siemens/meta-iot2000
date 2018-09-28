@@ -9,6 +9,7 @@ SRC_URI += "file://nc.cfg"
 SRC_URI += "file://ntpclient.cfg"
 SRC_URI += "file://ntp.conf"
 SRC_URI += "file://ntpd.busybox"
+SRC_URI += "file://no-ext-dhcp.cfg"
 
 PACKAGES =+ "${PN}-ntpd"
 
