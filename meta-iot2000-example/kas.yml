@@ -18,6 +18,7 @@ repos:
 
   meta-openembedded:
     layers:
+      meta-networking:
       meta-python:
 
 local_conf_header:
