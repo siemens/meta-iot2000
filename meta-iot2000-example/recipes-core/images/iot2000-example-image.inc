@@ -42,4 +42,6 @@ IMAGE_INSTALL_append = " ppp ppp-oe"
 IMAGE_INSTALL_append = " ofono ofono-tests"
 IMAGE_INSTALL_append = " connman connman-tools connman-tests connman-client"
 
+IMAGE_INSTALL_append += "efibootguard-tools"
+
 DEPENDS += "gptfdisk-native efibootguard-native"
