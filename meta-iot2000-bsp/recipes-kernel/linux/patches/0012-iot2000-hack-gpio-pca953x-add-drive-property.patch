@@ -1,7 +1,7 @@
-From d072eccede4b20b0950308e6a096c3c94f0c5dda Mon Sep 17 00:00:00 2001
+From d0c0b818eb140be64824e4773e0a291c53b0733e Mon Sep 17 00:00:00 2001
 From: Yong Li <sdliyong@gmail.com>
 Date: Thu, 31 Mar 2016 15:33:09 +0800
-Subject: [PATCH 4/5] iot2000-hack: gpio-pca953x: add "drive" property
+Subject: [PATCH 12/13] iot2000-hack: gpio-pca953x: add "drive" property
 
 Galileo gen 2 has support for setting GPIO modes. Expose these
 properties through the GPIO sysfs interface. This approach is bit hacky,
@@ -201,7 +201,7 @@ index b57ed8e55ab5..72a8647146fa 100644
  };
  
 diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 9a9399e6ca60..8f1116ea8def 100644
+index 827510dbba30..d19928b9a311 100644
 --- a/drivers/gpio/gpiolib.c
 +++ b/drivers/gpio/gpiolib.c
 @@ -1315,6 +1315,23 @@ int gpiod_is_active_low(const struct gpio_desc *desc)
@@ -330,5 +330,5 @@ index de502c7e4171..d59080ba9fec 100644
  	int			(*to_irq)(struct gpio_chip *chip,
  						unsigned offset);
 -- 
-2.13.6
+2.16.4
 

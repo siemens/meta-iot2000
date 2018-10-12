@@ -1,0 +1,61 @@
+From 47e2346f55abfdc73b2f3709db8e66fe5db535cd Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Thu, 22 Jun 2017 08:17:59 +0200
+Subject: [PATCH 03/13] stmmac: pci: Make stmmac_pci_find_phy_addr truly
+ generic
+
+Commit c5f657e49c878756f21349f9e4b0f1c9631d5352 upstream.
+
+Move the special case for the early Galileo firmware into
+quark_default_setup. This allows to use stmmac_pci_find_phy_addr for
+non-quark cases.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c
+index a60059032dc6..19cf9607618a 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c
+@@ -55,12 +55,8 @@ static int stmmac_pci_find_phy_addr(struct pci_dev *pdev,
+ 	unsigned int func = PCI_FUNC(pdev->devfn);
+ 	struct stmmac_pci_dmi_data *dmi;
+ 
+-	/*
+-	 * Galileo boards with old firmware don't support DMI. We always return
+-	 * 1 here, so at least first found MAC controller would be probed.
+-	 */
+ 	if (!name)
+-		return 1;
++		return -ENODEV;
+ 
+ 	for (dmi = info->dmi; dmi->name && *dmi->name; dmi++) {
+ 		if (!strcmp(dmi->name, name) && dmi->func == func) {
+@@ -115,8 +111,18 @@ static int quark_default_data(struct pci_dev *pdev,
+ 	 * does not connect to any PHY interface.
+ 	 */
+ 	ret = stmmac_pci_find_phy_addr(pdev, info);
+-	if (ret < 0)
+-		return ret;
++	if (ret < 0) {
++		/* Return error to the caller on DMI enabled boards. */
++		if (dmi_get_system_info(DMI_BOARD_NAME))
++			return ret;
++
++		/*
++		 * Galileo boards with old firmware don't support DMI. We always
++		 * use 1 here as PHY address, so at least the first found MAC
++		 * controller would be probed.
++		 */
++		ret = 1;
++	}
+ 
+ 	plat->bus_id = PCI_DEVID(pdev->bus->number, pdev->devfn);
+ 	plat->phy_addr = ret;
+-- 
+2.16.4
+
