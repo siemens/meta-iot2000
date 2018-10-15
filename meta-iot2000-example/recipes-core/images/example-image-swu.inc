@@ -9,3 +9,4 @@ IMAGE_FSTYPES += "ext4.gz"
 
 IMAGE_INSTALL += "swupdate"
 IMAGE_INSTALL += "efibootguard-tools"
+IMAGE_INSTALL += "persiststore"
