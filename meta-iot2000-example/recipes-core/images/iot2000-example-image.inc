@@ -45,3 +45,5 @@ IMAGE_INSTALL_append = " connman connman-tools connman-tests connman-client"
 IMAGE_INSTALL_append += "efibootguard-tools"
 
 DEPENDS += "gptfdisk-native efibootguard-native"
+
+IMAGE_INSTALL_append = " persiststore"
