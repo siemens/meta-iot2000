@@ -51,3 +51,5 @@ DEPENDS += "gptfdisk-native efibootguard-native"
 # created, since the python plugin used by the wic image wants to copy these
 # files.
 do_image_wic[depends] += "${PN}:do_bootimg"
+
+IMAGE_INSTALL_append = " persiststore"

@@ -8,6 +8,6 @@ part --source efibootguard-boot --size 32 --extra-space 0 --overhead-factor 1 --
 part / --source rootfs --size 1536 --extra-space 0 --overhead-factor 1 --ondisk mmcblk0 --fstype=ext4 --label platform0 --align 1024
 part --source rootfs --size 1536 --extra-space 0 --overhead-factor 1 --ondisk mmcblk0 --fstype=ext4 --label plaftorm1 --align 1024
 part swap --ondisk mmcblk0 --size 512 --fstype=swap --label swap --align 1024
-part --size 1024 --extra-space 0 --overhead-factor 1 --ondisk mmcblk0 --label persistent --align 1024 --fstype=ext4
+part /data --size 1024 --extra-space 0 --overhead-factor 1 --ondisk mmcblk0 --label persistent --align 1024 --fstype=ext4
 
 include common.iot2000.wks.footer.inc
