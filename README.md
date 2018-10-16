@@ -54,24 +54,31 @@ Furthermore, install the kas build tool:
 $ pip3 install kas
 ```
 
+Clone the meta-iot2000 repository (or unpack an archive of it) into a work
+directory:
+
+```shell
+$ git clone https://github.com/siemens/meta-iot2000
+```
+
 Now you can build the example image like this:
 
 ```shell
-$ kas build meta-iot2000-example/kas.yml
+$ kas build meta-iot2000/meta-iot2000-example/kas.yml
 ```
 
 To build the BSP image instead, just specify the corresponding configuration
 file instead:
 
 ```shell
-$ kas build meta-iot2000-bsp/kas.yml
+$ kas build meta-iot2000/meta-iot2000-bsp/kas.yml
 ```
 
 You can also reproduce the Windows or Linux SDK this way:
 
 ```shell
-$ kas build meta-iot2000-example/kas-sdk-windows-i586.yml
-$ kas build meta-iot2000-example/kas-sdk-linux-x64.yml
+$ kas build meta-iot2000/meta-iot2000-example/kas-sdk-windows-i586.yml
+$ kas build meta-iot2000/meta-iot2000-example/kas-sdk-linux-x64.yml
 ```
 
 
