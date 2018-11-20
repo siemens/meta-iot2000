@@ -1,1 +1,5 @@
-include common.iot2000.wks.inc
+include common.iot2000.wks.header.inc
+
+part / --source rootfs --ondisk mmcblk0 --fstype=ext3 --label platform --align 1024
+
+include common.iot2000.wks.footer.inc

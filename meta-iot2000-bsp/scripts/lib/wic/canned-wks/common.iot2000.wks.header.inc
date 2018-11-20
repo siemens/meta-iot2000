@@ -3,7 +3,3 @@
 # that the user can directly dd to boot media.
 
 part /boot --source bootimg-efi --sourceparams="loader=systemd-boot,initrd=acpi-upgrades-iot2000.cpio" --ondisk mmcblk0 --label msdos --active --align 1024
-
-part / --source rootfs --ondisk mmcblk0 --fstype=ext3 --label platform --align 1024
-
-bootloader  --timeout=0  --append="console=ttyS1,115200n8 reboot=efi,warm rw debugshell=5 rootwait"
