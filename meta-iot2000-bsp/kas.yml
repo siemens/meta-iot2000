@@ -16,10 +16,6 @@ repos:
       meta-poky:
       meta-yocto-bsp:
 
-  meta-intel:
-    url: https://git.yoctoproject.org/git/meta-intel
-    refspec: 4ee8ff5ebe0657bd376d7a79703a21ec070ee779
-
   meta-openembedded:
     url: http://git.openembedded.org/meta-openembedded
     refspec: eae996301d9c097bcbeb8046f08041dc82bb62f8
