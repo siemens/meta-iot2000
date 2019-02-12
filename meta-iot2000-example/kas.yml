@@ -12,11 +12,15 @@ repos:
     layers:
       meta-iot2000-example:
 
+  poky:
+    refspec: 2731fd35d5570263bc004ab16acf4acb0d94422b
+
   meta-nodejs:
     url: https://github.com/ninox92/meta-nodejs
     refspec: 7e90d506488036cf1c490d1ac1086675eb2805b6
 
   meta-openembedded:
+    refspec: eae996301d9c097bcbeb8046f08041dc82bb62f8
     layers:
       meta-networking:
       meta-python:
