@@ -287,13 +287,9 @@ SRC_URI = "npm://registry.npmjs.org;name=node-red-node-serialport;version=${PV}"
 NPM_SHRINKWRAP := "${THISDIR}/${PN}/npm-shrinkwrap.json"
 NPM_LOCKDOWN := "${THISDIR}/${PN}/lockdown.json"
 
-inherit npm-manual-inst
+inherit npm-iot2000
 
 do_compile_append() {
-	export http_proxy="${http_proxy}"
-	export https_proxy="${https_proxy}"
-	export no_proxy="${no_proxy}"
-
 	npm rebuild --build-from-source --arch=${TARGET_ARCH}
 }
 

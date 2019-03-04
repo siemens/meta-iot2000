@@ -872,7 +872,7 @@ SRC_URI = "npm://registry.npmjs.org;name=node-red;version=${PV}"
 NPM_SHRINKWRAP := "${THISDIR}/${PN}/npm-shrinkwrap.json"
 NPM_LOCKDOWN := "${THISDIR}/${PN}/lockdown.json"
 
-inherit npm-manual-inst
+inherit npm-iot2000
 
 # Must be set after inherit npm since that itself sets S
 S = "${WORKDIR}/npmpkg"
@@ -1807,7 +1807,4 @@ LICENSE_${PN}-xml2js-xmlbuilder = "MIT"
 LICENSE_${PN}-xml2js = "MIT"
 LICENSE_${PN} = "Apache-2.0"
 
-RDEPENDS_${PN} += "python"
-
-DEPENDS += "bash"
-RDEPENDS_${PN}-node-red-node-feedparser-request-node-uuid += "bash"
+RDEPENDS_${PN} += "python bash"

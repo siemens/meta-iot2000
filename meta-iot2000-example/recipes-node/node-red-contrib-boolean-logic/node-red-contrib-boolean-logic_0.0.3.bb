@@ -9,7 +9,7 @@ SRC_URI = "npm://registry.npmjs.org;name=node-red-contrib-boolean-logic;version=
 NPM_SHRINKWRAP := "${THISDIR}/${PN}/npm-shrinkwrap.json"
 NPM_LOCKDOWN := "${THISDIR}/${PN}/lockdown.json"
 
-inherit npm
+inherit npm-iot2000
 
 # Must be set after inherit npm since that itself sets S
 S = "${WORKDIR}/npmpkg"

@@ -15,6 +15,6 @@ SUMMARY = "A Node-RED node to talk to an Intel Galileo or Edison using mraa"
 NPM_SHRINKWRAP := "${THISDIR}/${PN}/npm-shrinkwrap.json"
 NPM_LOCKDOWN := "${THISDIR}/${PN}/lockdown.json"
 
-inherit npm
+inherit npm-iot2000
 
 LICENSE_${PN} = "Apache-2.0"
