@@ -51,7 +51,7 @@ that Yocto 2.2 requires.
 Furthermore, install the kas build tool:
 
 ```shell
-$ pip3 install kas
+$ sudo pip3 install kas
 ```
 
 Clone the meta-iot2000 repository (or unpack an archive of it) into a work
