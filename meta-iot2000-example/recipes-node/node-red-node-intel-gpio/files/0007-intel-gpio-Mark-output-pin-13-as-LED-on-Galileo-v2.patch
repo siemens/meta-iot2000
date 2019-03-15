@@ -1,0 +1,56 @@
+From a34eb83826ea31417b037aeb6579d6d3df8955ae Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 6 May 2019 00:13:00 +0200
+Subject: [PATCH 07/11] intel-gpio: Mark output pin 13 as "LED" on Galileo v2
+
+At least for that board we know that D13 is connected to an LED.
+Visualize that.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ hardware/intel/mraa-gpio-dout.html | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/hardware/intel/mraa-gpio-dout.html b/hardware/intel/mraa-gpio-dout.html
+index bcbfbd0..0900039 100644
+--- a/hardware/intel/mraa-gpio-dout.html
++++ b/hardware/intel/mraa-gpio-dout.html
+@@ -6,6 +6,7 @@
+         paletteLabel: 'digital',
+         defaults: {
+             name: {value:""},
++            d13suffix: {value:""},
+             pin:  {value:"", required: true},
+             set: { value:"" },
+             level: { value:"0" }
+@@ -19,7 +20,7 @@
+                 return this.name || "LED";
+             }
+             else {
+-                return this.name||"D"+this.pin;
++                return this.name || "D" + this.pin + (this.pin === "13" ? this.d13suffix : "");
+             }
+         },
+         labelStyle: function() {
+@@ -27,6 +28,7 @@
+         },
+         oneditprepare: function() {
+             var pinnow = this.pin;
++            var node = this;
+             $.getJSON('mraa-gpio/'+this.id,function(data) {
+                 var t = "unknown";
+                 if (data === 0) { t = "Galileo v1"; }
+@@ -41,6 +43,10 @@
+                 if (data === 0) {
+                     $('#node-input-pin').append($("<option></option>").attr("value",14).text("LED - Galileo v1"));
+                 }
++                if (data === 1) {
++                    node.d13suffix = " (Green LED)";
++                    $('#node-input-pin [value=13]').text("D13 (Green LED)");
++                }
+                 $('#node-input-pin').val(pinnow);
+             });
+             $.getJSON('mraa-version/'+this.id,function(data) {
+-- 
+2.16.4
+

@@ -1,0 +1,28 @@
+From 497b0fbbc7b0a197eb38a64076dab9bb7dcba859 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Tue, 7 May 2019 17:24:08 +0200
+Subject: [PATCH 11/11] intel-gpio: Privatize version
+
+This allows to build our own package that is newer than the official
+one.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ hardware/intel/package.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hardware/intel/package.json b/hardware/intel/package.json
+index 6f66fe4..53d1319 100644
+--- a/hardware/intel/package.json
++++ b/hardware/intel/package.json
+@@ -1,6 +1,6 @@
+ {
+     "name"          : "node-red-node-intel-gpio",
+-    "version"       : "0.0.6",
++    "version"       : "1.0.0-iot2000",
+     "description"   : "A Node-RED node to talk to an Intel Galileo or Edison using mraa",
+     "dependencies"  : {
+     },
+-- 
+2.16.4
+

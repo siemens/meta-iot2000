@@ -1,0 +1,118 @@
+From 274b034e7b0214d5e09755b0c8ddc3805747e82c Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 29 Apr 2019 12:52:58 +0200
+Subject: [PATCH 05/11] intel-gpio: Add polling of input pins in absence of
+ interrupts
+
+Some GPIO pins may not support interrupts, and then we will get no
+updates at all. Address that case by setting up polling, by default with
+10 ms interval which can be adjusted as needed.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ hardware/intel/mraa-gpio-din.html |  8 +++++++-
+ hardware/intel/mraa-gpio-din.js   | 38 ++++++++++++++++++++++++++++++--------
+ 2 files changed, 37 insertions(+), 9 deletions(-)
+
+diff --git a/hardware/intel/mraa-gpio-din.html b/hardware/intel/mraa-gpio-din.html
+index 13916fd..375a8e8 100644
+--- a/hardware/intel/mraa-gpio-din.html
++++ b/hardware/intel/mraa-gpio-din.html
+@@ -8,7 +8,8 @@
+             name: {value:""},
+             pin:  {value:"", required: true},
+             interrupt: {value:"", required: true},
+-            initial: {value: false}
++            initial: {value: false},
++            interval: {value: "10", validate:RED.validators.number()}
+         },
+         inputs:0,
+         outputs:1,
+@@ -71,6 +72,10 @@
+             <option value="b">Both </option>
+         </select>
+     </div>
++    <div class="form-row">
++        <label for="node-input-interval"><i class="fa fa-clock-o"></i> Interval</label>
++        <input type="text" id="node-input-interval" placeholder="Interval" style="width: 250px;"> ms
++    </div>
+     <div class="form-row" id="node-initial-tick">
+         <label>&nbsp;</label>
+         <input type="checkbox" id="node-input-initial" style="display: inline-block; width: auto; vertical-align: top;">
+@@ -87,4 +92,5 @@
+     <p>A digital input pin for an mraa-supported board.</p>
+     <p>The <code>msg.payload</code> contains the value (0 or 1), and <code>msg.topic</code>
+     contains "{the_board_name}/D{the pin number}".</p>
++    <p>The input is sampled on each interrupt or, if interrupt support is not available, at the specified interval.</p>
+ </script>
+diff --git a/hardware/intel/mraa-gpio-din.js b/hardware/intel/mraa-gpio-din.js
+index 031341a..f98e105 100644
+--- a/hardware/intel/mraa-gpio-din.js
++++ b/hardware/intel/mraa-gpio-din.js
+@@ -7,14 +7,12 @@ module.exports = function(RED) {
+         RED.nodes.createNode(this,n);
+         this.pin = n.pin;
+         this.interrupt = n.interrupt;
+-        this.x = new m.Gpio(parseInt(this.pin));
++        this.pollingInterval = n.interval;
+         this.initialMsg = n.initial;
+         this.board = m.getPlatformName();
+         var node = this;
+-        node.x.mode(m.PIN_GPIO);
+-        node.x.dir(m.DIR_IN);
+-        node.x.isr(m.EDGE_BOTH, function() {
+-            var g = node.x.read();
++
++        var eventHandler = function(g) {
+             var msg = { payload:g, topic:node.board+"/D"+node.pin };
+             switch (g) {
+                 case 0: {
+@@ -35,9 +33,13 @@ module.exports = function(RED) {
+                     node.status({fill:"grey",shape:"ring",text:"unknown"});
+                 }
+             }
+-        });
++        }
+ 
+-        var initialState = this.x.read();
++        this.gpio = new m.Gpio(parseInt(this.pin));
++        this.gpio.mode(m.PIN_GPIO);
++        this.gpio.dir(m.DIR_IN);
++
++        var initialState = this.gpio.read();
+         switch (initialState) {
+             case 0: {
+                 this.status({fill:"green",shape:"ring",text:"low"});
+@@ -54,8 +56,28 @@ module.exports = function(RED) {
+         if (this.initialMsg)
+             eventHandler(initialState);
+ 
++        var isrOk = this.gpio.isr(m.EDGE_BOTH, function() {
++                eventHandler(node.gpio.read());
++            }) === 0;
++        }
++
++        this.timer = null;
++        if (!isrOk) {
++            var last = initialState;
++            this.timer = setInterval(function() {
++                newState = node.gpio.read();
++                if (newState != last) {
++                    eventHandler(newState);
++                    last = newState;
++                }
++            }, node.pollingInterval);
++        };
++
+         this.on('close', function() {
+-            node.x.isrExit();
++            node.gpio.isrExit();
++            if (node.timer) {
++                clearInterval(node.timer);
++            }
+         });
+     }
+     RED.nodes.registerType("mraa-gpio-din", gpioDin);
+-- 
+2.16.4
+

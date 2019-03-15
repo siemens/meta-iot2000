@@ -1,0 +1,73 @@
+From a4dd2b0e9e54d77454c00dd31397cadae0ca9879 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 29 Apr 2019 12:31:08 +0200
+Subject: [PATCH 02/11] intel-gpio: Consistently use "this" where available
+
+The "node" alias variable is for use in callbacks.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ hardware/intel/mraa-gpio-din.js  |  8 ++++----
+ hardware/intel/mraa-gpio-dout.js | 16 ++++++++--------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/hardware/intel/mraa-gpio-din.js b/hardware/intel/mraa-gpio-din.js
+index 5966e44..a11c5e0 100644
+--- a/hardware/intel/mraa-gpio-din.js
++++ b/hardware/intel/mraa-gpio-din.js
+@@ -35,17 +35,17 @@ module.exports = function(RED) {
+                 }
+             }
+         });
+-        switch (node.x.read()) {
++        switch (this.x.read()) {
+             case 0: {
+-                node.status({fill:"green",shape:"ring",text:"low"});
++                this.status({fill:"green",shape:"ring",text:"low"});
+                 break;
+             }
+             case 1: {
+-                node.status({fill:"green",shape:"dot",text:"high"});
++                this.status({fill:"green",shape:"dot",text:"high"});
+                 break;
+             }
+             default: {
+-                node.status({});
++                this.status({});
+             }
+         }
+         this.on('close', function() {
+diff --git a/hardware/intel/mraa-gpio-dout.js b/hardware/intel/mraa-gpio-dout.js
+index 020db55..1c97e0a 100644
+--- a/hardware/intel/mraa-gpio-dout.js
++++ b/hardware/intel/mraa-gpio-dout.js
+@@ -8,18 +8,18 @@ module.exports = function(RED) {
+         this.set = n.set;
+         this.level = Number(n.level);
+         var node = this;
+-        if (node.pin === 14) {
+-            node.p = new m.Gpio(3,false,true);  // special for onboard LED v1
++        if (this.pin === 14) {
++            this.p = new m.Gpio(3,false,true);  // special for onboard LED v1
+         }
+         else {
+-            node.p = new m.Gpio(node.pin);
++            this.p = new m.Gpio(node.pin);
+         }
+-        node.p.mode(m.PIN_GPIO);
+-        node.p.dir(m.DIR_OUT);
+-        if (node.set) {
+-            node.p.write(node.level);
++        this.p.mode(m.PIN_GPIO);
++        this.p.dir(m.DIR_OUT);
++        if (this.set) {
++            this.p.write(this.level);
+         }
+-        node.on("input", function(msg) {
++        this.on("input", function(msg) {
+             if (msg.payload == "1") {
+                 node.p.write(1);
+             }
+-- 
+2.16.4
+

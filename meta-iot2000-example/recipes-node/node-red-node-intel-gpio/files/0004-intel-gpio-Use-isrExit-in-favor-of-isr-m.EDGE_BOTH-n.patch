@@ -1,0 +1,29 @@
+From 3bf5436a51ea40b5d78c095f1cf3e785e9061c30 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 29 Apr 2019 12:46:28 +0200
+Subject: [PATCH 04/11] intel-gpio: Use isrExit in favor of isr(m.EDGE_BOTH,
+ null)
+
+Provides a cleaner shutdown.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ hardware/intel/mraa-gpio-din.js | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hardware/intel/mraa-gpio-din.js b/hardware/intel/mraa-gpio-din.js
+index 2ce87b1..031341a 100644
+--- a/hardware/intel/mraa-gpio-din.js
++++ b/hardware/intel/mraa-gpio-din.js
+@@ -55,7 +55,7 @@ module.exports = function(RED) {
+             eventHandler(initialState);
+ 
+         this.on('close', function() {
+-            node.x.isr(m.EDGE_BOTH, null);
++            node.x.isrExit();
+         });
+     }
+     RED.nodes.registerType("mraa-gpio-din", gpioDin);
+-- 
+2.16.4
+
