@@ -17,7 +17,7 @@ variables:
 .build-and-deploy-image: &build-and-deploy-image
   <<: *build
   after_script:
-    - xz -c -T0 ../build/tmp/deploy/images/iot2000/$DEPLOY_IMAGE.wic > $DEPLOY_IMAGE.xz
+    - xz -c -T0 -9 ../build/tmp/deploy/images/iot2000/$DEPLOY_IMAGE.wic > $DEPLOY_IMAGE.xz
   artifacts:
     name: "${CI_JOB_NAME}-${CI_COMMIT_SHA::12}"
     paths:
