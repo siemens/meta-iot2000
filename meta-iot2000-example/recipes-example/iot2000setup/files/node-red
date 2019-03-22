@@ -1,0 +1,67 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:             Node-RED
+# Required-Start:       $remote_fs $time
+# Required-Stop:        $remote_fs $time
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    Node-RED
+### END INIT INFO
+
+# To enable autostart use command:
+# $ chmod +x /etc/init.d/node-red
+# $ update-rc.d node-red defaults
+
+# To disable autostart use command:
+# $ update-rc.d -f node-red remove
+
+NODEJS=/usr/bin/node
+NODERED=/usr/lib/node_modules/node-red/red
+LOGFILE=/var/log/node-red.log
+PIDFILE=/run/node-red.pid
+HOME=/home/root/
+
+case "$1" in
+  start)
+    echo -n "Starting Node-RED: "
+    if [ -n "$(pgrep -F $PIDFILE 2> /dev/null)" ]; then
+      echo "already running as pid $PID"
+    else
+      $NODEJS $NODERED >> $LOGFILE &
+      echo $! > $PIDFILE
+      echo "logging to $LOGFILE"
+    fi
+    ;;
+  stop)
+    echo -n "Stopping Node-RED: "
+    if [ -f $PIDFILE ]; then
+      if [ -n "$(pgrep -F $PIDFILE 2> /dev/null)" ]; then
+        /usr/bin/pkill -SIGINT -F $PIDFILE
+        for i in {0..59}; do
+          if [ -n "$(pgrep -F $PIDFILE 2> /dev/null)" ]; then
+            sleep 1
+            echo -n "."
+          else
+            rm $PIDFILE
+            echo "done"
+            break
+          fi
+        done
+      else
+        echo "not running"
+      fi
+    else
+      echo "no pid file"
+    fi
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+    echo "Usage: $0 { start | stop | restart }" >&2
+    exit 1
+    ;;
+esac
+
+exit 0

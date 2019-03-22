@@ -544,7 +544,7 @@ class SoftwareSettings:
 		taskReturn = task.stdout.read().decode().lstrip().rstrip()
 		sshEnabled = "running" in taskReturn
 
-		noderedAutostartEnabled = os.path.isfile("/etc/init.d/launch_node-red.sh")
+		noderedAutostartEnabled = os.path.isfile("/etc/rc2.d/S20node-red")
 		mosquittoAutostartEnabled = os.path.isfile("/etc/init.d/launch_mosquitto.sh")
 
 		bb = ButtonBar(self.topmenu.gscreen, [("Done", "done", "ESC")])
@@ -566,15 +566,15 @@ class SoftwareSettings:
 
 		if (noderedAutostartEnabled != noderedAutostartEnabledNew):
 			if ("Auto Start node-red" in selectedOptions):
-				self.registerLaunchScript("on", "launch_node-red.sh", "#!/bin/sh\nsu root -c \"/usr/bin/node /usr/lib/node_modules/node-red/red >/dev/null\" &")
+				self.changeRunCommands("on", "node-red")
 			else:
-				self.registerLaunchScript("off", "launch_node-red.sh", "")
+				self.changeRunCommands("off", "node-red")
 
 		if (sshEnabled != sshEnabledNew):
 			if ("SSH Server Enabled" in selectedOptions):
-				changeSshServerSetting("on")
+				self.changeRunCommands("on", "sshd")
 			else:
-				changeSshServerSetting("off")
+				self.changeRunCommands("off", "sshd")
 
 		if (mosquittoAutostartEnabled != mosquittoAutostartEnabledNew):
 			if ("Auto Start Mosquitto Broker" in selectedOptions):
@@ -587,13 +587,13 @@ class SoftwareSettings:
 			else:
 				self.registerLaunchScript("off", "launch_mosquitto.sh", "")
 
-	def changeSshServerSetting(self, status):
+	def changeRunCommands(self, status, script):
 		if (status == "on"):
-			subprocess.call("update-rc.d -f sshd defaults", shell=True, stdout=open(os.devnull, 'wb'))
-			subprocess.call("/etc/init.d/sshd start", shell=True, stdout=open(os.devnull, 'wb'))
+			subprocess.call("update-rc.d " + script + " defaults", shell=True, stdout=open(os.devnull, 'wb'))
+			subprocess.call("/etc/init.d/" + script + " start", shell=True, stdout=open(os.devnull, 'wb'))
 		elif (status == "off"):
-			subprocess.call("/etc/init.d/sshd stop", shell=True, stdout=open(os.devnull, 'wb'))
-			subprocess.call("update-rc.d -f sshd remove", shell=True, stdout=open(os.devnull, 'wb'))
+			subprocess.call("/etc/init.d/" + script + " stop", shell=True, stdout=open(os.devnull, 'wb'))
+			subprocess.call("update-rc.d -f " + script + " remove", shell=True, stdout=open(os.devnull, 'wb'))
 	def registerLaunchScript(self, status, fileName, scriptcontent):
 		if (status == "on"):
 			initFile = open("/etc/init.d/" + fileName, 'w')
