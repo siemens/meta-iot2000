@@ -6,15 +6,13 @@ require linux-cip_4.4.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/configs:${THISDIR}/patches:"
 
-SRC_URI = " \
-    git://git.kernel.org/pub/scm/linux/kernel/git/wagi/linux-cip-rt.git;branch=linux-4.4.y-cip-rt;protocol=https \
-    ${KERNEL_PATCHES} \
+LINUX_VERSION .= "-rt23"
+SRC_URI += " \
     file://rt-0001-spi-pca2xx-pci-Allow-MSI.patch \
     file://rt-0002-gpio-dwapb-Work-around-RT-full-s-enforced-IRQ-thread.patch \
     file://defconfig \
     file://iot2000-cip-rt.scc"
-SRCREV = "f91c5e39c7d6c8abb875b51ee36df09e6d8e74fb"
-LINUX_VERSION .= "-rt20"
+SRC_URI[sha256sum] = "90d601e22edc3821048cec873696f9ccbe367a1d828418f6f429947f9499f6d6"
 
 PV = "${LINUX_VERSION}"
 
