@@ -1,7 +1,7 @@
-From b20481cd84af3712bf68d497964eb6a4d49f782f Mon Sep 17 00:00:00 2001
+From 6e378b789ebcfcdc4ae957b25f1ac6eb2ef64edc Mon Sep 17 00:00:00 2001
 From: Su Bao Cheng <baocheng.su@siemens.com>
 Date: Fri, 12 Oct 2018 15:05:07 +0200
-Subject: [PATCH 08/13] mfd: intel_quark_i2c_gpio: Adjust IOT2000 matching
+Subject: [PATCH 08/18] mfd: intel_quark_i2c_gpio: Adjust IOT2000 matching
 
 Since there are more IOT2040 variants with identical hardware but
 different asset tags, the asset tag matching should be adjusted to
@@ -14,7 +14,7 @@ the "SIMATIC IOT2000" DMI board name but different hardware. So remove
 the asset tag matching from this driver.
 
 Signed-off-by: Su Bao Cheng <baocheng.su@siemens.com>
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Reviewed-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
  drivers/mfd/intel_quark_i2c_gpio.c | 10 ----------
  1 file changed, 10 deletions(-)

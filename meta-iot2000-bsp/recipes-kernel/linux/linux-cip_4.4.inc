@@ -15,10 +15,15 @@ KERNEL_PATCHES = " \
     file://0006-stmmac-pci-Adjust-IOT2000-matching.patch \
     file://0007-serial-8250_exar-Adjust-IOT2000-matching.patch \
     file://0008-mfd-intel_quark_i2c_gpio-Adjust-IOT2000-matching.patch \
-    file://0009-iot2000-hack-Work-around-DSDT-mistake.patch \
-    file://0010-iot2000-hack-Adjust-pca9685-gpio-base-for-legacy-com.patch \
-    file://0011-iot2000-hack-gpio-pca953x-provide-GPIO-base-based-on.patch \
-    file://0012-iot2000-hack-gpio-pca953x-add-drive-property.patch \
-    file://0013-iot2000-hack-pwm-pca-9685-Provide-chip-level-pwm_per.patch"
+    file://0009-gpio-sch-use-gpiochip-data-pointer.patch \
+    file://0010-gpio-sch-Use-devm_gpiochip_add_data-for-gpio-registr.patch \
+    file://0011-gpio-sch-Fix-Oops-on-module-load-on-Asus-Eee-PC-1201.patch \
+    file://0012-gpio-sch-Implement-.get_direction.patch \
+    file://0013-gpio-sch-Add-interrupt-support.patch \
+    file://0014-iot2000-hack-Work-around-DSDT-mistake.patch \
+    file://0015-iot2000-hack-Adjust-pca9685-gpio-base-for-legacy-com.patch \
+    file://0016-iot2000-hack-gpio-pca953x-provide-GPIO-base-based-on.patch \
+    file://0017-iot2000-hack-gpio-pca953x-add-drive-property.patch \
+    file://0018-iot2000-hack-pwm-pca-9685-Provide-chip-level-pwm_per.patch"
 
 S = "${WORKDIR}/linux-cip-${LINUX_VERSION}"
