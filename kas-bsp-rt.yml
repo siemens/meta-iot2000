@@ -1,9 +1,9 @@
 header:
   version: 2
   includes:
-    - kas.yml
+    - kas-bsp.yml
 
-target: iot2000-example-image-rt
+target: core-image-rt
 
 local_conf_header:
   rt_kernel: |

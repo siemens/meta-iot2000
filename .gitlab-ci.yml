@@ -37,18 +37,18 @@ variables:
 bsp-rt:
   <<: *build-and-deploy-image
   variables:
-    KAS_CONFIG: meta-iot2000-bsp/kas-rt.yml
+    KAS_CONFIG: kas-bsp-rt.yml
     DEPLOY_IMAGE: core-image-rt-iot2000
 
 example-image:
   <<: *build-and-deploy-image
   variables:
-    KAS_CONFIG: meta-iot2000-example/kas.yml
+    KAS_CONFIG: kas-example.yml
     DEPLOY_IMAGE: iot2000-example-image-iot2000
 
 windows-sdk:
 #  <<: *build-and-deploy-sdk
   <<: *build
   variables:
-    KAS_CONFIG: meta-iot2000-example/kas-sdk-windows-i586.yml
+    KAS_CONFIG: kas-sdk-windows-i586.yml
     DEPLOY_SDK: poky-iot2000-glibc-i686-iot2000-example-image-i586-nlp-32-toolchain-2.2.2.tar.xz

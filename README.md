@@ -64,21 +64,21 @@ $ git clone https://github.com/siemens/meta-iot2000
 Now you can build the example image like this:
 
 ```shell
-$ kas build meta-iot2000/meta-iot2000-example/kas.yml
+$ kas build meta-iot2000/kas-example.yml
 ```
 
 To build the BSP image instead, just specify the corresponding configuration
 file instead:
 
 ```shell
-$ kas build meta-iot2000/meta-iot2000-bsp/kas.yml
+$ kas build meta-iot2000/kas-bsp.yml
 ```
 
 You can also reproduce the Windows or Linux SDK this way:
 
 ```shell
-$ kas build meta-iot2000/meta-iot2000-example/kas-sdk-windows-i586.yml
-$ kas build meta-iot2000/meta-iot2000-example/kas-sdk-linux-x64.yml
+$ kas build meta-iot2000/kas-sdk-windows-i586.yml
+$ kas build meta-iot2000/kas-sdk-linux-x64.yml
 ```
 
 
@@ -97,7 +97,7 @@ $ docker run -v $(pwd):/shared-volume:rw -e USER_ID=$(id -u) --rm -t -i \
              --storage-opt size=50G kasproject/kas:latest sh -c "
       cd /shared-volume &&
       git clone https://github.com/siemens/meta-iot2000 &&
-      kas build meta-iot2000/meta-iot2000-example/kas.yml"
+      kas build meta-iot2000/kas-example.yml"
 ```
 
 The above command disposes the build container after use, keeping downloads and
@@ -111,7 +111,7 @@ $ docker run -v $(pwd):/shared-volume:rw -e USER_ID=$(id -u) -t -i \
 # inside the container
 $ cd /shared-volume
 $ git clone https://github.com/siemens/meta-iot2000
-$ kas build meta-iot2000/meta-iot2000-example/kas.yml
+$ kas build meta-iot2000/kas-example.yml
 ...
 ```
 

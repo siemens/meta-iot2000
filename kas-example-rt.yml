@@ -1,9 +1,9 @@
 header:
   version: 2
   includes:
-    - kas.yml
+    - kas-example.yml
 
-target: core-image-rt
+target: iot2000-example-image-rt
 
 local_conf_header:
   rt_kernel: |
