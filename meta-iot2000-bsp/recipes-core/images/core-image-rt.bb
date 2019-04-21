@@ -11,7 +11,7 @@ python () {
 
 DESCRIPTION = "A small image just capable of allowing a device to boot plus a \
 real-time test suite and tools appropriate for real-time use."
-DEPENDS = "linux-cip-rt"
+DEPENDS += "linux-cip-rt"
 
 IMAGE_INSTALL += "rt-tests hwlatdetect"
 
