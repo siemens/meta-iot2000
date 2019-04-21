@@ -1,9 +1,7 @@
 --- galileo-target-0.1/scripts/opt/cln/galileo/galileo_sketch_reset_script.sh	2015-06-29 02:10:35.770165975 +0800
-+++ galileo-target-0.1-systemd/scripts/opt/cln/galileo/galileo_sketch_reset_script.sh	2015-06-29 02:12:50.950162414 +0800
-@@ -1,4 +1,5 @@
++++ galileo-target-0.1/scripts/opt/cln/galileo/galileo_sketch_reset_script.sh	2015-06-29 02:12:50.950162414 +0800
+@@ -1,3 +1,3 @@
  #!/bin/sh
  
 -systemctl restart galileo-target.service
-+
 +killall -TERM clloader
- 
