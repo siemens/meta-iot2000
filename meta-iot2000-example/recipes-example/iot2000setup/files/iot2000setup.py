@@ -542,6 +542,8 @@ class SoftwareSettings:
 		nodeRedEnabled = self.serviceEnabled("node-red")
 		sshEnabled = self.serviceEnabled("sshd")
 		mosquittoEnabled = self.serviceEnabled("mosquitto")
+		galileoEnabled = self.serviceEnabled("galileod")
+		tcfEnabled = self.serviceEnabled("tcf-agent")
 
 		bb = ButtonBar(self.topmenu.gscreen, (("Ok", "ok"), ("Cancel", "cancel", "ESC")))
 		ct = CheckboxTree(height = 7, scroll = 1,width=40)
@@ -549,6 +551,8 @@ class SoftwareSettings:
 		ct.append("Node-RED", "node-red", selected=nodeRedEnabled)
 		ct.append("SSH Server", "ssh", selected=sshEnabled)
 		ct.append("Mosquitto Broker", "mosquitto", selected=mosquittoEnabled)
+		ct.append("Galileo Arduino Runtime", "galileo", selected=galileoEnabled)
+		ct.append("TCF Debugger Agent", "tcf", selected=tcfEnabled)
 
 		g = GridForm(self.topmenu.gscreen, "Autostart Services", 1, 4)
 		g.add(ct, 0, 1)
@@ -562,6 +566,8 @@ class SoftwareSettings:
 		nodeRedEnabledNew = "node-red" in selectedOptions
 		sshEnabledNew = "ssh" in selectedOptions
 		mosquittoEnabledNew = "mosquitto" in selectedOptions
+		galileoEnabledNew = "galileo" in selectedOptions
+		tcfEnabledNew = "tcf" in selectedOptions
 
 		if (nodeRedEnabled != nodeRedEnabledNew):
 			self.update_rc("node-red", nodeRedEnabledNew)
@@ -569,6 +575,10 @@ class SoftwareSettings:
 			self.update_rc("sshd", sshEnabledNew)
 		if (mosquittoEnabled != mosquittoEnabledNew):
 			self.update_rc("mosquitto", mosquittoEnabledNew)
+		if (galileoEnabled != galileoEnabledNew):
+			self.update_rc("galileod", galileoEnabledNew)
+		if (tcfEnabled != tcfEnabledNew):
+			self.update_rc("tcf-agent", tcfEnabledNew)
 
 	def update_rc(self, service, enable):
 		with open(os.devnull, 'wb') as devnull:
