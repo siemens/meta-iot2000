@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 SRC_URI = "file://galileo-target \
            file://launcher.sh \
-           file://galileod.sh \
+           file://galileod.init \
            file://galileo-target.service \
            file://galileo-sketch-reset.service \
            file://r1_2_sketch_reset.patch"
@@ -32,9 +32,7 @@ do_install() {
         install -m 0755 ${WORKDIR}/launcher.sh ${D}${INSTALLDIR}/
 
         install -d ${D}${sysconfdir}/init.d
-        install -d ${D}${sysconfdir}/rcS.d
-        install -m 0755 ${WORKDIR}/galileod.sh ${D}${sysconfdir}/init.d
-        ln -s ../init.d/galileod.sh ${D}${sysconfdir}/rcS.d/S70galileod.sh
+        install -m 0755 ${WORKDIR}/galileod.init ${D}${sysconfdir}/init.d/galileod
 
         install -d ${D}${systemd_unitdir}/system
         install -m 0644 ${WORKDIR}/galileo-target.service ${D}${systemd_unitdir}/system/
@@ -45,6 +43,10 @@ do_install() {
 
         install -d ${D}/sketch
 }
+
+inherit update-rc.d
+INITSCRIPT_PACKAGES = "${PN}"
+INITSCRIPT_NAME = "galileod"
 
 inherit systemd
 SYSTEMD_SERVICE_${PN} = "galileo-target.service galileo-sketch-reset.service"
