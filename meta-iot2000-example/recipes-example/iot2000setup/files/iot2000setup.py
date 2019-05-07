@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from __future__ import absolute_import, print_function, unicode_literals
 
 from snack import *
 import time
@@ -942,7 +941,6 @@ class connmanManager:
 
 iot2000Connman = connmanManager()
 
-#repoFileTemplate
 mainwindow = TopMenu()
 while(True):
 	mainwindow.show()
