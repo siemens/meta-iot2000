@@ -17,11 +17,13 @@ variables:
 .build-and-deploy-image: &build-and-deploy-image
   <<: *build
   after_script:
-    - xz -c -T0 -9 ../build/tmp/deploy/images/iot2000/$DEPLOY_IMAGE.wic > $DEPLOY_IMAGE.xz
+    - for IMAGE in $DEPLOY_IMAGES; do
+          xz -c -T0 -9 ../build/tmp/deploy/images/iot2000/$IMAGE > $IMAGE.xz;
+      done
   artifacts:
     name: "${CI_JOB_NAME}-${CI_COMMIT_SHA::12}"
     paths:
-      - $DEPLOY_IMAGE.xz
+      - ./*.xz
     expire_in: 1 week
 
 .build-and-deploy-sdk: &build-and-deploy-sdk
@@ -38,13 +40,20 @@ bsp-rt:
   <<: *build-and-deploy-image
   variables:
     KAS_CONFIG: kas-bsp-rt.yml
-    DEPLOY_IMAGE: core-image-rt-iot2000
+    DEPLOY_IMAGES: core-image-rt-iot2000.wic
 
 example-image:
   <<: *build-and-deploy-image
   variables:
     KAS_CONFIG: kas-example.yml
-    DEPLOY_IMAGE: iot2000-example-image-iot2000
+    DEPLOY_IMAGES: iot2000-example-image-iot2000.wic
+
+update-image:
+#  <<: *build-and-deploy-image
+  <<: *build
+  variables:
+    KAS_CONFIG: kas-example-swupdate.yml
+    DEPLOY_IMAGES: iot2000-example-image-swu-iot2000.wic iot2000-update-image-iot2000.swu
 
 windows-sdk:
 #  <<: *build-and-deploy-sdk
