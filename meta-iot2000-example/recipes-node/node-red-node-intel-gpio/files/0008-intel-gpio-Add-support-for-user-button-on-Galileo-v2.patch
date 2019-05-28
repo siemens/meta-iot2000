@@ -1,0 +1,122 @@
+From 80754746d357eda4af04ac86133e2e2eeea39c8a Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 6 May 2019 00:26:56 +0200
+Subject: [PATCH 08/11] intel-gpio: Add support for user button on Galileo v2
+
+mraa does not support it, and it might be shared with Arduino emulation.
+But reading its state via sysfs and the new polling mode is nevertheless
+possible and allows access to this input.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ hardware/intel/mraa-gpio-din.html | 10 +++++++++-
+ hardware/intel/mraa-gpio-din.js   | 37 ++++++++++++++++++++++++++++---------
+ 2 files changed, 37 insertions(+), 10 deletions(-)
+
+diff --git a/hardware/intel/mraa-gpio-din.html b/hardware/intel/mraa-gpio-din.html
+index 375a8e8..bc728d0 100644
+--- a/hardware/intel/mraa-gpio-din.html
++++ b/hardware/intel/mraa-gpio-din.html
+@@ -15,7 +15,12 @@
+         outputs:1,
+         icon: "arrow.png",
+         label: function() {
+-            return this.name||"D"+this.pin;
++            if (this.pin == "14") {
++                return this.name || "User Button";
++            }
++            else {
++                return this.name || "D" + this.pin;
++            }
+         },
+         labelStyle: function() {
+             return this.name?"node_label_italic":"";
+@@ -33,6 +38,9 @@
+                 if (data === 6) { t = "Beaglebone"; }
+                 if (data === 7) { t = "Banana"; }
+                 $('#type-tip').text(t);
++                if (data === 1) {
++                    $('#node-input-pin').append($("<option></option>").attr("value", 14).text("User Button"));
++                }
+                 $('#node-input-pin').val(pinnow);
+             });
+             $.getJSON('mraa-version/'+this.id,function(data) {
+diff --git a/hardware/intel/mraa-gpio-din.js b/hardware/intel/mraa-gpio-din.js
+index f98e105..3509e51 100644
+--- a/hardware/intel/mraa-gpio-din.js
++++ b/hardware/intel/mraa-gpio-din.js
+@@ -1,7 +1,7 @@
+ 
+ module.exports = function(RED) {
+-    var m = require('mraa');
+-    //console.log("BOARD :",m.getPlatformName());
++    const m = require('mraa');
++    const fs = require('fs');
+ 
+     function gpioDin(n) {
+         RED.nodes.createNode(this,n);
+@@ -35,11 +35,26 @@ module.exports = function(RED) {
+             }
+         }
+ 
+-        this.gpio = new m.Gpio(parseInt(this.pin));
+-        this.gpio.mode(m.PIN_GPIO);
+-        this.gpio.dir(m.DIR_IN);
++        if (this.pin === "14") {
++            this.gpio = null;
++            try {
++                fs.writeFileSync("/sys/class/gpio/export", "63");
++            }
++            catch(err) {}
++            this.readGpio = function() {
++                return parseInt(fs.readFileSync("/sys/class/gpio/gpio63/value")) ^ 1;
++            };
++        }
++        else {
++            this.gpio = new m.Gpio(parseInt(this.pin));
++            this.gpio.mode(m.PIN_GPIO);
++            this.gpio.dir(m.DIR_IN);
++            this.readGpio = function() {
++                return node.gpio.read();
++            };
++        }
+ 
+-        var initialState = this.gpio.read();
++        var initialState = this.readGpio();
+         switch (initialState) {
+             case 0: {
+                 this.status({fill:"green",shape:"ring",text:"low"});
+@@ -56,7 +71,9 @@ module.exports = function(RED) {
+         if (this.initialMsg)
+             eventHandler(initialState);
+ 
+-        var isrOk = this.gpio.isr(m.EDGE_BOTH, function() {
++        var isrOk = false;
++        if (this.pin != "14") {
++            isrOk = this.gpio.isr(m.EDGE_BOTH, function() {
+                 eventHandler(node.gpio.read());
+             }) === 0;
+         }
+@@ -65,7 +82,7 @@ module.exports = function(RED) {
+         if (!isrOk) {
+             var last = initialState;
+             this.timer = setInterval(function() {
+-                newState = node.gpio.read();
++                newState = node.readGpio();
+                 if (newState != last) {
+                     eventHandler(newState);
+                     last = newState;
+@@ -74,7 +91,9 @@ module.exports = function(RED) {
+         };
+ 
+         this.on('close', function() {
+-            node.gpio.isrExit();
++            if (node.gpio) {
++                node.gpio.isrExit();
++            }
+             if (node.timer) {
+                 clearInterval(node.timer);
+             }
+-- 
+2.16.4
+

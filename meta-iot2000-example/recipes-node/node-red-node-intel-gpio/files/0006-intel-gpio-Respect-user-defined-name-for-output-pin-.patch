@@ -1,0 +1,31 @@
+From 80658c52d10c7eb785d3f4f006b1f5e7609bd97a Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 6 May 2019 00:07:38 +0200
+Subject: [PATCH 06/11] intel-gpio: Respect user-defined name for output pin 14
+
+No reason to hard-code "LED" here.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ hardware/intel/mraa-gpio-dout.html | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/hardware/intel/mraa-gpio-dout.html b/hardware/intel/mraa-gpio-dout.html
+index 6c37a41..bcbfbd0 100644
+--- a/hardware/intel/mraa-gpio-dout.html
++++ b/hardware/intel/mraa-gpio-dout.html
+@@ -16,8 +16,9 @@
+         align: "right",
+         label: function() {
+             if (this.pin === "14") {
+-                return "LED";
+-            } else {
++                return this.name || "LED";
++            }
++            else {
+                 return this.name||"D"+this.pin;
+             }
+         },
+-- 
+2.16.4
+

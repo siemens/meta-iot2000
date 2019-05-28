@@ -1,0 +1,15 @@
+header:
+  version: 3
+  includes:
+    - kas-example.yml
+
+task: populate_sdk
+
+repos:
+  meta-mingw:
+    url: https://git.yoctoproject.org/git/meta-mingw
+    refspec: 6556cde16fbdf42c7edae89bb186e5ae4982eff5
+
+local_conf_header:
+  sdk_machine: |
+    SDKMACHINE ?= "i686-mingw32"

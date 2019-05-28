@@ -1,0 +1,77 @@
+From 357d7e2adc9cfa82854af1983ade56e015aedac7 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 29 Apr 2019 12:19:03 +0200
+Subject: [PATCH 03/11] intel-gpio: Add support for initial message from
+ digital input
+
+This allows to send out an initial message with the current digital pin
+state on startup, simplifying initializations of certain flows.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ hardware/intel/mraa-gpio-din.html | 8 +++++++-
+ hardware/intel/mraa-gpio-din.js   | 8 +++++++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/hardware/intel/mraa-gpio-din.html b/hardware/intel/mraa-gpio-din.html
+index 0abc49c..13916fd 100644
+--- a/hardware/intel/mraa-gpio-din.html
++++ b/hardware/intel/mraa-gpio-din.html
+@@ -7,7 +7,8 @@
+         defaults: {
+             name: {value:""},
+             pin:  {value:"", required: true},
+-            interrupt: {value:"", required: true}
++            interrupt: {value:"", required: true},
++            initial: {value: false}
+         },
+         inputs:0,
+         outputs:1,
+@@ -70,6 +71,11 @@
+             <option value="b">Both </option>
+         </select>
+     </div>
++    <div class="form-row" id="node-initial-tick">
++        <label>&nbsp;</label>
++        <input type="checkbox" id="node-input-initial" style="display: inline-block; width: auto; vertical-align: top;">
++        <label for="node-input-initial" style="width: 70%;">Send initial message with level of pin.</label>
++    </div>
+     <div class="form-row">
+         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+         <input type="text" id="node-input-name" placeholder="Name" style="width: 250px;">
+diff --git a/hardware/intel/mraa-gpio-din.js b/hardware/intel/mraa-gpio-din.js
+index a11c5e0..2ce87b1 100644
+--- a/hardware/intel/mraa-gpio-din.js
++++ b/hardware/intel/mraa-gpio-din.js
+@@ -8,6 +8,7 @@ module.exports = function(RED) {
+         this.pin = n.pin;
+         this.interrupt = n.interrupt;
+         this.x = new m.Gpio(parseInt(this.pin));
++        this.initialMsg = n.initial;
+         this.board = m.getPlatformName();
+         var node = this;
+         node.x.mode(m.PIN_GPIO);
+@@ -35,7 +36,9 @@ module.exports = function(RED) {
+                 }
+             }
+         });
+-        switch (this.x.read()) {
++
++        var initialState = this.x.read();
++        switch (initialState) {
+             case 0: {
+                 this.status({fill:"green",shape:"ring",text:"low"});
+                 break;
+@@ -48,6 +51,9 @@ module.exports = function(RED) {
+                 this.status({});
+             }
+         }
++        if (this.initialMsg)
++            eventHandler(initialState);
++
+         this.on('close', function() {
+             node.x.isr(m.EDGE_BOTH, null);
+         });
+-- 
+2.16.4
+

@@ -1,0 +1,42 @@
+From 88f2d0ccdee1f1890af0d049c60fe24f6c6eb048 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Thu, 25 May 2017 13:05:12 +0200
+Subject: [PATCH 15/18] iot2000-hack: Adjust pca9685-gpio base for legacy
+ compatibility
+
+mraa and the Arduino runtime expect this.
+
+Not for upstream.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ drivers/pwm/pwm-pca9685.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pwm/pwm-pca9685.c b/drivers/pwm/pwm-pca9685.c
+index d2b92e940e38..611b9263a896 100644
+--- a/drivers/pwm/pwm-pca9685.c
++++ b/drivers/pwm/pwm-pca9685.c
+@@ -19,6 +19,7 @@
+  * this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
++#include <linux/dmi.h>
+ #include <linux/acpi.h>
+ #include <linux/gpio/driver.h>
+ #include <linux/i2c.h>
+@@ -222,7 +223,10 @@ static int pca9685_pwm_gpio_probe(struct pca9685 *pca)
+ 	pca->gpio.direction_output = pca9685_pwm_gpio_direction_output;
+ 	pca->gpio.get = pca9685_pwm_gpio_get;
+ 	pca->gpio.set = pca9685_pwm_gpio_set;
+-	pca->gpio.base = -1;
++	if (!strcmp(dmi_get_system_info(DMI_BOARD_NAME), "SIMATIC IOT2000"))
++		pca->gpio.base = 64;
++	else
++		pca->gpio.base = -1;
+ 	pca->gpio.ngpio = PCA9685_MAXCHAN;
+ 	pca->gpio.can_sleep = true;
+ 
+-- 
+2.16.4
+

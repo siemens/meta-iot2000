@@ -17,7 +17,7 @@ variables:
 .build-and-deploy-image: &build-and-deploy-image
   <<: *build
   after_script:
-    - xz -c -T0 ../build/tmp/deploy/images/iot2000/$DEPLOY_IMAGE.wic > $DEPLOY_IMAGE.xz
+    - xz -c -T0 -9 ../build/tmp/deploy/images/iot2000/$DEPLOY_IMAGE.wic > $DEPLOY_IMAGE.xz
   artifacts:
     name: "${CI_JOB_NAME}-${CI_COMMIT_SHA::12}"
     paths:
@@ -37,18 +37,18 @@ variables:
 bsp-rt:
   <<: *build-and-deploy-image
   variables:
-    KAS_CONFIG: meta-iot2000-bsp/kas-rt.yml
+    KAS_CONFIG: kas-bsp-rt.yml
     DEPLOY_IMAGE: core-image-rt-iot2000
 
 example-image:
   <<: *build-and-deploy-image
   variables:
-    KAS_CONFIG: meta-iot2000-example/kas.yml
+    KAS_CONFIG: kas-example.yml
     DEPLOY_IMAGE: iot2000-example-image-iot2000
 
 windows-sdk:
 #  <<: *build-and-deploy-sdk
   <<: *build
   variables:
-    KAS_CONFIG: meta-iot2000-example/kas-sdk-windows-i586.yml
+    KAS_CONFIG: kas-sdk-windows-i586.yml
     DEPLOY_SDK: poky-iot2000-glibc-i686-iot2000-example-image-i586-nlp-32-toolchain-2.2.2.tar.xz

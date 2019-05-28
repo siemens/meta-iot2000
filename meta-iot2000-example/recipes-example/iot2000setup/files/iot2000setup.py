@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from __future__ import absolute_import, print_function, unicode_literals
 
 from snack import *
 import time
@@ -540,74 +539,60 @@ class SoftwareSettings:
 		self.finish = True
 
 	def changeAutostart(self):
-		task = subprocess.Popen("/etc/init.d/sshd status", stdout=subprocess.PIPE, shell=True)
-		taskReturn = task.stdout.read().decode().lstrip().rstrip()
-		sshEnabled = "running" in taskReturn
+		nodeRedEnabled = self.serviceEnabled("node-red")
+		sshEnabled = self.serviceEnabled("sshd")
+		mosquittoEnabled = self.serviceEnabled("mosquitto")
+		galileoEnabled = self.serviceEnabled("galileod")
+		tcfEnabled = self.serviceEnabled("tcf-agent")
 
-		noderedAutostartEnabled = os.path.isfile("/etc/init.d/launch_node-red.sh")
-		mosquittoAutostartEnabled = os.path.isfile("/etc/init.d/launch_mosquitto.sh")
-
-		bb = ButtonBar(self.topmenu.gscreen, [("Done", "done", "ESC")])
+		bb = ButtonBar(self.topmenu.gscreen, (("Ok", "ok"), ("Cancel", "cancel", "ESC")))
 		ct = CheckboxTree(height = 7, scroll = 1,width=40)
 
-		ct.append("Auto Start node-red", selected=noderedAutostartEnabled)
-		ct.append("SSH Server Enabled", selected=sshEnabled)
-		ct.append("Auto Start Mosquitto Broker", selected=mosquittoAutostartEnabled)
+		ct.append("Node-RED", "node-red", selected=nodeRedEnabled)
+		ct.append("SSH Server", "ssh", selected=sshEnabled)
+		ct.append("Mosquitto Broker", "mosquitto", selected=mosquittoEnabled)
+		ct.append("Galileo Arduino Runtime", "galileo", selected=galileoEnabled)
+		ct.append("TCF Debugger Agent", "tcf", selected=tcfEnabled)
 
-		g = GridForm(self.topmenu.gscreen, "Advanced Options", 1, 4)
+		g = GridForm(self.topmenu.gscreen, "Autostart Services", 1, 4)
 		g.add(ct, 0, 1)
-		g.add(bb, 0, 3, growx = 1)
+		g.add(bb, 0, 2, growx = 1)
 		result = g.runOnce()
+		if (bb.buttonPressed(result) != "ok"):
+			return;
+
 		selectedOptions = ct.getSelection()
 
-		noderedAutostartEnabledNew = "Auto Start node-red" in selectedOptions
-		sshEnabledNew = "SSH Server Enabled" in selectedOptions
-		mosquittoAutostartEnabledNew = "Auto Start Mosquitto Broker" in selectedOptions
+		nodeRedEnabledNew = "node-red" in selectedOptions
+		sshEnabledNew = "ssh" in selectedOptions
+		mosquittoEnabledNew = "mosquitto" in selectedOptions
+		galileoEnabledNew = "galileo" in selectedOptions
+		tcfEnabledNew = "tcf" in selectedOptions
 
-		if (noderedAutostartEnabled != noderedAutostartEnabledNew):
-			if ("Auto Start node-red" in selectedOptions):
-				self.registerLaunchScript("on", "launch_node-red.sh", "#!/bin/sh\nsu root -c \"/usr/bin/node /usr/lib/node_modules/node-red/red >/dev/null\" &")
-			else:
-				self.registerLaunchScript("off", "launch_node-red.sh", "")
-
+		if (nodeRedEnabled != nodeRedEnabledNew):
+			self.update_rc("node-red", nodeRedEnabledNew)
 		if (sshEnabled != sshEnabledNew):
-			if ("SSH Server Enabled" in selectedOptions):
-				changeSshServerSetting("on")
+			self.update_rc("sshd", sshEnabledNew)
+		if (mosquittoEnabled != mosquittoEnabledNew):
+			self.update_rc("mosquitto", mosquittoEnabledNew)
+		if (galileoEnabled != galileoEnabledNew):
+			self.update_rc("galileod", galileoEnabledNew)
+		if (tcfEnabled != tcfEnabledNew):
+			self.update_rc("tcf-agent", tcfEnabledNew)
+
+	def update_rc(self, service, enable):
+		with open(os.devnull, 'wb') as devnull:
+			if (enable):
+				subprocess.call("update-rc.d %s defaults" % service, shell=True, stdout=devnull)
+				subprocess.call("/etc/init.d/%s start" % service, shell=True, stdout=devnull)
 			else:
-				changeSshServerSetting("off")
+				subprocess.call("/etc/init.d/%s stop" % service, shell=True, stdout=devnull)
+				subprocess.call("update-rc.d -f %s remove" % service, shell=True, stdout=devnull, stderr=devnull)
 
-		if (mosquittoAutostartEnabled != mosquittoAutostartEnabledNew):
-			if ("Auto Start Mosquitto Broker" in selectedOptions):
-				self.registerLaunchScript("on", "launch_mosquitto.sh", "#!/bin/sh\nsu root -c \"/usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf -d &>/dev/null\" ")
-
-				fileName = "/etc/mosquitto/mosquitto.conf"
-				initFile = open(fileName, 'w')
-				initFile.write("user root")
-				initFile.close()
-			else:
-				self.registerLaunchScript("off", "launch_mosquitto.sh", "")
-
-	def changeSshServerSetting(self, status):
-		if (status == "on"):
-			subprocess.call("update-rc.d -f sshd defaults", shell=True, stdout=open(os.devnull, 'wb'))
-			subprocess.call("/etc/init.d/sshd start", shell=True, stdout=open(os.devnull, 'wb'))
-		elif (status == "off"):
-			subprocess.call("/etc/init.d/sshd stop", shell=True, stdout=open(os.devnull, 'wb'))
-			subprocess.call("update-rc.d -f sshd remove", shell=True, stdout=open(os.devnull, 'wb'))
-	def registerLaunchScript(self, status, fileName, scriptcontent):
-		if (status == "on"):
-			initFile = open("/etc/init.d/" + fileName, 'w')
-			initFile.write(scriptcontent)
-			initFile.close()
-
-			st = os.stat("/etc/init.d/" + fileName)
-			os.chmod("/etc/init.d/" + fileName, st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
-
-			subprocess.call("update-rc.d " + fileName + " defaults", shell=True, stdout=open(os.devnull, 'wb'))
-			subprocess.call("/etc/init.d/" + fileName, shell=True, stdout=open(os.devnull, 'wb'))
-		elif (status == "off"):
-			subprocess.call("update-rc.d " + fileName + " remove", shell=True, stdout=open(os.devnull, 'wb'))
-			os.remove("/etc/init.d/" + fileName)
+	def serviceEnabled(self, service):
+		task = subprocess.Popen("/etc/init.d/%s status" % service, stdout=subprocess.PIPE, shell=True)
+		taskReturn = task.stdout.read().decode().lstrip().rstrip()
+		return "running" in taskReturn
 
 class Peripherals:
 	def __init__(self, topmenu):
@@ -966,7 +951,6 @@ class connmanManager:
 
 iot2000Connman = connmanManager()
 
-#repoFileTemplate
 mainwindow = TopMenu()
 while(True):
 	mainwindow.show()

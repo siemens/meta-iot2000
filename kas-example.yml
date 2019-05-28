@@ -1,0 +1,21 @@
+header:
+  version: 2
+  includes:
+    - kas-bsp.yml
+
+distro: poky-iot2000
+target: iot2000-example-image
+
+repos:
+  meta-iot2000:
+    layers:
+      meta-iot2000-example:
+
+  meta-openembedded:
+    layers:
+      meta-networking:
+      meta-python:
+
+local_conf_header:
+  package_ipk: |
+    PACKAGE_CLASSES = "package_ipk"

@@ -1,0 +1,10 @@
+header:
+  version: 2
+  includes:
+    - kas-bsp.yml
+
+target: core-image-rt
+
+local_conf_header:
+  rt_kernel: |
+    PREFERRED_PROVIDER_virtual/kernel = "linux-cip-rt"

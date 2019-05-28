@@ -1,0 +1,108 @@
+From 9ff93c7e0a4b193541c71b9376dc1170f2f0d8f0 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 6 May 2019 00:33:12 +0200
+Subject: [PATCH 10/11] intel-gpio: Add support for red LED of IOT2040
+
+This one can easily be controlled via sysfs.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ hardware/intel/mraa-gpio-dout.html |  8 ++++++-
+ hardware/intel/mraa-gpio-dout.js   | 44 +++++++++++++++++++++++++-------------
+ 2 files changed, 36 insertions(+), 16 deletions(-)
+
+diff --git a/hardware/intel/mraa-gpio-dout.html b/hardware/intel/mraa-gpio-dout.html
+index 69dca05..a2e6fd7 100644
+--- a/hardware/intel/mraa-gpio-dout.html
++++ b/hardware/intel/mraa-gpio-dout.html
+@@ -16,7 +16,10 @@
+         icon: "arrow.png",
+         align: "right",
+         label: function() {
+-            if (this.pin === "14") {
++            if (this.pin === "15") {
++                return this.name || "Red LED";
++            }
++            else if (this.pin === "14") {
+                 return this.name || "LED";
+             }
+             else {
+@@ -49,6 +52,9 @@
+                     node.d13suffix = " (Green LED)";
+                     $('#node-input-pin [value=13]').text("D13 (Green LED)");
+                 }
++                if (data === 2040) {
++                    $('#node-input-pin').append($("<option></option>").attr("value", 15).text("Red LED"));
++                }
+                 $('#node-input-pin').val(pinnow);
+             });
+             $.getJSON('mraa-version/'+this.id,function(data) {
+diff --git a/hardware/intel/mraa-gpio-dout.js b/hardware/intel/mraa-gpio-dout.js
+index 37058d3..ec54e9e 100644
+--- a/hardware/intel/mraa-gpio-dout.js
++++ b/hardware/intel/mraa-gpio-dout.js
+@@ -1,6 +1,7 @@
+ 
+ module.exports = function(RED) {
+-    var m = require('mraa');
++    const m = require('mraa');
++    const fs = require('fs');
+ 
+     function gpioDout(n) {
+         RED.nodes.createNode(this, n);
+@@ -8,25 +9,38 @@ module.exports = function(RED) {
+         this.set = n.set;
+         this.level = Number(n.level);
+         var node = this;
+-        if (this.pin === 14) {
+-            this.p = new m.Gpio(3,false,true);  // special for onboard LED v1
++        if (this.pin === 15) {
++            this.fd = fs.openSync("/sys/class/leds/mpio_uart_led:red:user/brightness", "w");
++            this.on("input", function(msg) {
++                if (msg.payload == "1") {
++                    fs.writeSync(node.fd, "1");
++                }
++                else {
++                    fs.writeSync(node.fd, "0");
++                }
++            });
+         }
+         else {
+-            this.p = new m.Gpio(node.pin);
+-        }
+-        this.p.mode(m.PIN_GPIO);
+-        this.p.dir(m.DIR_OUT);
+-        if (this.set) {
+-            this.p.write(this.level);
+-        }
+-        this.on("input", function(msg) {
+-            if (msg.payload == "1") {
+-                node.p.write(1);
++            if (this.pin === 14) {
++                this.p = new m.Gpio(3,false,true);  // special for onboard LED v1
+             }
+             else {
+-                node.p.write(0);
++                this.p = new m.Gpio(node.pin);
+             }
+-        });
++            this.p.mode(m.PIN_GPIO);
++            this.p.dir(m.DIR_OUT);
++            if (this.set) {
++                this.p.write(this.level);
++            }
++            this.on("input", function(msg) {
++                if (msg.payload == "1") {
++                    node.p.write(1);
++                }
++                else {
++                    node.p.write(0);
++                }
++            });
++        }
+ 
+         this.on('close', function() {
+         });
+-- 
+2.16.4
+

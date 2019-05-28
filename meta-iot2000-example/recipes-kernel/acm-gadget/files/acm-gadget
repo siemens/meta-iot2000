@@ -38,8 +38,10 @@ DEVICE=$CONFIGFS/usb_gadget/$NAME
 # Function that starts the device
 #
 do_start() {
-	mkdir -p $CONFIGFS
-	mount -t configfs none $CONFIGFS
+	if ! mountpoint -q $CONFIGFS; then
+		mkdir -p $CONFIGFS
+		mount -t configfs none $CONFIGFS
+	fi
 
 	mkdir $DEVICE
 	echo 0x8086 > $DEVICE/idVendor

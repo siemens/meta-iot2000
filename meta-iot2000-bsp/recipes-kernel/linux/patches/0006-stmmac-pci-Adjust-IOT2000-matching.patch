@@ -1,7 +1,7 @@
-From 1993133683e0ad0053863c8f8388a984d2c5901b Mon Sep 17 00:00:00 2001
+From e3ba8c4f83c6c206a20e4645a37612b1e10580c6 Mon Sep 17 00:00:00 2001
 From: Su Bao Cheng <baocheng.su@siemens.com>
 Date: Fri, 12 Oct 2018 15:08:11 +0200
-Subject: [PATCH 06/13] stmmac: pci: Adjust IOT2000 matching
+Subject: [PATCH 06/18] stmmac: pci: Adjust IOT2000 matching
 
 Since there are more IOT2040 variants with identical hardware but
 different asset tags, the asset tag matching should be adjusted to
@@ -15,13 +15,13 @@ devices with the "SIMATIC IOT2000" DMI board name but different
 hardware.
 
 Signed-off-by: Su Bao Cheng <baocheng.su@siemens.com>
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Reviewed-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
  drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c | 8 ++++++--
  1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c
-index 279a1355d75f..94da1691424b 100644
+index 279a1355d75f..ac733d4d3ed4 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c
 @@ -149,11 +149,15 @@ static const struct dmi_system_id quark_pci_dmi[] = {
@@ -29,7 +29,7 @@ index 279a1355d75f..94da1691424b 100644
  		.driver_data = (void *)&galileo_stmmac_dmi_data,
  	},
 +	/*
-+	 * There are 2 types of SIMATIC IOT2000: IOT20202 and IOT2040.
++	 * There are 2 types of SIMATIC IOT2000: IOT2020 and IOT2040.
 +	 * The asset tag "6ES7647-0AA00-0YA2" is only for IOT2020 which
 +	 * has only one pci network device while other asset tags are
 +	 * for IOT2040 which has two.

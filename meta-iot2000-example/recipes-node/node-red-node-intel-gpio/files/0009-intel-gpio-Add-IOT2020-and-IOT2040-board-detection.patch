@@ -1,0 +1,108 @@
+From 62a7f2313bc7f7866b9074cdc7b7b6557b6c0ab2 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 6 May 2019 00:30:29 +0200
+Subject: [PATCH 09/11] intel-gpio: Add IOT2020 and IOT2040 board detection
+
+These boards share the properties of the Galileo v2. Adding detection
+not only provide cleaner listing, it also allows add an IOT2040-specific
+feature later on.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ hardware/intel/mraa-gpio-ain.html  |  2 ++
+ hardware/intel/mraa-gpio-din.html  |  4 +++-
+ hardware/intel/mraa-gpio-dout.html |  4 +++-
+ hardware/intel/mraa-gpio-dout.js   | 15 ++++++++++++++-
+ hardware/intel/mraa-gpio-pwm.html  |  2 ++
+ 5 files changed, 24 insertions(+), 3 deletions(-)
+
+diff --git a/hardware/intel/mraa-gpio-ain.html b/hardware/intel/mraa-gpio-ain.html
+index 263a4a7..17c4f7a 100644
+--- a/hardware/intel/mraa-gpio-ain.html
++++ b/hardware/intel/mraa-gpio-ain.html
+@@ -27,6 +27,8 @@
+                 if (data === 5) { t = "Raspberry Pi"; }
+                 if (data === 6) { t = "Beaglebone"; }
+                 if (data === 7) { t = "Banana"; }
++                if (data === 2020) { t = "SIMATIC IOT2020"; }
++                if (data === 2040) { t = "SIMATIC IOT2040"; }
+                 $('#btype').text(t);
+                 $('#node-input-pin').val(pinnow);
+             });
+diff --git a/hardware/intel/mraa-gpio-din.html b/hardware/intel/mraa-gpio-din.html
+index bc728d0..c0c10a9 100644
+--- a/hardware/intel/mraa-gpio-din.html
++++ b/hardware/intel/mraa-gpio-din.html
+@@ -37,8 +37,10 @@
+                 if (data === 5) { t = "Raspberry Pi"; }
+                 if (data === 6) { t = "Beaglebone"; }
+                 if (data === 7) { t = "Banana"; }
++                if (data === 2020) { t = "SIMATIC IOT2020"; }
++                if (data === 2040) { t = "SIMATIC IOT2040"; }
+                 $('#type-tip').text(t);
+-                if (data === 1) {
++                if (data === 1 || data === 2020 || data === 2040) {
+                     $('#node-input-pin').append($("<option></option>").attr("value", 14).text("User Button"));
+                 }
+                 $('#node-input-pin').val(pinnow);
+diff --git a/hardware/intel/mraa-gpio-dout.html b/hardware/intel/mraa-gpio-dout.html
+index 0900039..69dca05 100644
+--- a/hardware/intel/mraa-gpio-dout.html
++++ b/hardware/intel/mraa-gpio-dout.html
+@@ -39,11 +39,13 @@
+                 if (data === 5) { t = "Raspberry Pi"; }
+                 if (data === 6) { t = "Beaglebone"; }
+                 if (data === 7) { t = "Banana"; }
++                if (data === 2020) { t = "SIMATIC IOT2020"; }
++                if (data === 2040) { t = "SIMATIC IOT2040"; }
+                 $('#btype').text(t);
+                 if (data === 0) {
+                     $('#node-input-pin').append($("<option></option>").attr("value",14).text("LED - Galileo v1"));
+                 }
+-                if (data === 1) {
++                if (data === 1 || data === 2020 || data === 2040) {
+                     node.d13suffix = " (Green LED)";
+                     $('#node-input-pin [value=13]').text("D13 (Green LED)");
+                 }
+diff --git a/hardware/intel/mraa-gpio-dout.js b/hardware/intel/mraa-gpio-dout.js
+index 1c97e0a..37058d3 100644
+--- a/hardware/intel/mraa-gpio-dout.js
++++ b/hardware/intel/mraa-gpio-dout.js
+@@ -34,7 +34,20 @@ module.exports = function(RED) {
+     RED.nodes.registerType("mraa-gpio-dout", gpioDout);
+ 
+     RED.httpAdmin.get('/mraa-gpio/:id', RED.auth.needsPermission('mraa-gpio.read'), function(req,res) {
+-        res.json(m.getPlatformType());
++        const execSync = require('child_process').execSync;
++        var productName = execSync("dmidecode -s baseboard-product-name").toString();
++        if (productName === "SIMATIC IOT2000\n") {
++            var assetTag = execSync("dmidecode -s baseboard-asset-tag").toString();
++            if (assetTag === "6ES7647-0AA00-0YA2\n") {
++                res.json(2020);
++            }
++            else {
++                res.json(2040);
++            }
++        }
++        else {
++            res.json(m.getPlatformType());
++        }
+     });
+ 
+     RED.httpAdmin.get('/mraa-version/:id', RED.auth.needsPermission('mraa-version.read'), function(req,res) {
+diff --git a/hardware/intel/mraa-gpio-pwm.html b/hardware/intel/mraa-gpio-pwm.html
+index 2879e07..69e0990 100644
+--- a/hardware/intel/mraa-gpio-pwm.html
++++ b/hardware/intel/mraa-gpio-pwm.html
+@@ -35,6 +35,8 @@
+                 if (data === 5) { t = "Raspberry Pi"; }
+                 if (data === 6) { t = "Beaglebone"; }
+                 if (data === 7) { t = "Banana"; }
++                if (data === 2020) { t = "SIMATIC IOT2020"; }
++                if (data === 2040) { t = "SIMATIC IOT2040"; }
+                 $('#type-tip').text(t);
+                 $('#node-input-pin').val(pinnow);
+             });
+-- 
+2.16.4
+

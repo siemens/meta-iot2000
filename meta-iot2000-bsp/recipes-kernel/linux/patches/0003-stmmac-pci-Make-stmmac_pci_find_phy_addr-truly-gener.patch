@@ -1,7 +1,7 @@
-From 47e2346f55abfdc73b2f3709db8e66fe5db535cd Mon Sep 17 00:00:00 2001
+From d9478f26f2c620cf284f5022d3d852c47227e8da Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 22 Jun 2017 08:17:59 +0200
-Subject: [PATCH 03/13] stmmac: pci: Make stmmac_pci_find_phy_addr truly
+Subject: [PATCH 03/18] stmmac: pci: Make stmmac_pci_find_phy_addr truly
  generic
 
 Commit c5f657e49c878756f21349f9e4b0f1c9631d5352 upstream.

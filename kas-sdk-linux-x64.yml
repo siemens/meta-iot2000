@@ -1,0 +1,10 @@
+header:
+  version: 3
+  includes:
+    - kas-example.yml
+
+task: populate_sdk
+
+local_conf_header:
+  sdk_machine: |
+    SDKMACHINE ?= "x86_64"

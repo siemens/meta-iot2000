@@ -1,0 +1,90 @@
+From dec7217731a27e4d1a66eb7fde0aae3ac24e4d95 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 29 Apr 2019 06:54:52 +0200
+Subject: [PATCH 01/11] intel-gpio: HTML cleanups
+
+Make clear that this node is not only for Galileo and Edison, fix two
+minor mistakes (wrong label reference, wrong unit capitalization).
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ hardware/intel/mraa-gpio-ain.html  | 6 +++---
+ hardware/intel/mraa-gpio-din.html  | 4 ++--
+ hardware/intel/mraa-gpio-dout.html | 2 +-
+ hardware/intel/mraa-gpio-pwm.html  | 2 +-
+ 4 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/hardware/intel/mraa-gpio-ain.html b/hardware/intel/mraa-gpio-ain.html
+index 93d5a5a..263a4a7 100644
+--- a/hardware/intel/mraa-gpio-ain.html
++++ b/hardware/intel/mraa-gpio-ain.html
+@@ -51,8 +51,8 @@
+         </select>
+     </div>
+     <div class="form-row">
+-       <label for="node-input-name"><i class="fa fa-clock-o"></i> Interval</label>
+-        <input type="text" id="node-input-interval" placeholder="Interval" style="width:250px;"> mS
++        <label for="node-input-name"><i class="fa fa-clock-o"></i> Interval</label>
++        <input type="text" id="node-input-interval" placeholder="Interval" style="width:250px;"> ms
+     </div>
+     <div class="form-row">
+         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+@@ -62,7 +62,7 @@
+ </script>
+ 
+ <script type="text/x-red" data-help-name="mraa-gpio-ain">
+-    <p>An analogue input pin for an Intel Galileo or Edison board that is read every <i>interval</i> milliseconds.</p>
++    <p>An analogue input pin for a mraa-supported board that is read every <i>interval</i> milliseconds.</p>
+     <p>The <code>msg.payload</code> will contain the value, and <code>msg.topic</code>
+     contains "{the_board_name}/A{the pin number}".</p>
+     <p>The value is only sent if it is different from the previously read value.</p>
+diff --git a/hardware/intel/mraa-gpio-din.html b/hardware/intel/mraa-gpio-din.html
+index fdbcfc4..0abc49c 100644
+--- a/hardware/intel/mraa-gpio-din.html
++++ b/hardware/intel/mraa-gpio-din.html
+@@ -62,7 +62,7 @@
+         </select>
+     </div>
+     <div class="form-row">
+-        <label for="node-input-name"><i class="fa-level-up"></i> Interrupt</label>
++        <label for="node-input-interrupt"><i class="fa-level-up"></i> Interrupt</label>
+         <select type="text" id="node-input-interrupt" style="width: 250px;">
+             <option value='' disabled selected style='display:none;'>select interrupt</option>
+             <option value="r">Rising </option>
+@@ -78,7 +78,7 @@
+ </script>
+ 
+ <script type="text/x-red" data-help-name="mraa-gpio-din">
+-    <p>A digital input pin for an Intel Galileo or Edison board.</p>
++    <p>A digital input pin for an mraa-supported board.</p>
+     <p>The <code>msg.payload</code> contains the value (0 or 1), and <code>msg.topic</code>
+     contains "{the_board_name}/D{the pin number}".</p>
+ </script>
+diff --git a/hardware/intel/mraa-gpio-dout.html b/hardware/intel/mraa-gpio-dout.html
+index ed0289a..6c37a41 100644
+--- a/hardware/intel/mraa-gpio-dout.html
++++ b/hardware/intel/mraa-gpio-dout.html
+@@ -100,6 +100,6 @@
+ </script>
+ 
+ <script type="text/x-red" data-help-name="mraa-gpio-dout">
+-    <p>A digital output pin for an Intel Galileo or Edison board.</p>
++    <p>A digital output pin for an mraa-supported board.</p>
+     <p>The <code>msg.payload</code> should contain the value 0 or 1.</p>
+ </script>
+diff --git a/hardware/intel/mraa-gpio-pwm.html b/hardware/intel/mraa-gpio-pwm.html
+index 2dfb95e..2879e07 100644
+--- a/hardware/intel/mraa-gpio-pwm.html
++++ b/hardware/intel/mraa-gpio-pwm.html
+@@ -80,7 +80,7 @@
+ </script>
+ 
+ <script type="text/x-red" data-help-name="mraa-gpio-pwm">
+-    <p>A pulse width modulation (PWM) output pin for an Intel Galileo or Edison board.</p>
++    <p>A pulse width modulation (PWM) output pin for a mraa-supported board.</p>
+     <p>The <code>msg.payload</code> should contain a floating point number value
+     between 0 and 1, (or a string representation thereof.)</p>
+     <p>For servo control set the period to 20mS and vary the input between 0.05 and 0.10</p>
+-- 
+2.16.4
+

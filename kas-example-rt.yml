@@ -1,0 +1,10 @@
+header:
+  version: 2
+  includes:
+    - kas-example.yml
+
+target: iot2000-example-image-rt
+
+local_conf_header:
+  rt_kernel: |
+    PREFERRED_PROVIDER_virtual/kernel = "linux-cip-rt"

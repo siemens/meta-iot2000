@@ -1,0 +1,114 @@
+From 9fd1991d762b6092f462f3cc551b2d7df3009b52 Mon Sep 17 00:00:00 2001
+From: Colin Pitrat <colin.pitrat@gmail.com>
+Date: Sat, 18 Jun 2016 19:05:04 +0100
+Subject: [PATCH 11/18] gpio: sch: Fix Oops on module load on Asus Eee PC 1201
+
+This fixes the issue descirbe in bug 117531
+(https://bugzilla.kernel.org/show_bug.cgi?id=117531).
+It's a regression introduced in linux 4.5 that causes a Oops at load of
+gpio_sch and prevents powering off the computer.
+
+The issue is that sch_gpio_reg_set is called in sch_gpio_probe before
+gpio_chip data is initialized with the pointer to the sch_gpio struct. As
+sch_gpio_reg_set calls gpiochip_get_data, it returns NULL which causes
+the Oops.
+
+The patch follows Mika's advice (https://lkml.org/lkml/2016/5/9/61) and
+consists in modifying sch_gpio_reg_get and sch_gpio_reg_set to take a
+sch_gpio struct directly instead of a gpio_chip, which avoids the call to
+gpiochip_get_data.
+
+Thanks Mika for your patience with me :-)
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Colin Pitrat <colin.pitrat@gmail.com>
+Acked-by: Alexandre Courbot <acourbot@nvidia.com>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/gpio/gpio-sch.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/gpio/gpio-sch.c b/drivers/gpio/gpio-sch.c
+index bbf9b2a34da8..5f72b177fc80 100644
+--- a/drivers/gpio/gpio-sch.c
++++ b/drivers/gpio/gpio-sch.c
+@@ -61,9 +61,8 @@ static unsigned sch_gpio_bit(struct sch_gpio *sch, unsigned gpio)
+ 	return gpio % 8;
+ }
+ 
+-static int sch_gpio_reg_get(struct gpio_chip *gc, unsigned gpio, unsigned reg)
++static int sch_gpio_reg_get(struct sch_gpio *sch, unsigned gpio, unsigned reg)
+ {
+-	struct sch_gpio *sch = gpiochip_get_data(gc);
+ 	unsigned short offset, bit;
+ 	u8 reg_val;
+ 
+@@ -75,10 +74,9 @@ static int sch_gpio_reg_get(struct gpio_chip *gc, unsigned gpio, unsigned reg)
+ 	return reg_val;
+ }
+ 
+-static void sch_gpio_reg_set(struct gpio_chip *gc, unsigned gpio, unsigned reg,
++static void sch_gpio_reg_set(struct sch_gpio *sch, unsigned gpio, unsigned reg,
+ 			     int val)
+ {
+-	struct sch_gpio *sch = gpiochip_get_data(gc);
+ 	unsigned short offset, bit;
+ 	u8 reg_val;
+ 
+@@ -98,14 +96,15 @@ static int sch_gpio_direction_in(struct gpio_chip *gc, unsigned gpio_num)
+ 	struct sch_gpio *sch = gpiochip_get_data(gc);
+ 
+ 	spin_lock(&sch->lock);
+-	sch_gpio_reg_set(gc, gpio_num, GIO, 1);
++	sch_gpio_reg_set(sch, gpio_num, GIO, 1);
+ 	spin_unlock(&sch->lock);
+ 	return 0;
+ }
+ 
+ static int sch_gpio_get(struct gpio_chip *gc, unsigned gpio_num)
+ {
+-	return sch_gpio_reg_get(gc, gpio_num, GLV);
++	struct sch_gpio *sch = gpiochip_get_data(gc);
++	return sch_gpio_reg_get(sch, gpio_num, GLV);
+ }
+ 
+ static void sch_gpio_set(struct gpio_chip *gc, unsigned gpio_num, int val)
+@@ -113,7 +112,7 @@ static void sch_gpio_set(struct gpio_chip *gc, unsigned gpio_num, int val)
+ 	struct sch_gpio *sch = gpiochip_get_data(gc);
+ 
+ 	spin_lock(&sch->lock);
+-	sch_gpio_reg_set(gc, gpio_num, GLV, val);
++	sch_gpio_reg_set(sch, gpio_num, GLV, val);
+ 	spin_unlock(&sch->lock);
+ }
+ 
+@@ -123,7 +122,7 @@ static int sch_gpio_direction_out(struct gpio_chip *gc, unsigned gpio_num,
+ 	struct sch_gpio *sch = gpiochip_get_data(gc);
+ 
+ 	spin_lock(&sch->lock);
+-	sch_gpio_reg_set(gc, gpio_num, GIO, 0);
++	sch_gpio_reg_set(sch, gpio_num, GIO, 0);
+ 	spin_unlock(&sch->lock);
+ 
+ 	/*
+@@ -182,13 +181,13 @@ static int sch_gpio_probe(struct platform_device *pdev)
+ 		 * GPIO7 is configured by the CMC as SLPIOVR
+ 		 * Enable GPIO[9:8] core powered gpios explicitly
+ 		 */
+-		sch_gpio_reg_set(&sch->chip, 8, GEN, 1);
+-		sch_gpio_reg_set(&sch->chip, 9, GEN, 1);
++		sch_gpio_reg_set(sch, 8, GEN, 1);
++		sch_gpio_reg_set(sch, 9, GEN, 1);
+ 		/*
+ 		 * SUS_GPIO[2:0] enabled by default
+ 		 * Enable SUS_GPIO3 resume powered gpio explicitly
+ 		 */
+-		sch_gpio_reg_set(&sch->chip, 13, GEN, 1);
++		sch_gpio_reg_set(sch, 13, GEN, 1);
+ 		break;
+ 
+ 	case PCI_DEVICE_ID_INTEL_ITC_LPC:
+-- 
+2.16.4
+

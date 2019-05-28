@@ -1,0 +1,11 @@
+{
+  "requires": true,
+  "lockfileVersion": 1,
+  "dependencies": {
+    "node-red-contrib-boolean-logic": {
+      "version": "0.0.3",
+      "resolved": "https://registry.npmjs.org/node-red-contrib-boolean-logic/-/node-red-contrib-boolean-logic-0.0.3.tgz",
+      "integrity": "sha1-ObgL6YZ7PO+5z+ZgwWVX0HMBvMQ="
+    }
+  }
+}

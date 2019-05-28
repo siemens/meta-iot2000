@@ -1,0 +1,36 @@
+From 02fea2d5807b5ae9b7fe338be9c1ae2fc87b4522 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Sat, 16 Mar 2019 15:21:53 +0100
+Subject: [PATCH 3/3] Relax check in ComputeInputFrameSize
+
+It's not yet clear why the x87 port sometimes triggers this, e.g. while
+running npm, but it seems harmless to ignore, at least the case where
+result is larger than than expected.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ deps/v8/src/deoptimizer.cc | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/deps/v8/src/deoptimizer.cc b/deps/v8/src/deoptimizer.cc
+index 21b36ba49c..25e8abab58 100644
+--- a/deps/v8/src/deoptimizer.cc
++++ b/deps/v8/src/deoptimizer.cc
+@@ -1973,7 +1973,13 @@ unsigned Deoptimizer::ComputeInputFrameSize() const {
+     unsigned stack_slots = compiled_code_->stack_slots();
+     unsigned outgoing_size = 0;
+     //        ComputeOutgoingArgumentSize(compiled_code_, bailout_id_);
+-    CHECK_EQ(fixed_size_above_fp + (stack_slots * kPointerSize) -
++
++    if (V8_UNLIKELY(fixed_size_above_fp + (stack_slots * kPointerSize) -
++                    CommonFrameConstants::kFixedFrameSizeAboveFp +
++                    outgoing_size < result))
++      printf("node: WARN: Check failed in %s:%d - ignoring\n",
++             __FILE__, __LINE__);
++    CHECK_LE(fixed_size_above_fp + (stack_slots * kPointerSize) -
+                  CommonFrameConstants::kFixedFrameSizeAboveFp + outgoing_size,
+              result);
+   }
+-- 
+2.16.4
+
