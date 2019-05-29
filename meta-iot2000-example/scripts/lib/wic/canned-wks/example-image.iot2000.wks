@@ -1,3 +1,6 @@
-part swap --ondisk mmcblk0 --size 512 --fstype=swap --label swap --align 1024
+include common.iot2000.wks.header.inc
 
-include common.iot2000.wks.inc
+part swap --ondisk mmcblk0 --size 512 --fstype=swap --label swap --align 1024
+part / --source rootfs --ondisk mmcblk0 --fstype=ext3 --label platform --align 1024
+
+include common.iot2000.wks.footer.inc

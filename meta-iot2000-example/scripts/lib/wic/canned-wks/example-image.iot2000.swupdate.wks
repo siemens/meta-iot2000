@@ -1,0 +1,13 @@
+# short-description: Create an iot2000 example disk image for swupdate
+# long-description: Creates a partitioned EFI disk image for the iot2000,
+# using efibootguard, that the user can directly dd to boot media.
+
+include common.iot2000.wks.header.inc
+
+part --source efibootguard-boot --size 32 --extra-space 0 --overhead-factor 1 --ondisk mmcblk0 --label boot1 --align 1024 --part-type=0700 --sourceparams "watchdog=60,revision=1,initrd=acpi-upgrades-iot2000.cpio"
+part / --source rootfs --size 2048 --extra-space 0 --overhead-factor 1 --ondisk mmcblk0 --fstype=ext4 --label platform0 --align 1024
+part --size 2048 --extra-space 0 --overhead-factor 1 --ondisk mmcblk0 --fstype=ext4 --label plaftorm1 --align 1024
+part swap --ondisk mmcblk0 --size 512 --fstype=swap --label swap --align 1024
+part /data --size 1024 --extra-space 0 --overhead-factor 1 --ondisk mmcblk0 --label persistent --align 1024 --fstype=ext4
+
+include common.iot2000.wks.footer.inc

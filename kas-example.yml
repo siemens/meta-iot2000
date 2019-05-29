@@ -16,6 +16,10 @@ repos:
       meta-networking:
       meta-python:
 
+  meta-swupdate:
+    url: https://github.com/sbabic/meta-swupdate
+    refspec: c5ec279abdc607495ff4244224c497a2be6abefa
+
 local_conf_header:
   package_ipk: |
     PACKAGE_CLASSES = "package_ipk"

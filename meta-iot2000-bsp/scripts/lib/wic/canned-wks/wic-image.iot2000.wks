@@ -1,1 +1,9 @@
-include common.iot2000.wks.inc
+# short-description: Create an iot2000 example disk image
+# long-description: Creates a partitioned EFI disk image for the iot2000,
+# using efibootguard, that the user can directly dd to boot media.
+
+include common.iot2000.wks.header.inc
+
+part / --source rootfs --ondisk mmcblk0 --fstype=ext4 --label platform --align 1024
+
+include common.iot2000.wks.footer.inc
