@@ -45,8 +45,8 @@ Native Build
 ------------
 
 On a compatible distribution, install the
-[packages](http://www.yoctoproject.org/docs/2.2/mega-manual/mega-manual.html#packages)
-that Yocto 2.2 requires.
+[packages](https://www.yoctoproject.org/docs/2.6/mega-manual/mega-manual.html#required-packages-for-the-build-host)
+that Yocto 2.6 requires.
 
 Furthermore, install the kas build tool:
 
