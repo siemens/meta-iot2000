@@ -103,7 +103,10 @@ $ wget https://raw.githubusercontent.com/siemens/kas/master/kas-docker
 $ chmod a+x kas-docker
 ```
 
-Now run you can generate a desired image:
+Now you can generate a desired image. The following assumes that your user has
+permission to use docker. Usually, this is achieved by adding the user to the
+docker group (which has security implications). Note that running the build as
+root does not work.
 
 ```shell
 $ ./kas-docker build meta-iot2000/kas-example.yml
