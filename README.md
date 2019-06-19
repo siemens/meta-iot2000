@@ -90,14 +90,26 @@ may have to switch the storage driver away from legacy aufs, see
 [Docker documentation](https://docs.docker.com/engine/userguide/storagedriver/selectadriver),
 if kas warns about this.
 
-Now run you can generate the desired image:
+Again, the first step is cloning of the repository (or unpacking an archive):
 
 ```shell
-$ docker run -v $(pwd):/shared-volume:rw -e USER_ID=$(id -u) --rm -t -i \
-             --storage-opt size=50G kasproject/kas:latest sh -c "
-      cd /shared-volume &&
-      git clone https://github.com/siemens/meta-iot2000 &&
-      kas build meta-iot2000/kas-example.yml"
+$ git clone https://github.com/siemens/meta-iot2000
+```
+
+Next, install the `kas-docker` script like this:
+
+```shell
+$ wget https://raw.githubusercontent.com/siemens/kas/master/kas-docker
+$ chmod a+x kas-docker
+```
+
+Now run you can generate a desired image. The following assumes that your user
+has permission to use docker. Usually, this is achieved by adding a user to the
+docker group. If that is not desired for security reasons, prefix the
+invocations of `kas-docker` with `sudo`.
+
+```shell
+$ ./kas-docker build meta-iot2000/kas-example.yml
 ```
 
 The above command disposes the build container after use, keeping downloads and
@@ -106,24 +118,12 @@ build results in the current work directory.
 You may want to use the container interactively:
 
 ```shell
-$ docker run -v $(pwd):/shared-volume:rw -e USER_ID=$(id -u) -t -i \
-             --storage-opt size=50G kasproject/kas:latest
-# inside the container
-$ cd /shared-volume
-$ git clone https://github.com/siemens/meta-iot2000
-$ kas build meta-iot2000/kas-example.yml
-...
+$ ./kas-docker shell meta-iot2000/kas-example.yml
 ```
 
 If you are building from within a proxy-restricted network, make sure the
-settings are available via the standard environment variables and add
-
-```
-    -e http_proxy=$http_proxy -e https_proxy=$https_proxy \
-    -e ftp_proxy=$ftp_proxy -e no_proxy=$no_proxy
-```
-
-to the Docker run command above.
+settings are available via the standard environment variables
+(`http_proxy` etc.).
 
 
 Booting the Image from SD card
