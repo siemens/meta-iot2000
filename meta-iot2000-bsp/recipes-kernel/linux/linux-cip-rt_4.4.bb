@@ -6,7 +6,7 @@ require linux-cip_4.4.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/configs:${THISDIR}/patches:"
 
-LINUX_VERSION .= "-rt23"
+LINUX_VERSION = "4.4.176-cip31-rt23"
 SRC_URI += " \
     file://rt-0001-spi-pca2xx-pci-Allow-MSI.patch \
     file://rt-0002-gpio-dwapb-Work-around-RT-full-s-enforced-IRQ-thread.patch \
