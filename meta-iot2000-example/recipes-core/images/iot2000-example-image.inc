@@ -9,7 +9,7 @@ IMAGE_FEATURES += "eclipse-debug"
 IMAGE_FEATURES += "tools-sdk"
 
 IMAGE_INSTALL += "opkg"
-IMAGE_INSTALL += "imageversionfile"
+IMAGE_INSTALL += "os-release"
 IMAGE_INSTALL += "modules-load-entries"
 IMAGE_INSTALL += "dmidecode"
 IMAGE_INSTALL += "openssh"
