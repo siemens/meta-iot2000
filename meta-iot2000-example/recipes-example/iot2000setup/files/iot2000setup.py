@@ -122,7 +122,8 @@ class OsSettings:
 				self.topmenu.gscreen, 
 				"OS Settings", "",
 				[("Change Hostname", self.ChangeHostname),
-				("Change Password", self.ChangePassword)], 
+				 ("Change Password", self.ChangePassword),
+				 ("Change Timezone", self.ChangeTimezone)],
 				[('Back', 'back', 'ESC')])
 			if(action == 'back'):
 				return
@@ -149,6 +150,35 @@ class OsSettings:
 		print(ansicolors.clear) # Clear console 
 		subprocess.call("passwd")
 		self.finish = True
+
+	def ChangeTimezone(self):
+		with open("/usr/share/zoneinfo/zone1970.tab") as zonetab:
+			zones = [(zone.split()[2], zone.split()[2]) \
+				 for zone in zonetab.readlines() \
+				 if not zone.startswith('#')]
+
+		with open("/etc/timezone") as timezone:
+			defaultzone = timezone.readline().strip()
+		if not (defaultzone, defaultzone) in zones:
+			defaultzone = None
+
+		action, selection = ListboxChoiceWindow(
+				self.topmenu.gscreen, 
+				"Select Timezone", "",
+				sorted(zones),
+				[("Cancel", "cancel", "ESC")],
+				scroll=1, height=20, default=defaultzone)
+		if (action == 'cancel'):
+			return
+
+		with open("/etc/timezone", "w") as timezone:
+			timezone.write(selection + "\n")
+
+		try:
+			os.remove("/etc/localtime")
+		except FileNotFoundError:
+			pass
+		os.symlink("/usr/share/zoneinfo/" + selection, "/etc/localtime")
 
 def readFileLines(fileName, startLine):
 	fileReading = open(fileName, 'r')
