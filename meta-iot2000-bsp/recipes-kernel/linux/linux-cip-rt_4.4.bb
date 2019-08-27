@@ -7,7 +7,7 @@ require linux-cip_4.4.inc
 FILESEXTRAPATHS_prepend := "${THISDIR}/configs:${THISDIR}/patches:"
 
 SRC_URI = " \
-    git://git.kernel.org/pub/scm/linux/kernel/git/wagi/linux-cip-rt.git;branch=linux-4.4.y-cip-rt;protocol=https \
+    git://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git;branch=linux-4.4.y-cip-rt;protocol=https \
     ${KERNEL_PATCHES} \
     file://rt-0001-spi-pca2xx-pci-Allow-MSI.patch \
     file://rt-0002-gpio-dwapb-Work-around-RT-full-s-enforced-IRQ-thread.patch \
