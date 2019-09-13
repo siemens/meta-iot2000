@@ -37,7 +37,7 @@ local_conf_header:
     CONF_VERSION = "1"
 
   debug-tweaks: |
-    EXTRA_IMAGE_FEATURES = "debug-tweaks"
+    EXTRA_IMAGE_FEATURES ?= "debug-tweaks"
 
   diskmon: |
     BB_DISKMON_DIRS = "\
