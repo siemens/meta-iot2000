@@ -1,0 +1,87 @@
+From 45cf6623ee8462c12e9a971620ea01fdae7b0114 Mon Sep 17 00:00:00 2001
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Thu, 15 Jun 2017 00:45:26 +0200
+Subject: [PATCH 26/32] random: silence compiler warnings and fix race
+
+Odd versions of gcc for the sh4 architecture will actually warn about
+flags being used while uninitialized, so we set them to zero. Non crazy
+gccs will optimize that out again, so it doesn't make a difference.
+
+Next, over aggressive gccs could inline the expression that defines
+use_lock, which could then introduce a race resulting in a lock
+imbalance. By using READ_ONCE, we prevent that fate. Finally, we make
+that assignment const, so that gcc can still optimize a nice amount.
+
+Finally, we fix a potential deadlock between primary_crng.lock and
+batched_entropy_reset_lock, where they could be called in opposite
+order. Moving the call to invalidate_batched_entropy to outside the lock
+rectifies this issue.
+
+Fixes: b169c13de473a85b3c859bb36216a4cb5f00a54a
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+---
+ drivers/char/random.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index 6c571ee0d6c4..194cdb02d458 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -812,13 +812,13 @@ static int crng_fast_load(const char *cp, size_t len)
+ 		p[crng_init_cnt % CHACHA20_KEY_SIZE] ^= *cp;
+ 		cp++; crng_init_cnt++; len--;
+ 	}
++	spin_unlock_irqrestore(&primary_crng.lock, flags);
+ 	if (crng_init_cnt >= CRNG_INIT_CNT_THRESH) {
+ 		invalidate_batched_entropy();
+ 		crng_init = 1;
+ 		wake_up_interruptible(&crng_init_wait);
+ 		pr_notice("random: fast init done\n");
+ 	}
+-	spin_unlock_irqrestore(&primary_crng.lock, flags);
+ 	return 1;
+ }
+ 
+@@ -850,6 +850,7 @@ static void crng_reseed(struct crng_state *crng, struct entropy_store *r)
+ 	}
+ 	memzero_explicit(&buf, sizeof(buf));
+ 	crng->init_time = jiffies;
++	spin_unlock_irqrestore(&primary_crng.lock, flags);
+ 	if (crng == &primary_crng && crng_init < 2) {
+ 		invalidate_batched_entropy();
+ 		crng_init = 2;
+@@ -857,7 +858,6 @@ static void crng_reseed(struct crng_state *crng, struct entropy_store *r)
+ 		wake_up_interruptible(&crng_init_wait);
+ 		pr_notice("random: crng init done\n");
+ 	}
+-	spin_unlock_irqrestore(&primary_crng.lock, flags);
+ }
+ 
+ static inline void crng_wait_ready(void)
+@@ -2093,8 +2093,8 @@ static DEFINE_PER_CPU(struct batched_entropy, batched_entropy_u64);
+ u64 get_random_u64(void)
+ {
+ 	u64 ret;
+-	bool use_lock = crng_init < 2;
+-	unsigned long flags;
++	bool use_lock = READ_ONCE(crng_init) < 2;
++	unsigned long flags = 0;
+ 	struct batched_entropy *batch;
+ 
+ #if BITS_PER_LONG == 64
+@@ -2125,8 +2125,8 @@ static DEFINE_PER_CPU(struct batched_entropy, batched_entropy_u32);
+ u32 get_random_u32(void)
+ {
+ 	u32 ret;
+-	bool use_lock = crng_init < 2;
+-	unsigned long flags;
++	bool use_lock = READ_ONCE(crng_init) < 2;
++	unsigned long flags = 0;
+ 	struct batched_entropy *batch;
+ 
+ 	if (arch_get_random_int(&ret))
+-- 
+2.16.4
+

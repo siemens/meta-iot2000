@@ -1,7 +1,7 @@
-From 5222a576c02eed33b0499a7e632a56680742a885 Mon Sep 17 00:00:00 2001
+From 94eff655c67ea28f35715f8864f3412faa2d827e Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 22 Jun 2017 08:17:58 +0200
-Subject: [PATCH 02/18] stmmac: pci: Use stmmac_pci_info for all devices
+Subject: [PATCH 02/32] stmmac: pci: Use stmmac_pci_info for all devices
 
 Commit b6a4c8f013ea2dd1ead7ee14b44712189a7bc6c6 upstream.
 

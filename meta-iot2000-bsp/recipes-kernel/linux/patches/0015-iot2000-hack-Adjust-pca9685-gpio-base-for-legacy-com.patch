@@ -1,7 +1,7 @@
-From 88f2d0ccdee1f1890af0d049c60fe24f6c6eb048 Mon Sep 17 00:00:00 2001
+From e679338fe980d8722246366906bf71971fa2f538 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 25 May 2017 13:05:12 +0200
-Subject: [PATCH 15/18] iot2000-hack: Adjust pca9685-gpio base for legacy
+Subject: [PATCH 15/32] iot2000-hack: Adjust pca9685-gpio base for legacy
  compatibility
 
 mraa and the Arduino runtime expect this.

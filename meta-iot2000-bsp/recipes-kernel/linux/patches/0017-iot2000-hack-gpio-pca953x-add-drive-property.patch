@@ -1,7 +1,7 @@
-From a66a980a3520859c1a01fc65f76c4f2abd2a2eed Mon Sep 17 00:00:00 2001
+From 7190fa3b9d76d0d554dab7c0a220a2be3e866560 Mon Sep 17 00:00:00 2001
 From: Yong Li <sdliyong@gmail.com>
 Date: Thu, 31 Mar 2016 15:33:09 +0800
-Subject: [PATCH 17/18] iot2000-hack: gpio-pca953x: add "drive" property
+Subject: [PATCH 17/32] iot2000-hack: gpio-pca953x: add "drive" property
 
 Galileo gen 2 has support for setting GPIO modes. Expose these
 properties through the GPIO sysfs interface. This approach is bit hacky,
@@ -201,10 +201,10 @@ index b57ed8e55ab5..72a8647146fa 100644
  };
  
 diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 827510dbba30..d19928b9a311 100644
+index d72218fcaeeb..66d4e4a59035 100644
 --- a/drivers/gpio/gpiolib.c
 +++ b/drivers/gpio/gpiolib.c
-@@ -1315,6 +1315,23 @@ int gpiod_is_active_low(const struct gpio_desc *desc)
+@@ -1376,6 +1376,23 @@ int gpiod_is_active_low(const struct gpio_desc *desc)
  }
  EXPORT_SYMBOL_GPL(gpiod_is_active_low);
  
@@ -260,7 +260,7 @@ index 40ec1433f05d..519e8d458878 100644
  {
  	return gpiod_get_raw_value_cansleep(gpio_to_desc(gpio));
 diff --git a/include/linux/gpio.h b/include/linux/gpio.h
-index d12b5d566e4b..344e62d27700 100644
+index 11555bd821b7..1e8ab82f2787 100644
 --- a/include/linux/gpio.h
 +++ b/include/linux/gpio.h
 @@ -30,6 +30,11 @@
@@ -317,7 +317,7 @@ index fb0fde686cb1..17f5f187699b 100644
  {
  	/* GPIO can never have been requested */
 diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
-index de502c7e4171..d59080ba9fec 100644
+index c0fc8effdba9..b73af28ac7d8 100644
 --- a/include/linux/gpio/driver.h
 +++ b/include/linux/gpio/driver.h
 @@ -116,6 +116,8 @@ struct gpio_chip {

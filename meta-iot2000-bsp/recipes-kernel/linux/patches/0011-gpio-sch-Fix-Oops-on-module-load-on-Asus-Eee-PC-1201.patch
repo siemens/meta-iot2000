@@ -1,7 +1,7 @@
-From 9fd1991d762b6092f462f3cc551b2d7df3009b52 Mon Sep 17 00:00:00 2001
+From 3ecc35879dfd4a4df2ae418892743446fe05f3a0 Mon Sep 17 00:00:00 2001
 From: Colin Pitrat <colin.pitrat@gmail.com>
 Date: Sat, 18 Jun 2016 19:05:04 +0100
-Subject: [PATCH 11/18] gpio: sch: Fix Oops on module load on Asus Eee PC 1201
+Subject: [PATCH 11/32] gpio: sch: Fix Oops on module load on Asus Eee PC 1201
 
 This fixes the issue descirbe in bug 117531
 (https://bugzilla.kernel.org/show_bug.cgi?id=117531).

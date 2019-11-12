@@ -1,0 +1,58 @@
+From 4fe896ddf122abf98234154db65773db70f0b8a1 Mon Sep 17 00:00:00 2001
+From: Theodore Ts'o <tytso@mit.edu>
+Date: Wed, 22 May 2019 12:02:16 -0400
+Subject: [PATCH 31/32] random: fix soft lockup when trying to read from an
+ uninitialized blocking pool
+
+Fixes: eb9d1bf079bb: "random: only read from /dev/random after its pool has received 128 bits"
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+---
+ drivers/char/random.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index f37a90896821..29755924aa45 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -702,8 +702,11 @@ retry:
+ 	if (cmpxchg(&r->entropy_count, orig, entropy_count) != orig)
+ 		goto retry;
+ 
+-	if (has_initialized)
++	if (has_initialized) {
+ 		r->initialized = 1;
++		wake_up_interruptible(&random_read_wait);
++		kill_fasync(&fasync, SIGIO, POLL_IN);
++	}
+ 
+ 	trace_credit_entropy_bits(r->name, nbits,
+ 				  entropy_count >> ENTROPY_SHIFT, _RET_IP_);
+@@ -719,6 +722,13 @@ retry:
+ 			entropy_bits = r->entropy_count >> ENTROPY_SHIFT;
+ 		}
+ 
++		/* initialize the blocking pool if necessary */
++		if (entropy_bits >= random_read_wakeup_bits &&
++		    !other->initialized) {
++			schedule_work(&other->push_work);
++			return;
++		}
++
+ 		/* should we wake readers? */
+ 		if (entropy_bits >= random_read_wakeup_bits) {
+ 			wake_up_interruptible(&random_read_wait);
+@@ -1795,8 +1805,8 @@ _random_read(int nonblock, char __user *buf, size_t nbytes)
+ 			return -EAGAIN;
+ 
+ 		wait_event_interruptible(random_read_wait,
+-			ENTROPY_BITS(&input_pool) >=
+-			random_read_wakeup_bits);
++		    blocking_pool.initialized &&
++		    (ENTROPY_BITS(&input_pool) >= random_read_wakeup_bits));
+ 		if (signal_pending(current))
+ 			return -ERESTARTSYS;
+ 	}
+-- 
+2.16.4
+

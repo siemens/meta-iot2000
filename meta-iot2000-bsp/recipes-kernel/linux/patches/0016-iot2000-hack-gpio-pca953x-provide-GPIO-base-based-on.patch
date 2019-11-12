@@ -1,7 +1,7 @@
-From 5c102aea3f4ffea811eec719edd638fc7888e9c3 Mon Sep 17 00:00:00 2001
+From b4513d4a15616321e240c93436e8ffd58aa931ed Mon Sep 17 00:00:00 2001
 From: Yong Li <sdliyong@gmail.com>
 Date: Thu, 31 Mar 2016 15:33:08 +0800
-Subject: [PATCH 16/18] iot2000-hack: gpio: pca953x: provide GPIO base based on
+Subject: [PATCH 16/32] iot2000-hack: gpio: pca953x: provide GPIO base based on
  _UID
 
 Custom kernel for Intel Galileo Gen2 provides and moreover libmraa relies on

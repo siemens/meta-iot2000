@@ -1,0 +1,35 @@
+From 1eadc614c3546b2cef698c337c95034253c99771 Mon Sep 17 00:00:00 2001
+From: Stephan Mueller <stephan.mueller@atsec.com>
+Date: Thu, 15 Dec 2016 12:42:33 +0100
+Subject: [PATCH 22/32] random: remove stale maybe_reseed_primary_crng
+
+The function maybe_reseed_primary_crng is not used anywhere and thus can
+be removed.
+
+Signed-off-by: Stephan Mueller <smueller@chronox.de>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+---
+ drivers/char/random.c | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index a1214c0fbaf3..a6a6a357ddae 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -853,13 +853,6 @@ static void crng_reseed(struct crng_state *crng, struct entropy_store *r)
+ 	spin_unlock_irqrestore(&primary_crng.lock, flags);
+ }
+ 
+-static inline void maybe_reseed_primary_crng(void)
+-{
+-	if (crng_init > 2 &&
+-	    time_after(jiffies, primary_crng.init_time + CRNG_RESEED_INTERVAL))
+-		crng_reseed(&primary_crng, &input_pool);
+-}
+-
+ static inline void crng_wait_ready(void)
+ {
+ 	wait_event_interruptible(crng_init_wait, crng_ready());
+-- 
+2.16.4
+
