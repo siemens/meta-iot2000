@@ -7,7 +7,6 @@ require linux-cip_4.4.inc
 FILESEXTRAPATHS_prepend := "${THISDIR}/configs:${THISDIR}/patches:"
 
 SRC_URI += " \
-    ${KERNEL_PATCHES} \
     file://defconfig"
 
 PV = "${LINUX_VERSION}"
