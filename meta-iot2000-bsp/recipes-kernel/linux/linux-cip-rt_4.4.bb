@@ -4,12 +4,12 @@ SECTION = "kernel"
 require recipes-kernel/linux/linux-yocto.inc
 require linux-cip_4.4.inc
 
-LINUX_VERSION .= "-rt24"
+LINUX_VERSION = "4.4.190-cip36-rt25"
 SRC_URI += " \
     file://rt-0001-spi-pca2xx-pci-Allow-MSI.patch \
     file://rt-0002-gpio-dwapb-Work-around-RT-full-s-enforced-IRQ-thread.patch \
     file://iot2000-cip-rt.scc"
-SRC_URI[sha256sum] = "44721ced14d1171ad5b110c4a4a4d15327b962b7ef0187891a513547f2ddde22"
+SRC_URI[sha256sum] = "7fe6c2bd0b61ac3a5b71f9078608afb4eef8a565f70cbb34fa9b35a3fa001177"
 
 PV = "${LINUX_VERSION}"
 
