@@ -1,9 +1,12 @@
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
+FILESEXTRAPATHS_prepend := "${THISDIR}/configs:${THISDIR}/patches:"
+
 LINUX_VERSION = "4.4.185-cip35"
 SRC_URI = " \
     https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git/snapshot/linux-cip-${LINUX_VERSION}.tar.gz \
+    file://defconfig \
     ${KERNEL_PATCHES}"
 SRC_URI[sha256sum] = "fcdd46615fdc7e0e4ad3d73465d1489e3af72ed09efb8c748abec7be38586a5b"
 

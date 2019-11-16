@@ -4,11 +4,6 @@ SECTION = "kernel"
 require recipes-kernel/linux/linux-yocto.inc
 require linux-cip_4.4.inc
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/configs:${THISDIR}/patches:"
-
-SRC_URI += " \
-    file://defconfig"
-
 PV = "${LINUX_VERSION}"
 
 LINUX_VERSION_EXTENSION = ""
