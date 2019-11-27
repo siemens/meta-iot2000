@@ -99,7 +99,7 @@ $ git clone https://github.com/siemens/meta-iot2000
 Next, install the `kas-docker` script like this:
 
 ```shell
-$ wget https://raw.githubusercontent.com/siemens/kas/master/kas-docker
+$ wget https://raw.githubusercontent.com/siemens/kas/2.0/kas-docker
 $ chmod a+x kas-docker
 ```
 
