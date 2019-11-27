@@ -44,3 +44,6 @@ IMAGE_INSTALL += "ppp ppp-oe"
 IMAGE_INSTALL += "ofono ofono-tests"
 IMAGE_INSTALL += "connman connman-tools connman-tests connman-client"
 IMAGE_INSTALL += "haveged"
+
+# causing excessive boot delays with Yocto 3.0
+PACKAGE_EXCLUDE += "rng-tools"
