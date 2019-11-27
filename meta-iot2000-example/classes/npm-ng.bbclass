@@ -165,7 +165,7 @@ unpack_npm() {
 }
 do_unpack[postfuncs] += "unpack_npm"
 
-DEPENDS_${PN} += "nodejs-native"
+DEPENDS += "nodejs-native"
 
 do_compile() {
     # changing the home directory to the working directory, the .npmrc will
