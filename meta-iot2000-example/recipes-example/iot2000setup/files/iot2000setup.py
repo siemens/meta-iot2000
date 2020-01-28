@@ -152,7 +152,7 @@ class OsSettings:
 		self.finish = True
 
 	def ChangeTimezone(self):
-		with open("/usr/share/zoneinfo/zone1970.tab") as zonetab:
+		with open("/usr/share/zoneinfo/zone1970.tab", encoding="utf-8") as zonetab:
 			zones = [(zone.split()[2], zone.split()[2]) \
 				 for zone in zonetab.readlines() \
 				 if not zone.startswith('#')]
