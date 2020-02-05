@@ -1,7 +1,7 @@
-From 8fec046f568e2b946abd55a82d5417717a115b21 Mon Sep 17 00:00:00 2001
+From 8c5cc2a98dcbcbd4208c62e5709d3669405072f7 Mon Sep 17 00:00:00 2001
 From: Linus Walleij <linus.walleij@linaro.org>
 Date: Wed, 27 Jun 2018 10:39:31 +0200
-Subject: [PATCH 12/18] gpio: sch: Implement .get_direction()
+Subject: [PATCH 12/32] gpio: sch: Implement .get_direction()
 
 It's pretty simple to implement the .get_direction() for this
 chip, so let's just do it.

@@ -1,7 +1,7 @@
-From 53c90b014f54743b5a2180f90b90b1f198535583 Mon Sep 17 00:00:00 2001
+From d046375f1bc2a63d945bad8c4026ce1a6eabd838 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Wed, 17 Apr 2019 22:26:22 +0200
-Subject: [PATCH 13/18] gpio: sch: Add interrupt support
+Subject: [PATCH 13/32] gpio: sch: Add interrupt support
 
 Validated on the Quark platform, this adds interrupt support on rising
 and/or falling edges.

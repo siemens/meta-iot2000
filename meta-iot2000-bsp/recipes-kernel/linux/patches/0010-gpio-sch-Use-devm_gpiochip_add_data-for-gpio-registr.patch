@@ -1,7 +1,7 @@
-From 6a930e4d040061edcaf0c3e3e43a10acdc20f09c Mon Sep 17 00:00:00 2001
+From 01837820d1cc75845d0c771f24eea5fe3d4ae109 Mon Sep 17 00:00:00 2001
 From: Laxman Dewangan <ldewangan@nvidia.com>
 Date: Mon, 22 Feb 2016 17:43:28 +0530
-Subject: [PATCH 10/18] gpio: sch: Use devm_gpiochip_add_data() for gpio
+Subject: [PATCH 10/32] gpio: sch: Use devm_gpiochip_add_data() for gpio
  registration
 
 Use devm_gpiochip_add_data() for GPIO registration and remove the

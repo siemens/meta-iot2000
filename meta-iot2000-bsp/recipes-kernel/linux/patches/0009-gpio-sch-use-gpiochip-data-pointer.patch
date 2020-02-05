@@ -1,7 +1,7 @@
-From cf3d1330c71d47c4cdb9268f68d2ee5931890d93 Mon Sep 17 00:00:00 2001
+From 31273219d4787459eea40094ac811a24cf20eaf6 Mon Sep 17 00:00:00 2001
 From: Linus Walleij <linus.walleij@linaro.org>
 Date: Mon, 7 Dec 2015 14:21:49 +0100
-Subject: [PATCH 09/18] gpio: sch: use gpiochip data pointer
+Subject: [PATCH 09/32] gpio: sch: use gpiochip data pointer
 
 This makes the driver use the data pointer added to the gpio_chip
 to store a pointer to the state container instead of relying on

@@ -1,7 +1,7 @@
-From 6e378b789ebcfcdc4ae957b25f1ac6eb2ef64edc Mon Sep 17 00:00:00 2001
+From f95eb6b146bc6107b082c8d600ac5ae51c05054e Mon Sep 17 00:00:00 2001
 From: Su Bao Cheng <baocheng.su@siemens.com>
 Date: Fri, 12 Oct 2018 15:05:07 +0200
-Subject: [PATCH 08/18] mfd: intel_quark_i2c_gpio: Adjust IOT2000 matching
+Subject: [PATCH 08/32] mfd: intel_quark_i2c_gpio: Adjust IOT2000 matching
 
 Since there are more IOT2040 variants with identical hardware but
 different asset tags, the asset tag matching should be adjusted to

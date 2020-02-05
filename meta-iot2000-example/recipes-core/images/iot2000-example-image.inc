@@ -1,5 +1,7 @@
 WKS_FILE = "example-image.${MACHINE}.wks"
 
+IMAGE_FSTYPES_append = " wic.bmap"
+
 DESCRIPTION = "Example image for the IOT2000 platform"
 
 #example features
@@ -42,3 +44,6 @@ IMAGE_INSTALL += "ppp ppp-oe"
 IMAGE_INSTALL += "ofono ofono-tests"
 IMAGE_INSTALL += "connman connman-tools connman-tests connman-client"
 IMAGE_INSTALL += "haveged"
+
+# causing excessive boot delays with Yocto 3.0
+PACKAGE_EXCLUDE += "rng-tools"

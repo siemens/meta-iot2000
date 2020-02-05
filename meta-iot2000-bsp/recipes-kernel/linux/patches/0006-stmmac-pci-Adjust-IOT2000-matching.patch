@@ -1,7 +1,7 @@
-From e3ba8c4f83c6c206a20e4645a37612b1e10580c6 Mon Sep 17 00:00:00 2001
+From 81aabe391560f74d9dafc5b139b3b3c2e6de08df Mon Sep 17 00:00:00 2001
 From: Su Bao Cheng <baocheng.su@siemens.com>
 Date: Fri, 12 Oct 2018 15:08:11 +0200
-Subject: [PATCH 06/18] stmmac: pci: Adjust IOT2000 matching
+Subject: [PATCH 06/32] stmmac: pci: Adjust IOT2000 matching
 
 Since there are more IOT2040 variants with identical hardware but
 different asset tags, the asset tag matching should be adjusted to

@@ -1,7 +1,7 @@
-From f43a54ec8a8b5f070d4b1b59f3d47dc03f74ad32 Mon Sep 17 00:00:00 2001
+From 63e4ba1816a80a258e4c7a846b3bd389b9a04e32 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 25 May 2017 11:09:42 +0200
-Subject: [PATCH 14/18] iot2000-hack: Work around DSDT mistake
+Subject: [PATCH 14/32] iot2000-hack: Work around DSDT mistake
 
 Until we have a new firmware revision, fix up the incorrect GPIO
 interrupt pin in software.

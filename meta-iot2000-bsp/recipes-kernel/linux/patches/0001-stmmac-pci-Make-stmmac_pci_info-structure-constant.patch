@@ -1,7 +1,7 @@
-From 2ca48f47b659edbd5cf4c4e55c420ef40712ce9b Mon Sep 17 00:00:00 2001
+From 9d215622c3277114820de51365109896e0337ab8 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 22 Jun 2017 08:17:57 +0200
-Subject: [PATCH 01/18] stmmac: pci: Make stmmac_pci_info structure constant
+Subject: [PATCH 01/32] stmmac: pci: Make stmmac_pci_info structure constant
 
 Commit c5d5287ef0f763e836bf94659b3a6080358373f1 upstream.
 

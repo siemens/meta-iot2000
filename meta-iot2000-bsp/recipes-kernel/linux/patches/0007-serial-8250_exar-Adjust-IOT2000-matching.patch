@@ -1,7 +1,7 @@
-From df74e188ffc38176d4caba969e104d2ab2e4e609 Mon Sep 17 00:00:00 2001
+From 186847dd575416b337ae370b46744a163fcf31fc Mon Sep 17 00:00:00 2001
 From: Su Bao Cheng <baocheng.su@siemens.com>
 Date: Fri, 12 Oct 2018 15:12:37 +0200
-Subject: [PATCH 07/18] serial: 8250_exar: Adjust IOT2000 matching
+Subject: [PATCH 07/32] serial: 8250_exar: Adjust IOT2000 matching
 
 Since there are more IOT2040 variants with identical hardware but
 different asset tags, the asset tag matching should be adjusted to

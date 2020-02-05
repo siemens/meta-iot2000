@@ -1,7 +1,7 @@
-From 1b2894107ad2d9de45402ecc4ffe14f075a08bbc Mon Sep 17 00:00:00 2001
+From d771759e71dfab46de09fc2efcd1282926a775b8 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 22 Jun 2017 08:18:01 +0200
-Subject: [PATCH 05/18] stmmac: pci: Use dmi_system_id table for retrieving PHY
+Subject: [PATCH 05/32] stmmac: pci: Use dmi_system_id table for retrieving PHY
  addresses
 
 Commit 8d78b69091845386b6096f3adae98f28b9bf96ed upstream.

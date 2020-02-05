@@ -10,7 +10,7 @@ repos:
 
   poky:
     url: https://git.yoctoproject.org/git/poky
-    refspec: 2dd610cc27c606f731f83047b4766787aab6e6b2
+    refspec: cf92a2d567260b91a259652bad0ecd790750f710
     layers:
       meta:
       meta-poky:
@@ -18,11 +18,11 @@ repos:
 
   meta-efibootguard:
     url: https://github.com/siemens/meta-efibootguard
-    refspec: a703d073f02bcb7c537a74debd7437b4261e0816
+    refspec: 3295b62225465b4f792d2c0070420516e2beff45
 
   meta-openembedded:
     url: http://git.openembedded.org/meta-openembedded
-    refspec: 9b3b907f30b0d5b92d58c7e68289184fda733d3e
+    refspec: e855ecc6d35677e79780adc57b2552213c995731
     layers:
       meta-oe:
 

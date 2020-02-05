@@ -1,7 +1,7 @@
-From 0747f34d4be27952be866461c97d386c29000817 Mon Sep 17 00:00:00 2001
+From 95e91552d7a7d0fd28afc42191d8be1c3096d6c2 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 22 Jun 2017 08:18:00 +0200
-Subject: [PATCH 04/18] stmmac: pci: Select quark_pci_dmi_data from
+Subject: [PATCH 04/32] stmmac: pci: Select quark_pci_dmi_data from
  quark_default_data
 
 Commit 7bc519b3ea04026877242328d2fe73cc8e6102bd upsteam.
