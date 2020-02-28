@@ -6,7 +6,6 @@ LIC_FILES_CHKSUM = "file://${IOT2000_MIT_LICENSE};md5=838c366f69b72c5df05c96dff7
 NODE_RED_PACKAGES = " \
     node-red-dashboard \
     node-red-node-serialport \
-    node-red-node-intel-gpio \
     node-red-contrib-boolean-logic \
     node-red-contrib-iiot-opcua \
     node-red-contrib-modbus \

@@ -17,9 +17,11 @@ SRC_URI = "git://github.com/node-red/node-red-nodes;protocol=https \
     file://0011-intel-gpio-Privatize-version.patch"
 SRCREV = "8d45e85acfa10b53fb94b1d6bfc16b9f8cc39eea"
 
+RDEPENDS_${PN} += "node-red"
+
 S = "${WORKDIR}/git"
 
-NODE_MODULES_DIR = "/home/root/.node-red/node_modules"
+NODE_MODULES_DIR = "/usr/lib/node/node-red/node_modules"
 
 do_install() {
     install -d ${D}${NODE_MODULES_DIR}/${PN}
