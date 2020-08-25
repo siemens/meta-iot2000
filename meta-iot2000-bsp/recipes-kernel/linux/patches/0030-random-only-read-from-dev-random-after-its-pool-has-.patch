@@ -1,4 +1,4 @@
-From 6cb95e11da746d51f1defd91d5904f90c15fb743 Mon Sep 17 00:00:00 2001
+From 1965b3dbf769829ad1659f4d1f9ae62239162919 Mon Sep 17 00:00:00 2001
 From: Theodore Ts'o <tytso@mit.edu>
 Date: Wed, 20 Feb 2019 16:06:38 -0500
 Subject: [PATCH 30/32] random: only read from /dev/random after its pool has
@@ -20,12 +20,12 @@ entropy_total field any more.
 
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 ---
- drivers/char/random.c         | 44 +++++++++++++++++++++----------------------
- include/trace/events/random.h | 13 +++++--------
+ drivers/char/random.c         | 44 +++++++++++++++++------------------
+ include/trace/events/random.h | 13 ++++-------
  2 files changed, 27 insertions(+), 30 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index ca9127abad52..f37a90896821 100644
+index b629f84586d9..0c72ec3eaf3b 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -466,7 +466,6 @@ struct entropy_store {
@@ -159,5 +159,5 @@ index 4684de344c5d..d5323630be90 100644
  
  TRACE_EVENT(push_to_pool,
 -- 
-2.16.4
+2.26.2
 

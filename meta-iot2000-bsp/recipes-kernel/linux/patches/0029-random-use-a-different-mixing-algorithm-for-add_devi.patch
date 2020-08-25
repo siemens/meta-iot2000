@@ -1,4 +1,4 @@
-From 0e756274490a989fc8a368d0072b20019a5bd53d Mon Sep 17 00:00:00 2001
+From 9e67bda853dd27652e3608ed6952a8e7f8940f7d Mon Sep 17 00:00:00 2001
 From: Theodore Ts'o <tytso@mit.edu>
 Date: Wed, 11 Apr 2018 14:58:27 -0400
 Subject: [PATCH 29/32] random: use a different mixing algorithm for
@@ -25,11 +25,11 @@ Fixes: ee7998c50c26 ("random: do not ignore early device randomness")
 Cc: stable@kernel.org # 4.13+
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 ---
- drivers/char/random.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/char/random.c | 52 +++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 52 insertions(+)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 747b7d6d4f44..ca9127abad52 100644
+index d50f71b3b4ea..b629f84586d9 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -796,6 +796,10 @@ static void crng_initialize(struct crng_state *crng)
@@ -106,5 +106,5 @@ index 747b7d6d4f44..ca9127abad52 100644
  	spin_lock_irqsave(&input_pool.lock, flags);
  	_mix_pool_bytes(&input_pool, buf, size);
 -- 
-2.16.4
+2.26.2
 

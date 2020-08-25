@@ -1,4 +1,4 @@
-From b2a4ee8c97a7102789f81e428ce13d14a2ac1954 Mon Sep 17 00:00:00 2001
+From 78d2a3beacb2562fd5f688e774859f2b1c039953 Mon Sep 17 00:00:00 2001
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Date: Fri, 6 Jan 2017 19:32:01 +0100
 Subject: [PATCH 23/32] random: use chacha20 for get_random_int/long
@@ -35,16 +35,16 @@ Cc: Hannes Frederic Sowa <hannes@stressinduktion.org>
 Cc: Andy Lutomirski <luto@amacapital.net>
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 ---
- drivers/char/random.c  | 84 ++++++++++++++++++++++++++------------------------
+ drivers/char/random.c  | 80 ++++++++++++++++++++++--------------------
  include/linux/random.h |  1 -
  init/main.c            |  1 -
- 3 files changed, 43 insertions(+), 43 deletions(-)
+ 3 files changed, 41 insertions(+), 41 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index a6a6a357ddae..a10ff9c50cea 100644
+index 54f554161b51..64a1254bf0ba 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
-@@ -2068,63 +2068,65 @@ struct ctl_table random_table[] = {
+@@ -2068,57 +2068,59 @@ struct ctl_table random_table[] = {
  };
  #endif 	/* CONFIG_SYSCTL */
  
@@ -81,20 +81,16 @@ index a6a6a357ddae..a10ff9c50cea 100644
  {
 -	__u32 *hash;
 -	unsigned int ret;
-+	unsigned long ret;
-+	struct batched_entropy *batch;
- 
--	if (arch_get_random_int(&ret))
-+	if (arch_get_random_long(&ret))
- 		return ret;
- 
+-
 -	hash = get_cpu_var(get_random_int_hash);
 -
 -	hash[0] += current->pid + jiffies + random_get_entropy();
 -	md5_transform(hash, random_int_secret);
 -	ret = hash[0];
 -	put_cpu_var(get_random_int_hash);
--
++	unsigned long ret;
++	struct batched_entropy *batch;
+ 
 +	batch = &get_cpu_var(batched_entropy_long);
 +	if (batch->position % ARRAY_SIZE(batch->entropy_long) == 0) {
 +		extract_crng((u8 *)batch->entropy_long);
@@ -116,6 +112,13 @@ index a6a6a357ddae..a10ff9c50cea 100644
  {
 -	__u32 *hash;
 -	unsigned long ret;
+-
+-	hash = get_cpu_var(get_random_int_hash);
+-
+-	hash[0] += current->pid + jiffies + random_get_entropy();
+-	md5_transform(hash, random_int_secret);
+-	ret = *(unsigned long *)hash;
+-	put_cpu_var(get_random_int_hash);
 +	return get_random_long();
 +}
 +#else
@@ -125,17 +128,6 @@ index a6a6a357ddae..a10ff9c50cea 100644
 +	unsigned int ret;
 +	struct batched_entropy *batch;
  
--	if (arch_get_random_long(&ret))
-+	if (arch_get_random_int(&ret))
- 		return ret;
- 
--	hash = get_cpu_var(get_random_int_hash);
--
--	hash[0] += current->pid + jiffies + random_get_entropy();
--	md5_transform(hash, random_int_secret);
--	ret = *(unsigned long *)hash;
--	put_cpu_var(get_random_int_hash);
--
 +	batch = &get_cpu_var(batched_entropy_int);
 +	if (batch->position % ARRAY_SIZE(batch->entropy_int) == 0) {
 +		extract_crng((u8 *)batch->entropy_int);
@@ -164,10 +156,10 @@ index 9c29122037f9..3e874bcdf8b8 100644
  #ifndef MODULE
  extern const struct file_operations random_fops, urandom_fops;
 diff --git a/init/main.c b/init/main.c
-index e88c8cdef6a7..406cddf01de8 100644
+index 88159063baa1..f550c51372f9 100644
 --- a/init/main.c
 +++ b/init/main.c
-@@ -885,7 +885,6 @@ static void __init do_basic_setup(void)
+@@ -887,7 +887,6 @@ static void __init do_basic_setup(void)
  	do_ctors();
  	usermodehelper_enable();
  	do_initcalls();
@@ -176,5 +168,5 @@ index e88c8cdef6a7..406cddf01de8 100644
  
  static void __init do_pre_smp_initcalls(void)
 -- 
-2.16.4
+2.26.2
 

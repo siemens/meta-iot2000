@@ -1,4 +1,4 @@
-From 4fe896ddf122abf98234154db65773db70f0b8a1 Mon Sep 17 00:00:00 2001
+From 2895f61ed99c108457b9e15fd3c523706acd4263 Mon Sep 17 00:00:00 2001
 From: Theodore Ts'o <tytso@mit.edu>
 Date: Wed, 22 May 2019 12:02:16 -0400
 Subject: [PATCH 31/32] random: fix soft lockup when trying to read from an
@@ -12,7 +12,7 @@ Signed-off-by: Theodore Ts'o <tytso@mit.edu>
  1 file changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index f37a90896821..29755924aa45 100644
+index 0c72ec3eaf3b..6529a2043fde 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -702,8 +702,11 @@ retry:
@@ -54,5 +54,5 @@ index f37a90896821..29755924aa45 100644
  			return -ERESTARTSYS;
  	}
 -- 
-2.16.4
+2.26.2
 

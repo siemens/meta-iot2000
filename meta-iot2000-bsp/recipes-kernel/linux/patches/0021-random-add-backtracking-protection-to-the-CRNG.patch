@@ -1,15 +1,15 @@
-From a6d1adf3fed33218b5059d41128ab2b8b429d08c Mon Sep 17 00:00:00 2001
+From ea9a299149c2139b6c476ba3e29dbeefd93206ac Mon Sep 17 00:00:00 2001
 From: Theodore Ts'o <tytso@mit.edu>
 Date: Wed, 4 May 2016 13:29:18 -0400
 Subject: [PATCH 21/32] random: add backtracking protection to the CRNG
 
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 ---
- drivers/char/random.c | 54 ++++++++++++++++++++++++++++++++++++++++++++++-----
+ drivers/char/random.c | 54 +++++++++++++++++++++++++++++++++++++++----
  1 file changed, 49 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 79b049e644f3..a1214c0fbaf3 100644
+index da8c45f6d342..80be6054e0a4 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -437,7 +437,8 @@ static int crng_init_cnt = 0;
@@ -105,5 +105,5 @@ index 79b049e644f3..a1214c0fbaf3 100644
  EXPORT_SYMBOL(get_random_bytes);
  
 -- 
-2.16.4
+2.26.2
 

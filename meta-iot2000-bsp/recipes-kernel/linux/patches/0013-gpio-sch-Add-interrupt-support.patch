@@ -1,4 +1,4 @@
-From d046375f1bc2a63d945bad8c4026ce1a6eabd838 Mon Sep 17 00:00:00 2001
+From 72d07aaaf3dc17b521b40d33a86d79740af01166 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Wed, 17 Apr 2019 22:26:22 +0200
 Subject: [PATCH 13/32] gpio: sch: Add interrupt support
@@ -11,7 +11,7 @@ missing devm_* services.
 
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
- drivers/gpio/gpio-sch.c | 140 +++++++++++++++++++++++++++++++++++++++++++++---
+ drivers/gpio/gpio-sch.c | 140 ++++++++++++++++++++++++++++++++++++++--
  1 file changed, 133 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/gpio/gpio-sch.c b/drivers/gpio/gpio-sch.c
@@ -226,5 +226,5 @@ index 6715828c3940..1d1dadebc8c1 100644
  
  static struct platform_driver sch_gpio_driver = {
 -- 
-2.16.4
+2.26.2
 

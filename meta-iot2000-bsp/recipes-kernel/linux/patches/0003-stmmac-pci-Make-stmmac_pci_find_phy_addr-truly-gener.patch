@@ -1,4 +1,4 @@
-From 553355e45eac94312df999431b4491bb0dc43122 Mon Sep 17 00:00:00 2001
+From 988c513bde9db407f99907c8e0c0e93fb90e453d Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 22 Jun 2017 08:17:59 +0200
 Subject: [PATCH 03/32] stmmac: pci: Make stmmac_pci_find_phy_addr truly
@@ -14,7 +14,7 @@ Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c | 20 +++++++++++++-------
+ .../net/ethernet/stmicro/stmmac/stmmac_pci.c  | 20 ++++++++++++-------
  1 file changed, 13 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c
@@ -57,5 +57,5 @@ index a60059032dc6..19cf9607618a 100644
  	plat->bus_id = PCI_DEVID(pdev->bus->number, pdev->devfn);
  	plat->phy_addr = ret;
 -- 
-2.16.4
+2.26.2
 

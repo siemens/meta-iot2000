@@ -1,4 +1,4 @@
-From 1eadc614c3546b2cef698c337c95034253c99771 Mon Sep 17 00:00:00 2001
+From 05ab19e8fe19ad7fc40454a7b054ed270d138071 Mon Sep 17 00:00:00 2001
 From: Stephan Mueller <stephan.mueller@atsec.com>
 Date: Thu, 15 Dec 2016 12:42:33 +0100
 Subject: [PATCH 22/32] random: remove stale maybe_reseed_primary_crng
@@ -13,7 +13,7 @@ Signed-off-by: Theodore Ts'o <tytso@mit.edu>
  1 file changed, 7 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index a1214c0fbaf3..a6a6a357ddae 100644
+index 80be6054e0a4..54f554161b51 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -853,13 +853,6 @@ static void crng_reseed(struct crng_state *crng, struct entropy_store *r)
@@ -31,5 +31,5 @@ index a1214c0fbaf3..a6a6a357ddae 100644
  {
  	wait_event_interruptible(crng_init_wait, crng_ready());
 -- 
-2.16.4
+2.26.2
 

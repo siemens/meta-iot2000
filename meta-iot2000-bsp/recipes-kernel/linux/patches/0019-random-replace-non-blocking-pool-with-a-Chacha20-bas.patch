@@ -1,4 +1,4 @@
-From af72f4e73aa5a951d998e88260154082c5ffd340 Mon Sep 17 00:00:00 2001
+From 3e95e3abaef39718ae8f896248102bf46ed3769d Mon Sep 17 00:00:00 2001
 From: Theodore Ts'o <tytso@mit.edu>
 Date: Sun, 12 Jun 2016 18:13:36 -0400
 Subject: [PATCH 19/32] random: replace non-blocking pool with a Chacha20-based
@@ -9,11 +9,11 @@ CRNG any more.
 
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 ---
- crypto/chacha20_generic.c |  61 --------
- drivers/char/random.c     | 378 +++++++++++++++++++++++++++++++++-------------
+ crypto/chacha20_generic.c |  61 ------
+ drivers/char/random.c     | 378 ++++++++++++++++++++++++++++----------
  include/crypto/chacha20.h |   1 +
  lib/Makefile              |   2 +-
- lib/chacha20.c            |  79 ++++++++++
+ lib/chacha20.c            |  79 ++++++++
  5 files changed, 357 insertions(+), 164 deletions(-)
  create mode 100644 lib/chacha20.c
 
@@ -95,7 +95,7 @@ index da9c89968223..1cab83146e33 100644
  			     unsigned int bytes)
  {
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 2916d08ee30e..6d2abeae9434 100644
+index 661ed5ec546e..7b544251eab1 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -260,6 +260,7 @@
@@ -657,7 +657,7 @@ index 2916d08ee30e..6d2abeae9434 100644
  		if (signal_pending(current))
  			return -ERESTARTSYS;
  	}
-@@ -1888,18 +2063,17 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
+@@ -1882,18 +2057,17 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
  {
  	struct entropy_store *poolp = &input_pool;
  
@@ -797,5 +797,5 @@ index 000000000000..250ceed9ec9a
 +}
 +EXPORT_SYMBOL(chacha20_block);
 -- 
-2.16.4
+2.26.2
 

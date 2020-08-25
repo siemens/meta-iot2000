@@ -1,4 +1,4 @@
-From 74f881a90ad219b51f59cc3ea700b3dd9decc2a3 Mon Sep 17 00:00:00 2001
+From ed87bdc65b33ad67624049e744f17adf98a95c87 Mon Sep 17 00:00:00 2001
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Date: Sun, 22 Jan 2017 16:34:08 +0100
 Subject: [PATCH 24/32] random: convert get_random_int/long into
@@ -17,12 +17,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 ---
- drivers/char/random.c  | 55 +++++++++++++++++++++++++-------------------------
- include/linux/random.h | 17 ++++++++++++++--
- 2 files changed, 42 insertions(+), 30 deletions(-)
+ drivers/char/random.c  | 47 ++++++++++++++++++------------------------
+ include/linux/random.h | 17 +++++++++++++--
+ 2 files changed, 35 insertions(+), 29 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index a10ff9c50cea..d79a631a2b5e 100644
+index 64a1254bf0ba..1a22df4e9289 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -2070,8 +2070,8 @@ struct ctl_table random_table[] = {
@@ -36,7 +36,7 @@ index a10ff9c50cea..d79a631a2b5e 100644
  	};
  	unsigned int position;
  };
-@@ -2081,52 +2081,51 @@ struct batched_entropy {
+@@ -2081,46 +2081,39 @@ struct batched_entropy {
   * number is either as good as RDRAND or as good as /dev/urandom, with the
   * goal of being quite fast and not depleting entropy.
   */
@@ -48,16 +48,6 @@ index a10ff9c50cea..d79a631a2b5e 100644
 -	unsigned long ret;
 +	u64 ret;
  	struct batched_entropy *batch;
- 
--	if (arch_get_random_long(&ret))
-+#if BITS_PER_LONG == 64
-+	if (arch_get_random_long((unsigned long *)&ret))
- 		return ret;
-+#else
-+	if (arch_get_random_long((unsigned long *)&ret) &&
-+	    arch_get_random_long((unsigned long *)&ret + 1))
-+	    return ret;
-+#endif
  
 -	batch = &get_cpu_var(batched_entropy_long);
 -	if (batch->position % ARRAY_SIZE(batch->entropy_long) == 0) {
@@ -78,21 +68,18 @@ index a10ff9c50cea..d79a631a2b5e 100644
  
 -#if BITS_PER_LONG == 32
 -unsigned int get_random_int(void)
--{
++static DEFINE_PER_CPU(struct batched_entropy, batched_entropy_u32);
++u32 get_random_u32(void)
+ {
 -	return get_random_long();
 -}
 -#else
 -static DEFINE_PER_CPU(struct batched_entropy, batched_entropy_int);
 -unsigned int get_random_int(void)
-+static DEFINE_PER_CPU(struct batched_entropy, batched_entropy_u32);
-+u32 get_random_u32(void)
- {
+-{
 -	unsigned int ret;
 +	u32 ret;
  	struct batched_entropy *batch;
- 
- 	if (arch_get_random_int(&ret))
- 		return ret;
  
 -	batch = &get_cpu_var(batched_entropy_int);
 -	if (batch->position % ARRAY_SIZE(batch->entropy_int) == 0) {
@@ -143,5 +130,5 @@ index 3e874bcdf8b8..39f125ba80bb 100644
  
  u32 prandom_u32(void);
 -- 
-2.16.4
+2.26.2
 
