@@ -1,4 +1,4 @@
-From 63e4ba1816a80a258e4c7a846b3bd389b9a04e32 Mon Sep 17 00:00:00 2001
+From befd37c3d32ead256fc7f57081b292f84e15dcb2 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 25 May 2017 11:09:42 +0200
 Subject: [PATCH 14/32] iot2000-hack: Work around DSDT mistake
@@ -40,5 +40,5 @@ index 16a7b6816744..304855b3ecb8 100644
  					      agpio->pin_table[pin_index]);
  		lookup->info.gpioint =
 -- 
-2.16.4
+2.26.2
 

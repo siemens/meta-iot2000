@@ -1,4 +1,4 @@
-From 45cf6623ee8462c12e9a971620ea01fdae7b0114 Mon Sep 17 00:00:00 2001
+From 59df3d6f006842f97d860473407f5032d4cd9132 Mon Sep 17 00:00:00 2001
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Date: Thu, 15 Jun 2017 00:45:26 +0200
 Subject: [PATCH 26/32] random: silence compiler warnings and fix race
@@ -26,7 +26,7 @@ Cc: stable@vger.kernel.org
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 6c571ee0d6c4..194cdb02d458 100644
+index 62c7cdd88769..d0f7c85770be 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -812,13 +812,13 @@ static int crng_fast_load(const char *cp, size_t len)
@@ -70,8 +70,8 @@ index 6c571ee0d6c4..194cdb02d458 100644
 +	unsigned long flags = 0;
  	struct batched_entropy *batch;
  
- #if BITS_PER_LONG == 64
-@@ -2125,8 +2125,8 @@ static DEFINE_PER_CPU(struct batched_entropy, batched_entropy_u32);
+ 	batch = &get_cpu_var(batched_entropy_u64);
+@@ -2116,8 +2116,8 @@ static DEFINE_PER_CPU(struct batched_entropy, batched_entropy_u32);
  u32 get_random_u32(void)
  {
  	u32 ret;
@@ -81,7 +81,7 @@ index 6c571ee0d6c4..194cdb02d458 100644
 +	unsigned long flags = 0;
  	struct batched_entropy *batch;
  
- 	if (arch_get_random_int(&ret))
+ 	batch = &get_cpu_var(batched_entropy_u32);
 -- 
-2.16.4
+2.26.2
 

@@ -1,4 +1,4 @@
-From 24cef0dbc155391db6e2eceba26cba476e54dd15 Mon Sep 17 00:00:00 2001
+From a641db20c5ac4146b4e7456207b532c818a72ebc Mon Sep 17 00:00:00 2001
 From: Theodore Ts'o <tytso@mit.edu>
 Date: Wed, 11 Apr 2018 13:27:52 -0400
 Subject: [PATCH 28/32] random: fix crng_ready() test
@@ -24,7 +24,7 @@ Reviewed-by: Jann Horn <jannh@google.com>
  1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 198ae9df9d9e..747b7d6d4f44 100644
+index 2d6f57c7ee81..d50f71b3b4ea 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -435,7 +435,7 @@ struct crng_state primary_crng = {
@@ -63,7 +63,7 @@ index 198ae9df9d9e..747b7d6d4f44 100644
  		if ((fast_pool->count >= 64) &&
  		    crng_fast_load((char *) fast_pool->pool,
  				   sizeof(fast_pool->pool))) {
-@@ -2213,7 +2213,7 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
+@@ -2201,7 +2201,7 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
  {
  	struct entropy_store *poolp = &input_pool;
  
@@ -73,5 +73,5 @@ index 198ae9df9d9e..747b7d6d4f44 100644
  		return;
  	}
 -- 
-2.16.4
+2.26.2
 

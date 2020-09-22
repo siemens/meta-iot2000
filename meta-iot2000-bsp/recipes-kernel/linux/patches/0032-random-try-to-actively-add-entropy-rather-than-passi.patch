@@ -1,4 +1,4 @@
-From eb0b7b33a7bb77cd54cc4627044a77f1ee002139 Mon Sep 17 00:00:00 2001
+From 3abb0bf76bc2afb278961865a75b7c0058e9e21d Mon Sep 17 00:00:00 2001
 From: Linus Torvalds <torvalds@linux-foundation.org>
 Date: Sat, 28 Sep 2019 16:53:52 -0700
 Subject: [PATCH 32/32] random: try to actively add entropy rather than
@@ -57,11 +57,11 @@ Cc: Alexander E. Patrakov <patrakov@gmail.com>
 Cc: Lennart Poettering <mzxreary@0pointer.de>
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 ---
- drivers/char/random.c | 62 ++++++++++++++++++++++++++++++++++++++++++++++++++-
+ drivers/char/random.c | 62 ++++++++++++++++++++++++++++++++++++++++++-
  1 file changed, 61 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 29755924aa45..8bded70230de 100644
+index 6529a2043fde..7d29c1cc5a1f 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -1588,6 +1588,56 @@ void get_random_bytes(void *buf, int nbytes)
@@ -141,5 +141,5 @@ index 29755924aa45..8bded70230de 100644
  EXPORT_SYMBOL(wait_for_random_bytes);
  
 -- 
-2.16.4
+2.26.2
 

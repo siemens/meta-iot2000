@@ -1,4 +1,4 @@
-From d771759e71dfab46de09fc2efcd1282926a775b8 Mon Sep 17 00:00:00 2001
+From 53ba2fa8dbee50b77d34b581926da03f3297a3e8 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 22 Jun 2017 08:18:01 +0200
 Subject: [PATCH 05/32] stmmac: pci: Use dmi_system_id table for retrieving PHY
@@ -11,7 +11,7 @@ Avoids reimplementation of DMI matching in stmmac_pci_find_phy_addr.
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c | 97 ++++++++++++++++--------
+ .../net/ethernet/stmicro/stmmac/stmmac_pci.c  | 97 ++++++++++++-------
  1 file changed, 64 insertions(+), 33 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c
@@ -163,5 +163,5 @@ index 9fe6368738ec..279a1355d75f 100644
  		/* Return error to the caller on DMI enabled boards. */
  		if (dmi_get_system_info(DMI_BOARD_NAME))
 -- 
-2.16.4
+2.26.2
 

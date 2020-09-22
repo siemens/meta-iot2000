@@ -1,4 +1,4 @@
-From 81aabe391560f74d9dafc5b139b3b3c2e6de08df Mon Sep 17 00:00:00 2001
+From 132a589e95e917c791c140e6b89ce818bc60e713 Mon Sep 17 00:00:00 2001
 From: Su Bao Cheng <baocheng.su@siemens.com>
 Date: Fri, 12 Oct 2018 15:08:11 +0200
 Subject: [PATCH 06/32] stmmac: pci: Adjust IOT2000 matching
@@ -43,5 +43,5 @@ index 279a1355d75f..ac733d4d3ed4 100644
  		.driver_data = (void *)&iot2040_stmmac_dmi_data,
  	},
 -- 
-2.16.4
+2.26.2
 

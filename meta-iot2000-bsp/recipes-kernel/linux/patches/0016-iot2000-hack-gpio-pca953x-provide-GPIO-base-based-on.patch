@@ -1,4 +1,4 @@
-From b4513d4a15616321e240c93436e8ffd58aa931ed Mon Sep 17 00:00:00 2001
+From 3bf044ebd9ac94c217e4e5036b885b0c5cd36f38 Mon Sep 17 00:00:00 2001
 From: Yong Li <sdliyong@gmail.com>
 Date: Thu, 31 Mar 2016 15:33:08 +0800
 Subject: [PATCH 16/32] iot2000-hack: gpio: pca953x: provide GPIO base based on
@@ -17,7 +17,7 @@ Signed-off-by: Yong Li <sdliyong@gmail.com>
 Signed-off-by: Bruce Ashfield <bruce.ashfield@windriver.com>
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
- drivers/gpio/gpio-pca953x.c | 44 +++++++++++++++++++++++++++++++++++++-------
+ drivers/gpio/gpio-pca953x.c | 44 +++++++++++++++++++++++++++++++------
  1 file changed, 37 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
@@ -95,5 +95,5 @@ index b45ba6be69ef..8b467c0db1cb 100644
  
  	chip->chip_type = PCA_CHIP_TYPE(chip->driver_data);
 -- 
-2.16.4
+2.26.2
 

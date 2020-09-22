@@ -1,4 +1,4 @@
-From 8c5cc2a98dcbcbd4208c62e5709d3669405072f7 Mon Sep 17 00:00:00 2001
+From 08c6611a0fb2c0766863ec2a88ccc2530e9e15fa Mon Sep 17 00:00:00 2001
 From: Linus Walleij <linus.walleij@linaro.org>
 Date: Wed, 27 Jun 2018 10:39:31 +0200
 Subject: [PATCH 12/32] gpio: sch: Implement .get_direction()
@@ -41,5 +41,5 @@ index 5f72b177fc80..6715828c3940 100644
  
  static int sch_gpio_probe(struct platform_device *pdev)
 -- 
-2.16.4
+2.26.2
 

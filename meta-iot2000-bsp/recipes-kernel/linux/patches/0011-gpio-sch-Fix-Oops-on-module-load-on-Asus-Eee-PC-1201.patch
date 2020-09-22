@@ -1,4 +1,4 @@
-From 3ecc35879dfd4a4df2ae418892743446fe05f3a0 Mon Sep 17 00:00:00 2001
+From cfc9634a4edc93d82f4cebde6477fa3e3bfbc2de Mon Sep 17 00:00:00 2001
 From: Colin Pitrat <colin.pitrat@gmail.com>
 Date: Sat, 18 Jun 2016 19:05:04 +0100
 Subject: [PATCH 11/32] gpio: sch: Fix Oops on module load on Asus Eee PC 1201
@@ -110,5 +110,5 @@ index bbf9b2a34da8..5f72b177fc80 100644
  
  	case PCI_DEVICE_ID_INTEL_ITC_LPC:
 -- 
-2.16.4
+2.26.2
 

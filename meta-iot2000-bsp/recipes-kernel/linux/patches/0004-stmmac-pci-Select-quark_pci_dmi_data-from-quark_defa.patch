@@ -1,4 +1,4 @@
-From 95e91552d7a7d0fd28afc42191d8be1c3096d6c2 Mon Sep 17 00:00:00 2001
+From 8f12e39eb8091434873af2451df54c0f45f8464c Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 22 Jun 2017 08:18:00 +0200
 Subject: [PATCH 04/32] stmmac: pci: Select quark_pci_dmi_data from
@@ -15,7 +15,7 @@ Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c | 83 +++++++++++-------------
+ .../net/ethernet/stmicro/stmmac/stmmac_pci.c  | 83 +++++++++----------
  1 file changed, 39 insertions(+), 44 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_pci.c
@@ -161,5 +161,5 @@ index 19cf9607618a..9fe6368738ec 100644
  		return ret;
  
 -- 
-2.16.4
+2.26.2
 

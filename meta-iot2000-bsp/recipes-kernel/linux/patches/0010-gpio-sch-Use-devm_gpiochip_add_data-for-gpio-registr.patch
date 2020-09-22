@@ -1,4 +1,4 @@
-From 01837820d1cc75845d0c771f24eea5fe3d4ae109 Mon Sep 17 00:00:00 2001
+From 9354780a2ae5cf73a5d4202afe17e79450b07f3a Mon Sep 17 00:00:00 2001
 From: Laxman Dewangan <ldewangan@nvidia.com>
 Date: Mon, 22 Feb 2016 17:43:28 +0530
 Subject: [PATCH 10/32] gpio: sch: Use devm_gpiochip_add_data() for gpio
@@ -42,5 +42,5 @@ index 23907fc080a3..bbf9b2a34da8 100644
  
  module_platform_driver(sch_gpio_driver);
 -- 
-2.16.4
+2.26.2
 

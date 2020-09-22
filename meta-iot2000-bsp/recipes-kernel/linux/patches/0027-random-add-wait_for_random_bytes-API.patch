@@ -1,4 +1,4 @@
-From bab97a70fbb2f35de923e07d1e2377ad43b024af Mon Sep 17 00:00:00 2001
+From 5db15d59f3c90944d5e047a50a6dbd5f5860e33a Mon Sep 17 00:00:00 2001
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Date: Wed, 7 Jun 2017 19:58:56 -0400
 Subject: [PATCH 27/32] random: add wait_for_random_bytes() API
@@ -15,7 +15,7 @@ Signed-off-by: Theodore Ts'o <tytso@mit.edu>
  2 files changed, 32 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 194cdb02d458..198ae9df9d9e 100644
+index d0f7c85770be..2d6f57c7ee81 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -860,11 +860,6 @@ static void crng_reseed(struct crng_state *crng, struct entropy_store *r)
@@ -114,5 +114,5 @@ index 39f125ba80bb..b282d7adcacc 100644
  extern void del_random_ready_callback(struct random_ready_callback *rdy);
  extern void get_random_bytes_arch(void *buf, int nbytes);
 -- 
-2.16.4
+2.26.2
 

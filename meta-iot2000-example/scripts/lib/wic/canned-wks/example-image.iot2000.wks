@@ -1,6 +1,6 @@
 include common.iot2000.wks.header.inc
 
 part swap --ondisk mmcblk0 --size 512 --fstype=swap --label swap --align 1024
-part / --source rootfs --ondisk mmcblk0 --fstype=ext3 --label platform --align 1024
+part / --source rootfs --fstype=ext4 --label platform --align 1024 --use-uuid
 
 include common.iot2000.wks.footer.inc

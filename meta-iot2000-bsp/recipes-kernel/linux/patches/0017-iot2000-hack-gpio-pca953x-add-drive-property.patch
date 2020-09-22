@@ -1,4 +1,4 @@
-From 7190fa3b9d76d0d554dab7c0a220a2be3e866560 Mon Sep 17 00:00:00 2001
+From 8d2da44941dcd05415307eb9929032945207824c Mon Sep 17 00:00:00 2001
 From: Yong Li <sdliyong@gmail.com>
 Date: Thu, 31 Mar 2016 15:33:09 +0800
 Subject: [PATCH 17/32] iot2000-hack: gpio-pca953x: add "drive" property
@@ -20,14 +20,14 @@ Signed-off-by: Yong Li <sdliyong@gmail.com>
 Signed-off-by: Bruce Ashfield <bruce.ashfield@windriver.com>
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
- drivers/gpio/gpio-pca953x.c   | 42 +++++++++++++++++++++++
- drivers/gpio/gpiolib-sysfs.c  | 78 +++++++++++++++++++++++++++++++++++++++++++
- drivers/gpio/gpiolib.c        | 17 ++++++++++
- drivers/gpio/gpiolib.h        |  4 +++
+ drivers/gpio/gpio-pca953x.c   | 42 +++++++++++++++++++
+ drivers/gpio/gpiolib-sysfs.c  | 78 +++++++++++++++++++++++++++++++++++
+ drivers/gpio/gpiolib.c        | 17 ++++++++
+ drivers/gpio/gpiolib.h        |  4 ++
  include/asm-generic/gpio.h    |  5 +++
- include/linux/gpio.h          | 10 ++++++
- include/linux/gpio/consumer.h | 11 ++++++
- include/linux/gpio/driver.h   |  2 ++
+ include/linux/gpio.h          | 10 +++++
+ include/linux/gpio/consumer.h | 11 +++++
+ include/linux/gpio/driver.h   |  2 +
  8 files changed, 169 insertions(+)
 
 diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
@@ -201,10 +201,10 @@ index b57ed8e55ab5..72a8647146fa 100644
  };
  
 diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index d72218fcaeeb..66d4e4a59035 100644
+index 974223abc55d..4debdb356689 100644
 --- a/drivers/gpio/gpiolib.c
 +++ b/drivers/gpio/gpiolib.c
-@@ -1376,6 +1376,23 @@ int gpiod_is_active_low(const struct gpio_desc *desc)
+@@ -1389,6 +1389,23 @@ int gpiod_is_active_low(const struct gpio_desc *desc)
  }
  EXPORT_SYMBOL_GPL(gpiod_is_active_low);
  
@@ -288,7 +288,7 @@ index 11555bd821b7..1e8ab82f2787 100644
  {
  	/* GPIO can never have been requested or set as {in,out}put */
 diff --git a/include/linux/gpio/consumer.h b/include/linux/gpio/consumer.h
-index fb0fde686cb1..17f5f187699b 100644
+index 4a9838feb086..6943ef2d24db 100644
 --- a/include/linux/gpio/consumer.h
 +++ b/include/linux/gpio/consumer.h
 @@ -122,6 +122,8 @@ void gpiod_set_raw_array_value_cansleep(unsigned int array_size,
@@ -330,5 +330,5 @@ index c0fc8effdba9..b73af28ac7d8 100644
  	int			(*to_irq)(struct gpio_chip *chip,
  						unsigned offset);
 -- 
-2.16.4
+2.26.2
 

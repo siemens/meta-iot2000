@@ -1,4 +1,4 @@
-From f95eb6b146bc6107b082c8d600ac5ae51c05054e Mon Sep 17 00:00:00 2001
+From 2ae04bc63a130e4ef2787bf7ea60d12b3f81f256 Mon Sep 17 00:00:00 2001
 From: Su Bao Cheng <baocheng.su@siemens.com>
 Date: Fri, 12 Oct 2018 15:05:07 +0200
 Subject: [PATCH 08/32] mfd: intel_quark_i2c_gpio: Adjust IOT2000 matching
@@ -41,5 +41,5 @@ index 1c09604978d3..ad70a058bea8 100644
  		.driver_data = (void *)400000,
  	},
 -- 
-2.16.4
+2.26.2
 

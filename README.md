@@ -161,17 +161,3 @@ Under Linux, insert an unused USB stick. Assuming the USB stick takes device
 $ sudo dd if=build/tmp/deploy/images/iot2000/iot2000-example-image-iot2000.wic \
           of=/dev/sda bs=4M oflag=sync
 ```
-
-In addition, you have to change the boot config. On the first partition,
-navigate to the folder loader/entries, open the file boot.conf and change the
-following:
-
-```diff
---- loader/entries/boot.conf.orig
-+++ loader/entries/boot.conf
-@@ -1,3 +1,3 @@
- title boot
- linux /bzImage
--options LABEL=Boot root=/dev/mmcblk0p2 console=ttyS1,115200n8 reboot=efi,warm rw debugshell=5 rootwait initrd=EFI/BOOT/acpi-upgrades-iot2000.cpio
-+options LABEL=Boot root=/dev/sda2 console=ttyS1,115200n8 reboot=efi,warm rw debugshell=5 rootwait initrd=EFI/BOOT/acpi-upgrades-iot2000.cpio
-```
