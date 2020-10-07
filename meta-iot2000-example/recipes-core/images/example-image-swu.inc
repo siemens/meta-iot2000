@@ -8,5 +8,6 @@ IMAGE_ROOTFS_EXTRA_SPACE = "0"
 IMAGE_FSTYPES += "ext4.gz"
 
 IMAGE_INSTALL += "swupdate"
+IMAGE_INSTALL += "swupdate-progress"
 IMAGE_INSTALL += "efibootguard-tools"
 IMAGE_INSTALL += "persiststore"

@@ -1,7 +1,8 @@
 --[[
 
    Author: Andreas Reichel
-   Copyright (C) 2018, Siemens AG
+           Heiko Schabert
+   Copyright (C) 2020, Siemens AG
 
    SPDX-License-Identifier: GPL-2.0-or-later
 
@@ -115,30 +116,17 @@ function kernel_handler(image)
         return 1
     end
 
-    -- Now generate a list to update the bootloader environment
-    local tmpdirscripts = swupdate.tmpdirscripts()
-    local envfilepath = tmpdirscripts .. envfilename
-    swupdate.debug("Using " .. envfilepath .. " for setting the environment")
 
-    local envvarlist = assert(io.open(envfilepath, "w"), "Cannot create environment script")
-    envvarlist:write("kernelfile\t" .. bootlabels[rootindex] .. kernelname .. "\n")
+    -- update the bootloader
     kernelparams = kernelparams:gsub("REPLACEME", newroot)
-    envvarlist:write("kernelparams\t" .. kernelparams .. "\n")
-    envvarlist:close()
+    kernelfile = bootlabels[rootindex] .. kernelname
 
-    swupdate.debug("New environment values: ")
-    envvarlist = assert(io.open(envfilepath, "r"), "Cannot read generated environment script")
-    for value in envvarlist:lines() do
-        swupdate.debug(">>\t" .. value)
-    end
-    envvarlist:close()
+    swupdate.info(string.format("Setting bootloader environment: %s=%s", "kernelfile", kernelfile))
+    swupdate.set_bootenv("kernelfile", kernelfile)
 
-    image.filename = envfilename
-    err, msg = swupdate.call_handler("bootloader", image)
-    if err ~= 0 then
-        swupdate.error("Error calling bootloader handler: " .. (msg or ""))
-        return 1
-    end
+    swupdate.info(string.format("Setting bootloader environment: %s=%s", "kernelparams", kernelparams))
+    swupdate.set_bootenv("kernelparams", kernelparams)
+
     return 0
 end
 
