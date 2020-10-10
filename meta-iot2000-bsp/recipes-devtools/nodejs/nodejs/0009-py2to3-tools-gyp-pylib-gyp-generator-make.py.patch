@@ -1,0 +1,30 @@
+From 02edab4772c455db38d3b2de3917035e72f14ec2 Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Fri, 9 Oct 2020 19:01:09 +0800
+Subject: [PATCH 09/17] py2to3: tools/gyp/pylib/gyp/generator/make.py
+
+---
+ tools/gyp/pylib/gyp/generator/make.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tools/gyp/pylib/gyp/generator/make.py b/tools/gyp/pylib/gyp/generator/make.py
+index bde7e01429..8015a6fda4 100644
+--- a/tools/gyp/pylib/gyp/generator/make.py
++++ b/tools/gyp/pylib/gyp/generator/make.py
+@@ -1753,10 +1753,10 @@ $(obj).$(TOOLSET)/$(TARGET)/%%.o: $(obj)/%%%s FORCE_DO_CMD
+       # - The multi-output rule will have an do-nothing recipe.
+ 
+       # Hash the target name to avoid generating overlong filenames.
+-      cmddigest = hashlib.sha1(command if command else self.target).hexdigest()
+-      intermediate = "%s.intermediate" % (cmddigest)
++      cmddigest = hashlib.sha1((command or self.target).encode("utf-8")).hexdigest()
++      intermediate = "%s.intermediate" % cmddigest
+       self.WriteLn('%s: %s' % (' '.join(outputs), intermediate))
+-      self.WriteLn('\t%s' % '@:');
++      self.WriteLn('\t%s' % '@:')
+       self.WriteLn('%s: %s' % ('.INTERMEDIATE', intermediate))
+       self.WriteLn('%s: %s%s' %
+                    (intermediate, ' '.join(inputs), force_append))
+-- 
+2.25.1
+

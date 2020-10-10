@@ -1,0 +1,158 @@
+From 5cf9826feea16dfe9bca20fa06a8e6c3eb7a0f69 Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Fri, 9 Oct 2020 17:14:34 +0800
+Subject: [PATCH 05/17] py2to3: fix configure
+
+---
+ configure | 68 ++++++++++++++++++++-----------------------------------
+ 1 file changed, 24 insertions(+), 44 deletions(-)
+
+diff --git a/configure b/configure
+index a24eeef8ed..f5e325a133 100755
+--- a/configure
++++ b/configure
+@@ -1,30 +1,7 @@
+ #!/bin/sh
+ 
+-# Locate python2 interpreter and re-execute the script.  Note that the
+-# mix of single and double quotes is intentional, as is the fact that
+-# the ] goes on a new line.
+-_=[ 'exec' '/bin/sh' '-c' '''
+-which python2.7 >/dev/null && exec python2.7 "$0" "$@"
+-which python2 >/dev/null && exec python2 "$0" "$@"
+-exec python "$0" "$@"
+-''' "$0" "$@"
+-]
+-del _
+-
+ import sys
+ from distutils.spawn import find_executable as which
+-if sys.version_info[0] != 2 or sys.version_info[1] not in (6, 7):
+-  sys.stderr.write('Please use either Python 2.6 or 2.7')
+-
+-  python2 = which('python2') or which('python2.6') or which('python2.7')
+-
+-  if python2:
+-    sys.stderr.write(':\n\n')
+-    sys.stderr.write('  ' + python2 + ' ' + ' '.join(sys.argv))
+-
+-  sys.stderr.write('\n')
+-  sys.exit(1)
+-
+ import errno
+ import optparse
+ import os
+@@ -34,6 +11,7 @@ import shlex
+ import subprocess
+ import shutil
+ import string
++import io
+ 
+ # If not run from node/, cd to node/.
+ os.chdir(os.path.dirname(__file__) or '.')
+@@ -573,11 +551,14 @@ warn.warned = False
+ 
+ def b(value):
+   """Returns the string 'true' if value is truthy, 'false' otherwise."""
+-  if value:
+-    return 'true'
+-  else:
+-    return 'false'
++  return 'true' if value else 'false'
+ 
++def B(value):
++  """Returns 1 if value is truthy, 0 otherwise."""
++  return 1 if value else 0
++
++def to_utf8(s):
++  return s if isinstance(s, str) else s.decode("utf-8")
+ 
+ def pkg_config(pkg):
+   pkg_config = os.environ.get('PKG_CONFIG', 'pkg-config')
+@@ -587,7 +568,7 @@ def pkg_config(pkg):
+       proc = subprocess.Popen(
+           shlex.split(pkg_config) + ['--silence-errors', flag, pkg],
+           stdout=subprocess.PIPE)
+-      val = proc.communicate()[0].strip()
++      val = to_utf8(proc.communicate()[0]).strip()
+     except OSError as e:
+       if e.errno != errno.ENOENT: raise e  # Unexpected error.
+       return (None, None, None)  # No pkg-config/pkgconf installed.
+@@ -602,13 +583,13 @@ def try_check_compiler(cc, lang):
+   except OSError:
+     return (False, False, '', '')
+ 
+-  proc.stdin.write('__clang__ __GNUC__ __GNUC_MINOR__ __GNUC_PATCHLEVEL__ '
+-                   '__clang_major__ __clang_minor__ __clang_patchlevel__')
++  proc.stdin.write(b'__clang__ __GNUC__ __GNUC_MINOR__ __GNUC_PATCHLEVEL__ '
++                   b'__clang_major__ __clang_minor__ __clang_patchlevel__')
+ 
+-  values = (proc.communicate()[0].split() + ['0'] * 7)[0:7]
++  values = (to_utf8(proc.communicate()[0]).split() + ['0'] * 7)[0:7]
+   is_clang = values[0] == '1'
+-  gcc_version = tuple(values[1:1+3])
+-  clang_version = tuple(values[4:4+3])
++  gcc_version = tuple(map(int, values[1:1+3]))
++  clang_version = tuple(map(int, values[4:4+3])) if is_clang else None
+ 
+   return (True, is_clang, clang_version, gcc_version)
+ 
+@@ -632,7 +613,7 @@ def get_version_helper(cc, regexp):
+         ''')
+     sys.exit()
+ 
+-  match = re.search(regexp, proc.communicate()[1])
++  match = re.search(regexp, to_utf8(proc.communicate()[1]))
+ 
+   if match:
+     return match.group(2)
+@@ -664,7 +645,7 @@ def get_gas_version(cc):
+     sys.exit()
+ 
+   match = re.match(r"GNU assembler version ([2-9]\.[0-9]+)",
+-                   proc.communicate()[1])
++                   to_utf8(proc.communicate()[1]))
+ 
+   if match:
+     return match.group(1)
+@@ -724,10 +705,8 @@ def cc_macros(cc=None):
+         ''')
+     sys.exit()
+ 
+-  p.stdin.write('\n')
+-  out = p.communicate()[0]
+-
+-  out = str(out).split('\n')
++  p.stdin.write(b'\n')
++  out = to_utf8(p.communicate()[0]).split('\n')
+ 
+   k = {}
+   for line in out:
+@@ -1201,7 +1180,7 @@ def configure_intl(o):
+     o['variables']['icu_small'] = b(True)
+     locs = set(options.with_icu_locales.split(','))
+     locs.add('root')  # must have root
+-    o['variables']['icu_locales'] = string.join(locs,',')
++    o['variables']['icu_locales'] = ','.join(str(loc) for loc in locs)
+     # We will check a bit later if we can use the canned deps/icu-small
+   elif with_intl == 'full-icu':
+     # full ICU
+@@ -1329,10 +1308,11 @@ def configure_intl(o):
+   icu_ver_major = None
+   matchVerExp = r'^\s*#define\s+U_ICU_VERSION_SHORT\s+"([^"]*)".*'
+   match_version = re.compile(matchVerExp)
+-  for line in open(uvernum_h).readlines():
+-    m = match_version.match(line)
+-    if m:
+-      icu_ver_major = m.group(1)
++  with io.open(uvernum_h, encoding='utf8') as in_file:
++    for line in in_file:
++      m = match_version.match(line)
++      if m:
++        icu_ver_major = str(m.group(1))
+   if not icu_ver_major:
+     print('Could not read U_ICU_VERSION_SHORT version from %s' % uvernum_h)
+     sys.exit(1)
+-- 
+2.25.1
+

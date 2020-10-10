@@ -1,0 +1,24 @@
+From 105b309821fc493836aa358a5b3aad868a0d8b8b Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Sat, 10 Oct 2020 09:53:45 +0800
+Subject: [PATCH 14/17] py2to3: fix deps/v8/third_party/jinja2/runtime.py
+
+---
+ deps/v8/third_party/jinja2/runtime.py | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/deps/v8/third_party/jinja2/runtime.py b/deps/v8/third_party/jinja2/runtime.py
+index f90f5542e5..5b29743a58 100644
+--- a/deps/v8/third_party/jinja2/runtime.py
++++ b/deps/v8/third_party/jinja2/runtime.py
+@@ -522,7 +522,6 @@ class Undefined(object):
+ 
+     def __bool__(self):
+         return False
+-    __bool__ = __nonzero__
+ 
+     def __repr__(self):
+         return 'Undefined'
+-- 
+2.25.1
+

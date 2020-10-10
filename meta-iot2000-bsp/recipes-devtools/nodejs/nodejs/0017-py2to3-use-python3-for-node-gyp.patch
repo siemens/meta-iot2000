@@ -1,0 +1,144 @@
+From 645d16588103090743ee5ca582b93c136cba9963 Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Fri, 16 Oct 2020 15:16:06 +0800
+Subject: [PATCH 17/17] py2to3: use python3 for node-gyp
+
+---
+ .../node-gyp/gyp/pylib/gyp/input.py           | 51 +++++++++----------
+ .../node_modules/node-gyp/lib/configure.js    |  6 +--
+ 2 files changed, 26 insertions(+), 31 deletions(-)
+
+diff --git a/deps/npm/node_modules/node-gyp/gyp/pylib/gyp/input.py b/deps/npm/node_modules/node-gyp/gyp/pylib/gyp/input.py
+index a64b89b5e4..1b48c86c31 100644
+--- a/deps/npm/node_modules/node-gyp/gyp/pylib/gyp/input.py
++++ b/deps/npm/node_modules/node-gyp/gyp/pylib/gyp/input.py
+@@ -2,14 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
+-from compiler.ast import Const
+-from compiler.ast import Dict
+-from compiler.ast import Discard
+-from compiler.ast import List
+-from compiler.ast import Module
+-from compiler.ast import Node
+-from compiler.ast import Stmt
+-import compiler
++import ast
+ import gyp.common
+ import gyp.simple_copy
+ import multiprocessing
+@@ -182,43 +175,39 @@ def CheckedEval(file_contents):
+   Note that this is slower than eval() is.
+   """
+ 
+-  ast = compiler.parse(file_contents)
+-  assert isinstance(ast, Module)
+-  c1 = ast.getChildren()
+-  assert c1[0] is None
+-  assert isinstance(c1[1], Stmt)
+-  c2 = c1[1].getChildren()
+-  assert isinstance(c2[0], Discard)
+-  c3 = c2[0].getChildren()
+-  assert len(c3) == 1
+-  return CheckNode(c3[0], [])
++  syntax_tree = ast.parse(file_contents)
++  assert isinstance(syntax_tree, ast.Module)
++  c1 = syntax_tree.body
++  assert len(c1) == 1
++  c2 = c1[0]
++  assert isinstance(c2, ast.Expr)
++  return CheckNode(c2.value, [])
+ 
+ 
+ def CheckNode(node, keypath):
+-  if isinstance(node, Dict):
++  if isinstance(node, ast.Dict):
+     c = node.getChildren()
+     dict = {}
+-    for n in range(0, len(c), 2):
+-      assert isinstance(c[n], Const)
+-      key = c[n].getChildren()[0]
++    for key, value in zip(node.keys, node.values):
++      assert isinstance(key, ast.Str)
++      key = key.s
+       if key in dict:
+         raise GypError("Key '" + key + "' repeated at level " +
+               repr(len(keypath) + 1) + " with key path '" +
+               '.'.join(keypath) + "'")
+       kp = list(keypath)  # Make a copy of the list for descending this node.
+       kp.append(key)
+-      dict[key] = CheckNode(c[n + 1], kp)
++      dict[key] = CheckNode(value, kp)
+     return dict
+-  elif isinstance(node, List):
+-    c = node.getChildren()
++  elif isinstance(node, ast.List):
+     children = []
+-    for index, child in enumerate(c):
++    for index, child in enumerate(node.elts):
+       kp = list(keypath)  # Copy list.
+       kp.append(repr(index))
+       children.append(CheckNode(child, kp))
+     return children
+-  elif isinstance(node, Const):
+-    return node.getChildren()[0]
++  elif isinstance(node, ast.Str):
++    return node.s
+   else:
+     raise TypeError("Unknown AST node at key path '" + '.'.join(keypath) +
+          "': " + repr(node))
+@@ -716,6 +705,9 @@ PHASE_LATELATE = 2
+ 
+ def ExpandVariables(input, phase, variables, build_file):
+   # Look for the pattern that gets expanded into variables
++  def to_utf8(s):
++    return s if isinstance(s, str) else s.decode('utf-8')
++
+   if phase == PHASE_EARLY:
+     variable_re = early_variable_re
+     expansion_symbol = '<'
+@@ -918,6 +910,9 @@ def ExpandVariables(input, phase, variables, build_file):
+ 
+           p_stdout, p_stderr = p.communicate('')
+ 
++          p_stdout = to_utf8(p_stdout)
++          p_stderr = to_utf8(p_stderr)
++
+           if p.wait() != 0 or p_stderr:
+             sys.stderr.write(p_stderr)
+             # Simulate check_call behavior, since check_call only exists
+diff --git a/deps/npm/node_modules/node-gyp/lib/configure.js b/deps/npm/node_modules/node-gyp/lib/configure.js
+index 6ff19559cd..120bda7ee2 100644
+--- a/deps/npm/node_modules/node-gyp/lib/configure.js
++++ b/deps/npm/node_modules/node-gyp/lib/configure.js
+@@ -432,7 +432,7 @@ PythonFinder.prototype = {
+     var env = extend({}, this.env)
+     env.TERM = 'dumb'
+ 
+-    var launcherArgs = ['-2', '-c', 'import sys; print sys.executable']
++    var launcherArgs = ['-2', '-c', 'import sys; print(sys.executable)']
+     this.execFile('py.exe', launcherArgs, { env: env }, function (err, stdout) {
+       if (err) {
+         this.guessPython()
+@@ -448,7 +448,7 @@ PythonFinder.prototype = {
+   },
+ 
+   checkPythonVersion: function checkPythonVersion () {
+-    var args = ['-c', 'import sys; print "%s.%s.%s" % sys.version_info[:3];']
++    var args = ['-c', 'import sys; print("%s.%s.%s" % sys.version_info[:3]);']
+     var env = extend({}, this.env)
+     env.TERM = 'dumb'
+ 
+@@ -460,7 +460,7 @@ PythonFinder.prototype = {
+                        '`%s -c "' + args[1] + '"` returned: %j',
+                        this.python, stdout)
+       var version = stdout.trim()
+-      var range = semver.Range('>=2.5.0 <3.0.0')
++      var range = semver.Range('>=2.5.0 <3.9.0')
+       var valid = false
+       try {
+         valid = range.test(version)
+-- 
+2.25.1
+

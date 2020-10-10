@@ -1,0 +1,115 @@
+From e5eaa0d629f1dd4350337c01f0ebaf771da8c40a Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Fri, 9 Oct 2020 19:31:00 +0800
+Subject: [PATCH 11/17] py2to3: fix tools/js2c.py & deps/v8/tools/js2c.py
+
+---
+ deps/v8/tools/js2c.py | 22 +++++++++++-----------
+ tools/js2c.py         |  8 +++-----
+ 2 files changed, 14 insertions(+), 16 deletions(-)
+
+diff --git a/deps/v8/tools/js2c.py b/deps/v8/tools/js2c.py
+index 511b75094a..784483934e 100755
+--- a/deps/v8/tools/js2c.py
++++ b/deps/v8/tools/js2c.py
+@@ -35,7 +35,7 @@ import os, re
+ import optparse
+ import jsmin
+ import textwrap
+-from functools import reduce
++from functools import reduce, cmp_to_key
+ 
+ 
+ class Error(Exception):
+@@ -407,8 +407,8 @@ def PrepareSources(source_files, native_type, emit_js):
+     filters = BuildFilterChain(macro_file, message_template_file)
+ 
+   # Sort 'debugger' sources first.
+-  source_files = sorted(source_files,
+-                        lambda l,r: IsDebuggerFile(r) - IsDebuggerFile(l))
++  source_files = sorted(source_files, 
++    key=cmp_to_key(lambda l,r: IsDebuggerFile(r) - IsDebuggerFile(l)))
+ 
+   source_files_and_contents = [(f, ReadFile(f)) for f in source_files]
+ 
+@@ -505,13 +505,13 @@ def PutInt(blob_file, value):
+   byte_sequence = bytearray()
+   for i in range(size):
+     byte_sequence.append(value_with_length & 255)
+-    value_with_length >>= 8;
++    value_with_length >>= 8
+   blob_file.write(byte_sequence)
+ 
+ 
+ def PutStr(blob_file, value):
+-  PutInt(blob_file, len(value));
+-  blob_file.write(value);
++  PutInt(blob_file, len(value))
++  blob_file.write(value.encode('utf-8'))
+ 
+ 
+ def WriteStartupBlob(sources, startup_blob):
+@@ -524,16 +524,16 @@ def WriteStartupBlob(sources, startup_blob):
+   """
+   output = open(startup_blob, "wb")
+ 
+-  debug_sources = sum(sources.is_debugger_id);
++  debug_sources = sum(sources.is_debugger_id)
+   PutInt(output, debug_sources)
+   for i in range(debug_sources):
+-    PutStr(output, sources.names[i]);
+-    PutStr(output, sources.modules[i]);
++    PutStr(output, sources.names[i])
++    PutStr(output, sources.modules[i])
+ 
+   PutInt(output, len(sources.names) - debug_sources)
+   for i in range(debug_sources, len(sources.names)):
+-    PutStr(output, sources.names[i]);
+-    PutStr(output, sources.modules[i]);
++    PutStr(output, sources.names[i])
++    PutStr(output, sources.modules[i])
+ 
+   output.close()
+ 
+diff --git a/tools/js2c.py b/tools/js2c.py
+index 0fe695a64c..bb66a69af8 100755
+--- a/tools/js2c.py
++++ b/tools/js2c.py
+@@ -34,8 +34,6 @@
+ import os
+ import re
+ import sys
+-import string
+-
+ 
+ def ToCArray(elements, step=10):
+   slices = (elements[i:i+step] for i in range(0, len(elements), step))
+@@ -148,14 +146,14 @@ def ReadMacros(lines):
+       macro_match = MACRO_PATTERN.match(line)
+       if macro_match:
+         name = macro_match.group(1)
+-        args = list(map(string.strip, macro_match.group(2).split(',')))
++        args = [x.strip() for x in macro_match.group(2).split(',')]
+         body = macro_match.group(3).strip()
+         macros[name] = TextMacro(args, body)
+       else:
+         python_match = PYTHON_MACRO_PATTERN.match(line)
+         if python_match:
+           name = python_match.group(1)
+-          args = list(map(string.strip, python_match.group(2).split(',')))
++          args = [x.strip() for x in python_match.group(2).split(',')]
+           body = python_match.group(3).strip()
+           fun = eval("lambda " + ",".join(args) + ': ' + body)
+           macros[name] = PythonMacro(args, fun)
+@@ -223,7 +221,7 @@ def Render(var, data):
+   # Treat non-ASCII as UTF-8 and convert it to UTF-16.
+   if any(ord(c) > 127 for c in data):
+     template = TWO_BYTE_STRING
+-    data = list(map(ord, data.decode('utf-8').encode('utf-16be')))
++    data = bytearray(data, 'utf-16le')
+     data = [data[i] * 256 + data[i+1] for i in range(0, len(data), 2)]
+     data = ToCArray(data)
+   else:
+-- 
+2.25.1
+

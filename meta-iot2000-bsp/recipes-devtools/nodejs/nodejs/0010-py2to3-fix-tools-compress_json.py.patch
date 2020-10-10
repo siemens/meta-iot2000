@@ -1,0 +1,42 @@
+From fcb34ab66af6aec80a76d655ac483c4bcb0c8396 Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Fri, 9 Oct 2020 19:08:09 +0800
+Subject: [PATCH 10/17] py2to3: fix tools/compress_json.py
+
+---
+ tools/compress_json.py | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/tools/compress_json.py b/tools/compress_json.py
+index f136cd49be..13808b9769 100644
+--- a/tools/compress_json.py
++++ b/tools/compress_json.py
+@@ -6,9 +6,9 @@ import sys
+ import zlib
+ 
+ if __name__ == '__main__':
+-  fp = open(sys.argv[1])
+-  obj = json.load(fp)
+-  text = json.dumps(obj, separators=(',', ':'))
++  with open(sys.argv[1]) as fp:
++    obj = json.load(fp)
++  text = json.dumps(obj, separators=(',', ':')).encode('utf-8')
+   data = zlib.compress(text, zlib.Z_BEST_COMPRESSION)
+ 
+   # To make decompression a little easier, we prepend the compressed data
+@@ -18,8 +18,9 @@ if __name__ == '__main__':
+ 
+   step = 20
+   slices = (data[i:i+step] for i in range(0, len(data), step))
+-  slices = [','.join(str(ord(c)) for c in s) for s in slices]
++  slices = [','.join(str(c) for c in s) for s in slices]
++
+   text = ',\n'.join(slices)
+ 
+-  fp = open(sys.argv[2], 'w')
+-  fp.write(text)
++  with open(sys.argv[2], 'w') as fp:
++    fp.write(text)
+-- 
+2.25.1
+

@@ -1,0 +1,127 @@
+From 5c933ffe74a9aaf6a6f94cea3648c5ca772f5bdb Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Fri, 9 Oct 2020 19:56:40 +0800
+Subject: [PATCH 12/17] py2to3: fix deps/v8/tools/gen-postmortem-metadata.py
+
+---
+ deps/v8/tools/gen-postmortem-metadata.py | 65 ++++++++++++------------
+ 1 file changed, 32 insertions(+), 33 deletions(-)
+
+diff --git a/deps/v8/tools/gen-postmortem-metadata.py b/deps/v8/tools/gen-postmortem-metadata.py
+index 827d00dc9e..9dd9f0ee52 100644
+--- a/deps/v8/tools/gen-postmortem-metadata.py
++++ b/deps/v8/tools/gen-postmortem-metadata.py
+@@ -237,7 +237,7 @@ consts_misc = [
+         'value': 'UnseededNumberDictionaryShape::kEntrySize' },
+ 
+     { 'name': 'type_JSError__JS_ERROR_TYPE', 'value': 'JS_ERROR_TYPE' },
+-];
++]
+ 
+ #
+ # The following useful fields are missing accessors, so we define fake ones.
+@@ -282,7 +282,7 @@ extras_accessors = [
+     'SlicedString, parent, String, kParentOffset',
+     'Code, instruction_start, uintptr_t, kHeaderSize',
+     'Code, instruction_size, int, kInstructionSizeOffset',
+-];
++]
+ 
+ #
+ # The following is a whitelist of classes we expect to find when scanning the
+@@ -293,7 +293,7 @@ expected_classes = [
+     'ConsString', 'FixedArray', 'HeapNumber', 'JSArray', 'JSFunction',
+     'JSObject', 'JSRegExp', 'JSValue', 'Map', 'Oddball', 'Script',
+     'SeqOneByteString', 'SharedFunctionInfo'
+-];
++]
+ 
+ 
+ #
+@@ -627,54 +627,53 @@ def emit_set(out, consts):
+ # Emit the whole output file.
+ #
+ def emit_config():
+-        out = file(sys.argv[1], 'w');
++    with open(sys.argv[1], 'w') as out:
++        out.write(header)
+ 
+-        out.write(header);
++        out.write('/* miscellaneous constants */\n')
++        emit_set(out, consts_misc)
+ 
+-        out.write('/* miscellaneous constants */\n');
+-        emit_set(out, consts_misc);
+-
+-        out.write('/* class type information */\n');
+-        consts = [];
+-        keys = list(typeclasses.keys());
+-        keys.sort();
++        out.write('/* class type information */\n')
++        consts = []
++        keys = list(typeclasses.keys())
++        keys.sort()
+         for typename in keys:
+-                klass = typeclasses[typename];
++                klass = typeclasses[typename]
+                 consts.append({
+                     'name': 'type_%s__%s' % (klass, typename),
+                     'value': typename
+-                });
++                })
+ 
+-        emit_set(out, consts);
++        emit_set(out, consts)
+ 
+-        out.write('/* class hierarchy information */\n');
+-        consts = [];
+-        keys = list(klasses.keys());
+-        keys.sort();
++        out.write('/* class hierarchy information */\n')
++        consts = []
++        keys = list(klasses.keys())
++        keys.sort()
+         for klassname in keys:
+-                pklass = klasses[klassname]['parent'];
+-                bklass = get_base_class(klassname);
++                pklass = klasses[klassname]['parent']
++                bklass = get_base_class(klassname)
+                 if (bklass != 'Object'):
+-                        continue;
++                        continue
+                 if (pklass == None):
+-                        continue;
++                        continue
+ 
+                 consts.append({
+                     'name': 'parent_%s__%s' % (klassname, pklass),
+                     'value': 0
+-                });
++                })
+ 
+-        emit_set(out, consts);
++        emit_set(out, consts)
+ 
+-        out.write('/* field information */\n');
+-        emit_set(out, fields);
++        out.write('/* field information */\n')
++        emit_set(out, fields)
+ 
+-        out.write(footer);
++        out.write(footer)
+ 
+ if (len(sys.argv) < 4):
+-        print(('usage: %s output.cc objects.h objects-inl.h' % sys.argv[0]));
+-        sys.exit(2);
++        print(('usage: %s output.cc objects.h objects-inl.h' % sys.argv[0]))
++        sys.exit(2)
+ 
+-load_objects();
+-load_fields();
+-emit_config();
++load_objects()
++load_fields()
++emit_config()
+-- 
+2.25.1
+

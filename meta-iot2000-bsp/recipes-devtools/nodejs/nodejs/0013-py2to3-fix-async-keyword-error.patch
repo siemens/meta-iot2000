@@ -1,0 +1,37 @@
+From 953b8be4b82d3118f6b27d6e45cf048d08a48735 Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Sat, 10 Oct 2020 09:47:32 +0800
+Subject: [PATCH 13/17] py2to3: fix async keyword error
+
+fix async keyword error in:
+deps/v8/third_party/inspector_protocol/CodeGenerator.py
+---
+ deps/v8/third_party/inspector_protocol/CodeGenerator.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/deps/v8/third_party/inspector_protocol/CodeGenerator.py b/deps/v8/third_party/inspector_protocol/CodeGenerator.py
+index 20d05bc9f4..eda58710f5 100644
+--- a/deps/v8/third_party/inspector_protocol/CodeGenerator.py
++++ b/deps/v8/third_party/inspector_protocol/CodeGenerator.py
+@@ -31,6 +31,9 @@ def read_config():
+             items = [(k, os.path.join(config_base, v) if k == "path" else v) for (k, v) in list(object_dict.items())]
+             items = [(k, os.path.join(output_base, v) if k == "output" else v) for (k, v) in items]
+             keys, values = list(zip(*items))
++            # 'async' is a keyword since Python 3.7.
++            # Avoid namedtuple(rename=True) for compatibility with Python 2.X.
++            keys = tuple('async_' if k == 'async' else k for k in keys)
+             return collections.namedtuple('X', keys)(*values)
+         return json.loads(data, object_hook=json_object_hook)
+ 
+@@ -443,7 +446,7 @@ class Protocol(object):
+     def is_async_command(self, domain, command):
+         if not self.config.protocol.options:
+             return False
+-        return self.check_options(self.config.protocol.options, domain, command, "async", None, False)
++        return self.check_options(self.config.protocol.options, domain, command, "async_", None, False)
+ 
+ 
+     def is_exported(self, domain, name):
+-- 
+2.25.1
+

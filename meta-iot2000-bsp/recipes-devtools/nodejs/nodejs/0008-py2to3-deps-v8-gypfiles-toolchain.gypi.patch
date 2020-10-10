@@ -1,0 +1,25 @@
+From ceb2f77fb9f4c0fa406ac2edeeb71fbe3a19ff27 Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Fri, 9 Oct 2020 18:52:28 +0800
+Subject: [PATCH 08/17] py2to3: deps/v8/gypfiles/toolchain.gypi
+
+---
+ deps/v8/gypfiles/toolchain.gypi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/deps/v8/gypfiles/toolchain.gypi b/deps/v8/gypfiles/toolchain.gypi
+index 2b150b44b4..423f24b998 100644
+--- a/deps/v8/gypfiles/toolchain.gypi
++++ b/deps/v8/gypfiles/toolchain.gypi
+@@ -41,7 +41,7 @@
+     'has_valgrind%': 0,
+     'coverage%': 0,
+     'v8_target_arch%': '<(target_arch)',
+-    'v8_host_byteorder%': '<!(python -c "import sys; print sys.byteorder")',
++    'v8_host_byteorder%': '<!(python -c "import sys; print(sys.byteorder)")',
+     'force_dynamic_crt%': 0,
+ 
+     # Setting 'v8_can_use_vfp32dregs' to 'true' will cause V8 to use the VFP
+-- 
+2.25.1
+

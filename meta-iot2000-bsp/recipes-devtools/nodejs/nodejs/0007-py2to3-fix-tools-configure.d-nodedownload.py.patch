@@ -1,0 +1,30 @@
+From 215127972a08d32990c66f280d7ddf9e232a7ab6 Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Fri, 9 Oct 2020 18:19:02 +0800
+Subject: [PATCH 07/17] py2to3: fix tools/configure.d/nodedownload.py
+
+---
+ tools/configure.d/nodedownload.py | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/tools/configure.d/nodedownload.py b/tools/configure.d/nodedownload.py
+index 64a85bb505..92a30d6ee5 100644
+--- a/tools/configure.d/nodedownload.py
++++ b/tools/configure.d/nodedownload.py
+@@ -6,12 +6,11 @@ import hashlib
+ import sys
+ import zipfile
+ import tarfile
+-import fpformat
+ import contextlib
+ 
+ def formatSize(amt):
+     """Format a size as a string in MB"""
+-    return fpformat.fix(amt / 1024000., 1)
++    return "%.1f" % (amt / 1024000.)
+ 
+ def spin(c):
+     """print out an ASCII 'spinner' based on the value of counter 'c'"""
+-- 
+2.25.1
+

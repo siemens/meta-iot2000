@@ -1,0 +1,77 @@
+From 92df8ee33bcb322d3b26e073475cb9908f26736a Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Sat, 10 Oct 2020 12:59:22 +0800
+Subject: [PATCH 15/17] py2to3: fix gyp/samples/samples
+
+---
+ deps/npm/node_modules/node-gyp/gyp/samples/samples | 8 ++++----
+ tools/gyp/samples/samples                          | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/deps/npm/node_modules/node-gyp/gyp/samples/samples b/deps/npm/node_modules/node-gyp/gyp/samples/samples
+index 804b618998..94c0a9febd 100755
+--- a/deps/npm/node_modules/node-gyp/gyp/samples/samples
++++ b/deps/npm/node_modules/node-gyp/gyp/samples/samples
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ 
+ # Copyright (c) 2009 Google Inc. All rights reserved.
+ # Use of this source code is governed by a BSD-style license that can be
+@@ -57,7 +57,7 @@ gyps = [
+ 
+ def Main(argv):
+   if len(argv) != 3 or argv[1] not in ['push', 'pull']:
+-    print 'Usage: %s push/pull PATH_TO_CHROME' % argv[0]
++    print('Usage: %s push/pull PATH_TO_CHROME' % argv[0])
+     return 1
+ 
+   path_to_chrome = argv[2]
+@@ -66,10 +66,10 @@ def Main(argv):
+     chrome_file = os.path.join(path_to_chrome, g)
+     local_file = os.path.join(os.path.dirname(argv[0]), os.path.split(g)[1])
+     if argv[1] == 'push':
+-      print 'Copying %s to %s' % (local_file, chrome_file)
++      print('Copying %s to %s' % (local_file, chrome_file))
+       shutil.copyfile(local_file, chrome_file)
+     elif argv[1] == 'pull':
+-      print 'Copying %s to %s' % (chrome_file, local_file)
++      print('Copying %s to %s' % (chrome_file, local_file))
+       shutil.copyfile(chrome_file, local_file)
+     else:
+       assert False
+diff --git a/tools/gyp/samples/samples b/tools/gyp/samples/samples
+index 804b618998..94c0a9febd 100755
+--- a/tools/gyp/samples/samples
++++ b/tools/gyp/samples/samples
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ 
+ # Copyright (c) 2009 Google Inc. All rights reserved.
+ # Use of this source code is governed by a BSD-style license that can be
+@@ -57,7 +57,7 @@ gyps = [
+ 
+ def Main(argv):
+   if len(argv) != 3 or argv[1] not in ['push', 'pull']:
+-    print 'Usage: %s push/pull PATH_TO_CHROME' % argv[0]
++    print('Usage: %s push/pull PATH_TO_CHROME' % argv[0])
+     return 1
+ 
+   path_to_chrome = argv[2]
+@@ -66,10 +66,10 @@ def Main(argv):
+     chrome_file = os.path.join(path_to_chrome, g)
+     local_file = os.path.join(os.path.dirname(argv[0]), os.path.split(g)[1])
+     if argv[1] == 'push':
+-      print 'Copying %s to %s' % (local_file, chrome_file)
++      print('Copying %s to %s' % (local_file, chrome_file))
+       shutil.copyfile(local_file, chrome_file)
+     elif argv[1] == 'pull':
+-      print 'Copying %s to %s' % (chrome_file, local_file)
++      print('Copying %s to %s' % (chrome_file, local_file))
+       shutil.copyfile(chrome_file, local_file)
+     else:
+       assert False
+-- 
+2.25.1
+

@@ -1,0 +1,25 @@
+From 315faa68fc362e74f3f5c06f85629dec1bcc8cab Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Tue, 13 Oct 2020 13:26:50 +0800
+Subject: [PATCH 16/17] py2to3: fix js2c.py
+
+---
+ tools/js2c.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/js2c.py b/tools/js2c.py
+index bb66a69af8..c06d38428b 100755
+--- a/tools/js2c.py
++++ b/tools/js2c.py
+@@ -222,7 +222,7 @@ def Render(var, data):
+   if any(ord(c) > 127 for c in data):
+     template = TWO_BYTE_STRING
+     data = bytearray(data, 'utf-16le')
+-    data = [data[i] * 256 + data[i+1] for i in range(0, len(data), 2)]
++    data = [data[i] + data[i+1]*256 for i in range(0, len(data), 2)]
+     data = ToCArray(data)
+   else:
+     template = ONE_BYTE_STRING
+-- 
+2.25.1
+
