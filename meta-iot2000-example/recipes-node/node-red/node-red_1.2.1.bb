@@ -17,6 +17,6 @@ do_install_append() {
 
 FILES_${PN} += "${sysconfdir}/init.d/node-red.sh ${bindir}/node-red"
 
-RDEPENDS_${PN} += "python bash"
+RDEPENDS_${PN} += "python3 bash"
 
 INSANE_SKIP_${PN} += "textrel"
