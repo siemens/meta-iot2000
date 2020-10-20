@@ -16,7 +16,7 @@ RDEPENDS_${PN} += " \
     node-red-node-serialport \
     node-red-node-intel-gpio \
     node-red-contrib-boolean-logic \
-    node-red-contrib-iiot-opcua \
+    node-red-contrib-opcua \
     node-red-contrib-modbus \
     mindconnect-node-red-contrib-mindconnect"
 
