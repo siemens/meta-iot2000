@@ -1,8 +1,9 @@
-From 5cf9826feea16dfe9bca20fa06a8e6c3eb7a0f69 Mon Sep 17 00:00:00 2001
+From 9d1b310f6ddf67eeb667ef1e11b0b1b596545dc5 Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Fri, 9 Oct 2020 17:14:34 +0800
-Subject: [PATCH 05/17] py2to3: fix configure
+Subject: [PATCH 05/24] py2to3: fix configure
 
+Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---
  configure | 68 ++++++++++++++++++++-----------------------------------
  1 file changed, 24 insertions(+), 44 deletions(-)

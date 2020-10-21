@@ -1,0 +1,37 @@
+From e21712cbb2f92b3da3951a2b93d7320042592d6a Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Fri, 16 Oct 2020 15:16:06 +0800
+Subject: [PATCH 16/24] py2to3: use python3 for node-gyp
+
+Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
+---
+ deps/npm/node_modules/node-gyp/gyp/pylib/gyp/input.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/deps/npm/node_modules/node-gyp/gyp/pylib/gyp/input.py b/deps/npm/node_modules/node-gyp/gyp/pylib/gyp/input.py
+index 2094017c34..649b7ff6da 100644
+--- a/deps/npm/node_modules/node-gyp/gyp/pylib/gyp/input.py
++++ b/deps/npm/node_modules/node-gyp/gyp/pylib/gyp/input.py
+@@ -708,6 +708,9 @@ PHASE_LATELATE = 2
+ 
+ def ExpandVariables(input, phase, variables, build_file):
+   # Look for the pattern that gets expanded into variables
++  def to_utf8(s):
++    return s if isinstance(s, str) else s.decode('utf-8')
++
+   if phase == PHASE_EARLY:
+     variable_re = early_variable_re
+     expansion_symbol = '<'
+@@ -910,6 +913,9 @@ def ExpandVariables(input, phase, variables, build_file):
+ 
+           p_stdout, p_stderr = p.communicate('')
+ 
++          p_stdout = to_utf8(p_stdout)
++          p_stderr = to_utf8(p_stderr)
++
+           if p.wait() != 0 or p_stderr:
+             sys.stderr.write(p_stderr)
+             # Simulate check_call behavior, since check_call only exists
+-- 
+2.25.1
+

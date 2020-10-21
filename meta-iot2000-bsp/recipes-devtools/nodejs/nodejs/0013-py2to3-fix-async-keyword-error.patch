@@ -1,10 +1,12 @@
-From 953b8be4b82d3118f6b27d6e45cf048d08a48735 Mon Sep 17 00:00:00 2001
+From 97416b39938eb87555746ba2164365acc2d3cd5b Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Sat, 10 Oct 2020 09:47:32 +0800
-Subject: [PATCH 13/17] py2to3: fix async keyword error
+Subject: [PATCH 13/24] py2to3: fix async keyword error
 
 fix async keyword error in:
 deps/v8/third_party/inspector_protocol/CodeGenerator.py
+
+Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---
  deps/v8/third_party/inspector_protocol/CodeGenerator.py | 5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)

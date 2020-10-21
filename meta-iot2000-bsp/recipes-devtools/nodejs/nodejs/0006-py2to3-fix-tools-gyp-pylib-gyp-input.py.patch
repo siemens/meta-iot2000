@@ -1,17 +1,18 @@
-From e08f6342e9be46b36392e45a79daa435ca0efe3f Mon Sep 17 00:00:00 2001
+From 847886e268be99030268b8bc8fc33af48a4d35c8 Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Fri, 9 Oct 2020 18:15:21 +0800
-Subject: [PATCH 06/17] py2to3: fix tools/gyp/pylib/gyp/input.py
+Subject: [PATCH 06/24] py2to3: fix tools/gyp/pylib/gyp/input.py
 
+Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---
- tools/gyp/pylib/gyp/input.py | 60 +++++++++++++++++++-----------------
- 1 file changed, 31 insertions(+), 29 deletions(-)
+ tools/gyp/pylib/gyp/input.py | 52 ++++++++++++++++--------------------
+ 1 file changed, 23 insertions(+), 29 deletions(-)
 
 diff --git a/tools/gyp/pylib/gyp/input.py b/tools/gyp/pylib/gyp/input.py
-index c322c83b28..602ee145d0 100644
+index c322c83b28..7de6c44ae2 100644
 --- a/tools/gyp/pylib/gyp/input.py
 +++ b/tools/gyp/pylib/gyp/input.py
-@@ -2,14 +2,15 @@
+@@ -2,14 +2,7 @@
  # Use of this source code is governed by a BSD-style license that can be
  # found in the LICENSE file.
  
@@ -23,19 +24,11 @@ index c322c83b28..602ee145d0 100644
 -from compiler.ast import Node
 -from compiler.ast import Stmt
 -import compiler
-+# from compiler.ast import Const
-+# from compiler.ast import Dict
-+# from compiler.ast import Discard
-+# from compiler.ast import List
-+# from compiler.ast import Module
-+# from compiler.ast import Node
-+# from compiler.ast import Stmt
-+# import compiler
 +import ast
  import gyp.common
  import gyp.simple_copy
  import multiprocessing
-@@ -183,43 +184,39 @@ def CheckedEval(file_contents):
+@@ -183,43 +176,39 @@ def CheckedEval(file_contents):
    Note that this is slower than eval() is.
    """
  
@@ -95,7 +88,7 @@ index c322c83b28..602ee145d0 100644
    else:
      raise TypeError("Unknown AST node at key path '" + '.'.join(keypath) +
           "': " + repr(node))
-@@ -709,6 +706,9 @@ PHASE_LATELATE = 2
+@@ -709,6 +698,9 @@ PHASE_LATELATE = 2
  
  def ExpandVariables(input, phase, variables, build_file):
    # Look for the pattern that gets expanded into variables
@@ -105,7 +98,7 @@ index c322c83b28..602ee145d0 100644
    if phase == PHASE_EARLY:
      variable_re = early_variable_re
      expansion_symbol = '<'
-@@ -910,7 +910,9 @@ def ExpandVariables(input, phase, variables, build_file):
+@@ -910,7 +902,9 @@ def ExpandVariables(input, phase, variables, build_file):
                             (e, contents, build_file))
  
            p_stdout, p_stderr = p.communicate('')
