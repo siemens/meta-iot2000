@@ -18,7 +18,7 @@ repos:
 
   meta-swupdate:
     url: https://github.com/sbabic/meta-swupdate
-    refspec: 8ad6a75e1778cdda671b3d6aea2a9692613020ec
+    refspec: 1886350dacb63d931b3d1a3809b27795b0a5c306
 
 local_conf_header:
   package_ipk: |
