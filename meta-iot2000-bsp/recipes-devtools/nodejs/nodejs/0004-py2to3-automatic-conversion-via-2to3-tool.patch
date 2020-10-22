@@ -1,7 +1,7 @@
 From 1acb2be57b495e55860fb16d88a2a06e756c15ac Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Fri, 9 Oct 2020 16:21:40 +0800
-Subject: [PATCH 04/24] py2to3: automatic conversion via 2to3 tool
+Subject: [PATCH 04/26] py2to3: automatic conversion via 2to3 tool
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---

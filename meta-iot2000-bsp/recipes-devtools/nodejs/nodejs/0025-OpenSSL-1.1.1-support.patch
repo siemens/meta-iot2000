@@ -1,0 +1,240 @@
+From c915a50970cb95f911a0b1116ab8ed9ce9eb1ff6 Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Thu, 22 Oct 2020 09:35:07 +0800
+Subject: [PATCH 25/26] OpenSSL 1.1.1 support
+
+Ported from
+OpenSUSE:nodejs8-8.17.0-lp152.147.1:openssl_1_1_1.patch
+
+Original commit message:
+
+Backport OpenSSL 1.1.1 support, mostly be disabling TLS 1.3
+Upstream commits:
+
+commit 8dd8033519658bba2d7b776ec166f889a56bce31
+Author: Shigeki Ohtsu <ohtsu@ohtsu.org>
+Date:   Wed Sep 12 17:34:24 2018 +0900
+
+    tls: workaround handshakedone in renegotiation
+
+    `SSL_CB_HANDSHAKE_START` and `SSL_CB_HANDSHAKE_DONE` are called
+    sending HelloRequest in OpenSSL-1.1.1.
+    We need to check whether this is in a renegotiation state or not.
+
+    Backport-PR-URL: https://github.com/nodejs/node/pull/26270
+    PR-URL: https://github.com/nodejs/node/pull/25381
+    Reviewed-By: Daniel Bevenius <daniel.bevenius@gmail.com>
+    Reviewed-By: Shigeki Ohtsu <ohtsu@ohtsu.org>
+
+commit 161dca72cb06e36614fdc75184383c8f456e97a4
+Author: Sam Roberts <vieuxtech@gmail.com>
+Date:   Wed Nov 28 14:11:18 2018 -0800
+
+    tls: re-define max supported version as 1.2
+
+    Several secureProtocol strings allow any supported TLS version as the
+    maximum, but our maximum supported protocol version is TLSv1.2 even if
+    someone configures a build against an OpenSSL that supports TLSv1.3.
+
+    Fixes: https://github.com/nodejs/node/issues/24658
+
+    PR-URL: https://github.com/nodejs/node/pull/25024
+    Reviewed-By: Richard Lau <riclau@uk.ibm.com>
+    Reviewed-By: Ben Noordhuis <info@bnoordhuis.nl>
+    Reviewed-By: Daniel Bevenius <daniel.bevenius@gmail.com>
+    Reviewed-By: Colin Ihrig <cjihrig@gmail.com>
+
+Partial port, remain compatible with 1.0.2:
+
+commit 970ce14f61a44504520581c5af5dc9c3bddc0f40
+Author: Shigeki Ohtsu <ohtsu@ohtsu.org>
+Date:   Wed Mar 14 14:26:55 2018 +0900
+
+    crypto: remove deperecated methods of TLS version
+
+    All version-specific methods were deprecated in OpenSSL 1.1.0 and
+    min/max versions explicitly need to be set.
+    This still keeps comptatible with JS and OpenSSL-1.0.2 APIs for now.
+
+    crypto, constants: add constant of OpenSSL-1.1.0
+
+    Several constants for OpenSSL-1.1.0 engine were removed and renamed in
+    OpenSSL-1.1.0. This added one renamed constant in order to have a
+    compatible feature with that of OpenSSL-1.0.2.
+    Other missed or new constants in OpenSSL-1.1.0 are not yet added.
+
+    crypto,tls,constants: remove OpenSSL1.0.2 support
+
+    This is semver-majar change so that we need not to have
+    compatibilities with older versions.
+
+    Fixes: https://github.com/nodejs/node/issues/4270
+    PR-URL: https://github.com/nodejs/node/pull/19794
+    Reviewed-By: James M Snell <jasnell@gmail.com>
+    Reviewed-By: Rod Vagg <rod@vagg.org>
+    Reviewed-By: Michael Dawson <michael_dawson@ca.ibm.com>
+
+Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
+---
+ src/node_constants.cc |  4 +++
+ src/node_crypto.cc    | 75 +++++++++++++++++++++++++++++++++++++++++++
+ src/tls_wrap.cc       |  5 ++-
+ 3 files changed, 83 insertions(+), 1 deletion(-)
+
+diff --git a/src/node_constants.cc b/src/node_constants.cc
+index aa245ad4fd..8be12a0b13 100644
+--- a/src/node_constants.cc
++++ b/src/node_constants.cc
+@@ -921,6 +921,10 @@ void DefineOpenSSLConstants(Local<Object> target) {
+     NODE_DEFINE_CONSTANT(target, ENGINE_METHOD_ECDSA);
+ # endif
+ 
++# ifdef ENGINE_METHOD_EC
++    NODE_DEFINE_CONSTANT(target, ENGINE_METHOD_EC);
++# endif
++
+ # ifdef ENGINE_METHOD_CIPHERS
+     NODE_DEFINE_CONSTANT(target, ENGINE_METHOD_CIPHERS);
+ # endif
+diff --git a/src/node_crypto.cc b/src/node_crypto.cc
+index 73e6e48a75..affe4c620c 100644
+--- a/src/node_crypto.cc
++++ b/src/node_crypto.cc
+@@ -509,6 +509,8 @@ void SecureContext::Init(const FunctionCallbackInfo<Value>& args) {
+   ASSIGN_OR_RETURN_UNWRAP(&sc, args.Holder());
+   Environment* env = sc->env();
+ 
++  int min_version = 0;
++  int max_version = 0;
+   const SSL_METHOD* method = TLS_method();
+ 
+   if (args.Length() == 1 && args[0]->IsString()) {
+@@ -531,29 +533,95 @@ void SecureContext::Init(const FunctionCallbackInfo<Value>& args) {
+     } else if (strcmp(*sslmethod, "SSLv3_client_method") == 0) {
+       return env->ThrowError("SSLv3 methods disabled");
+     } else if (strcmp(*sslmethod, "SSLv23_method") == 0) {
++      #if OPENSSL_VERSION_NUMBER >= 0x10100000L
++      method = TLS_method();
++      #else
+       method = SSLv23_method();
++      #endif
+     } else if (strcmp(*sslmethod, "SSLv23_server_method") == 0) {
++      #if OPENSSL_VERSION_NUMBER >= 0x10100000L
++      method = TLS_server_method();
++      #else
+       method = SSLv23_server_method();
++      #endif
+     } else if (strcmp(*sslmethod, "SSLv23_client_method") == 0) {
++      #if OPENSSL_VERSION_NUMBER >= 0x10100000L
++      method = TLS_client_method();
++      #else
+       method = SSLv23_client_method();
++      #endif
+     } else if (strcmp(*sslmethod, "TLSv1_method") == 0) {
++      #if OPENSSL_VERSION_NUMBER >= 0x10100000L
++      min_version = TLS1_VERSION;
++      max_version = TLS1_VERSION;
++      method = TLS_method();
++      #else
+       method = TLSv1_method();
++      #endif
+     } else if (strcmp(*sslmethod, "TLSv1_server_method") == 0) {
++      #if OPENSSL_VERSION_NUMBER >= 0x10100000L
++      min_version = TLS1_VERSION;
++      max_version = TLS1_VERSION;
++      method = TLS_server_method();
++      #else
+       method = TLSv1_server_method();
++      #endif
+     } else if (strcmp(*sslmethod, "TLSv1_client_method") == 0) {
++      #if OPENSSL_VERSION_NUMBER >= 0x10100000L
++      min_version = TLS1_VERSION;
++      max_version = TLS1_VERSION;
++      method = TLS_client_method();
++      #else
+       method = TLSv1_client_method();
++      #endif
+     } else if (strcmp(*sslmethod, "TLSv1_1_method") == 0) {
++      #if OPENSSL_VERSION_NUMBER >= 0x10100000L
++      min_version = TLS1_1_VERSION;
++      max_version = TLS1_1_VERSION;
++      method = TLS_method();
++      #else
+       method = TLSv1_1_method();
++      #endif
+     } else if (strcmp(*sslmethod, "TLSv1_1_server_method") == 0) {
++      #if OPENSSL_VERSION_NUMBER >= 0x10100000L
++      min_version = TLS1_1_VERSION;
++      max_version = TLS1_1_VERSION;
++      method = TLS_server_method();
++      #else
+       method = TLSv1_1_server_method();
++      #endif
+     } else if (strcmp(*sslmethod, "TLSv1_1_client_method") == 0) {
++      #if OPENSSL_VERSION_NUMBER >= 0x10100000L
++      min_version = TLS1_1_VERSION;
++      max_version = TLS1_1_VERSION;
++      method = TLS_client_method();
++      #else
+       method = TLSv1_1_client_method();
++      #endif
+     } else if (strcmp(*sslmethod, "TLSv1_2_method") == 0) {
++      #if OPENSSL_VERSION_NUMBER >= 0x10100000L
++      min_version = TLS1_2_VERSION;
++      max_version = TLS1_2_VERSION;
++      method = TLS_method();
++      #else
+       method = TLSv1_2_method();
++      #endif
+     } else if (strcmp(*sslmethod, "TLSv1_2_server_method") == 0) {
++      #if OPENSSL_VERSION_NUMBER >= 0x10100000L
++      min_version = TLS1_2_VERSION;
++      max_version = TLS1_2_VERSION;
++      method = TLS_server_method();
++      #else
+       method = TLSv1_2_server_method();
++      #endif
+     } else if (strcmp(*sslmethod, "TLSv1_2_client_method") == 0) {
++      #if OPENSSL_VERSION_NUMBER >= 0x10100000L
++      min_version = TLS1_2_VERSION;
++      max_version = TLS1_2_VERSION;
++      method = TLS_client_method();
++      #else
+       method = TLSv1_2_client_method();
++      #endif
+     } else {
+       return env->ThrowError("Unknown method");
+     }
+@@ -578,6 +646,13 @@ void SecureContext::Init(const FunctionCallbackInfo<Value>& args) {
+   SSL_CTX_sess_set_new_cb(sc->ctx_, SSLWrap<Connection>::NewSessionCallback);
+ 
+ #if OPENSSL_VERSION_NUMBER >= 0x10100000L
++  SSL_CTX_set_min_proto_version(sc->ctx_, min_version);
++  if (max_version == 0) {
++    // Selecting some secureProtocol methods allows the TLS version to be "any
++    // supported", but we don't support TLSv1.3, even if OpenSSL does.
++    max_version = TLS1_2_VERSION;
++  }
++  SSL_CTX_set_max_proto_version(sc->ctx_, max_version);
+   // OpenSSL 1.1.0 changed the ticket key size, but the OpenSSL 1.0.x size was
+   // exposed in the public API. To retain compatibility, install a callback
+   // which restores the old algorithm.
+diff --git a/src/tls_wrap.cc b/src/tls_wrap.cc
+index 4c01f618a3..c104d0ff52 100644
+--- a/src/tls_wrap.cc
++++ b/src/tls_wrap.cc
+@@ -277,7 +277,10 @@ void TLSWrap::SSLInfoCallback(const SSL* ssl_, int where, int ret) {
+     }
+   }
+ 
+-  if (where & SSL_CB_HANDSHAKE_DONE) {
++  // SSL_CB_HANDSHAKE_START and SSL_CB_HANDSHAKE_DONE are called
++  // sending HelloRequest in OpenSSL-1.1.1.
++  // We need to check whether this is in a renegotiation state or not.
++  if (where & SSL_CB_HANDSHAKE_DONE && !SSL_renegotiate_pending(ssl)) {
+     c->established_ = true;
+     Local<Value> callback = object->Get(env->onhandshakedone_string());
+     if (callback->IsFunction()) {
+-- 
+2.25.1
+

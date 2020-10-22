@@ -1,7 +1,7 @@
 From 3494ee0dd521a7bb19a418b19dc558a7976a8bbb Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Fri, 9 Oct 2020 19:31:00 +0800
-Subject: [PATCH 11/24] py2to3: fix tools/js2c.py & deps/v8/tools/js2c.py
+Subject: [PATCH 11/26] py2to3: fix tools/js2c.py & deps/v8/tools/js2c.py
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---

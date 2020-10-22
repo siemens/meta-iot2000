@@ -1,7 +1,7 @@
 From 51b59a529a4bcd66cb8a83e3f3cbd63504f1b95e Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Fri, 9 Oct 2020 18:52:28 +0800
-Subject: [PATCH 08/24] py2to3: deps/v8/gypfiles/toolchain.gypi
+Subject: [PATCH 08/26] py2to3: deps/v8/gypfiles/toolchain.gypi
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---

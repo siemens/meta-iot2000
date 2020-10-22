@@ -1,7 +1,7 @@
 From 9d1b310f6ddf67eeb667ef1e11b0b1b596545dc5 Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Fri, 9 Oct 2020 17:14:34 +0800
-Subject: [PATCH 05/24] py2to3: fix configure
+Subject: [PATCH 05/26] py2to3: fix configure
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---

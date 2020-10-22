@@ -1,7 +1,7 @@
 From 2fd4e48c11834779fa4d162a1796ee68441f54f9 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 7 Feb 2019 21:58:05 +0100
-Subject: [PATCH 02/24] Switch to x87 mode when targeting ia32
+Subject: [PATCH 02/26] Switch to x87 mode when targeting ia32
 
 Required for Quark.
 
