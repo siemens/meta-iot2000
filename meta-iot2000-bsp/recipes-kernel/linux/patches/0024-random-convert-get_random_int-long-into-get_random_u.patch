@@ -1,4 +1,4 @@
-From ed87bdc65b33ad67624049e744f17adf98a95c87 Mon Sep 17 00:00:00 2001
+From 3f0e7c51417fc7ae68d108f623df20426e065bef Mon Sep 17 00:00:00 2001
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Date: Sun, 22 Jan 2017 16:34:08 +0100
 Subject: [PATCH 24/32] random: convert get_random_int/long into
@@ -22,10 +22,10 @@ Signed-off-by: Theodore Ts'o <tytso@mit.edu>
  2 files changed, 35 insertions(+), 29 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 64a1254bf0ba..1a22df4e9289 100644
+index 4fa63bfde6c9..0a05e87d17e2 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
-@@ -2070,8 +2070,8 @@ struct ctl_table random_table[] = {
+@@ -2071,8 +2071,8 @@ struct ctl_table random_table[] = {
  
  struct batched_entropy {
  	union {
@@ -36,7 +36,7 @@ index 64a1254bf0ba..1a22df4e9289 100644
  	};
  	unsigned int position;
  };
-@@ -2081,46 +2081,39 @@ struct batched_entropy {
+@@ -2082,46 +2082,39 @@ struct batched_entropy {
   * number is either as good as RDRAND or as good as /dev/urandom, with the
   * goal of being quite fast and not depleting entropy.
   */
@@ -102,7 +102,7 @@ index 64a1254bf0ba..1a22df4e9289 100644
  /*
   * randomize_range() returns a start address such that
 diff --git a/include/linux/random.h b/include/linux/random.h
-index 3e874bcdf8b8..39f125ba80bb 100644
+index 63041eb581da..45c3c3b4ee92 100644
 --- a/include/linux/random.h
 +++ b/include/linux/random.h
 @@ -32,8 +32,21 @@ void generate_random_uuid(unsigned char uuid_out[16]);
@@ -128,7 +128,7 @@ index 3e874bcdf8b8..39f125ba80bb 100644
 +
  unsigned long randomize_range(unsigned long start, unsigned long end, unsigned long len);
  
- u32 prandom_u32(void);
+ /*
 -- 
-2.26.2
+2.25.1
 

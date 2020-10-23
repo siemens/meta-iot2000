@@ -1,4 +1,4 @@
-From a308b11a12fc1cf88e20554547c24bac51d459b2 Mon Sep 17 00:00:00 2001
+From 71127aa7757bef8158fabb51b14a78a3cb77dba3 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 22 Jun 2017 08:17:57 +0200
 Subject: [PATCH 01/32] stmmac: pci: Make stmmac_pci_info structure constant
@@ -86,5 +86,5 @@ index 3491e98bffc5..828d276748e3 100644
  				return ret;
  		}
 -- 
-2.26.2
+2.25.1
 

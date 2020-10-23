@@ -1,4 +1,4 @@
-From 78d2a3beacb2562fd5f688e774859f2b1c039953 Mon Sep 17 00:00:00 2001
+From 63e143117ddacd4931283088506f01b5938f5ba6 Mon Sep 17 00:00:00 2001
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Date: Fri, 6 Jan 2017 19:32:01 +0100
 Subject: [PATCH 23/32] random: use chacha20 for get_random_int/long
@@ -41,10 +41,10 @@ Signed-off-by: Theodore Ts'o <tytso@mit.edu>
  3 files changed, 41 insertions(+), 41 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 54f554161b51..64a1254bf0ba 100644
+index 9ca6eb7490dc..4fa63bfde6c9 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
-@@ -2068,57 +2068,59 @@ struct ctl_table random_table[] = {
+@@ -2069,57 +2069,59 @@ struct ctl_table random_table[] = {
  };
  #endif 	/* CONFIG_SYSCTL */
  
@@ -144,7 +144,7 @@ index 54f554161b51..64a1254bf0ba 100644
  /*
   * randomize_range() returns a start address such that
 diff --git a/include/linux/random.h b/include/linux/random.h
-index 9c29122037f9..3e874bcdf8b8 100644
+index 2fa4207fd067..63041eb581da 100644
 --- a/include/linux/random.h
 +++ b/include/linux/random.h
 @@ -27,7 +27,6 @@ extern int add_random_ready_callback(struct random_ready_callback *rdy);
@@ -168,5 +168,5 @@ index 88159063baa1..f550c51372f9 100644
  
  static void __init do_pre_smp_initcalls(void)
 -- 
-2.26.2
+2.25.1
 
