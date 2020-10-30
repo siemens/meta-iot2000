@@ -121,10 +121,10 @@ function kernel_handler(image)
     kernelparams = kernelparams:gsub("REPLACEME", newroot)
     kernelfile = bootlabels[rootindex] .. kernelname
 
-    swupdate.info(string.format("Setting bootloader environment: %s=%s", "kernelfile", kernelfile))
+    swupdate.info("Setting bootloader environment: %s=%s", "kernelfile", kernelfile)
     swupdate.set_bootenv("kernelfile", kernelfile)
 
-    swupdate.info(string.format("Setting bootloader environment: %s=%s", "kernelparams", kernelparams))
+    swupdate.info("Setting bootloader environment: %s=%s", "kernelparams", kernelparams)
     swupdate.set_bootenv("kernelparams", kernelparams)
 
     return 0
