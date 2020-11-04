@@ -1,4 +1,4 @@
-From 2fb20a434404d954740556b56466365587c33cfc Mon Sep 17 00:00:00 2001
+From 3e04b76fef134ae25191d8c38759e0aa3da67ebd Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Mon, 26 Sep 2016 08:52:49 +0200
 Subject: [PATCH 1/2] spi: pca2xx-pci: Allow MSI
@@ -35,5 +35,5 @@ index ac0658ead1b9..0a9be3b6538a 100644
  	ssp->clk = clk_register_fixed_rate(&dev->dev, buf , NULL,
  					CLK_IS_ROOT, c->max_clk_rate);
 -- 
-2.13.6
+2.25.1
 

@@ -1,4 +1,4 @@
-From 53ba2fa8dbee50b77d34b581926da03f3297a3e8 Mon Sep 17 00:00:00 2001
+From c9f4321d8b74096202ee3e614f0e08c2681f6bd2 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 22 Jun 2017 08:18:01 +0200
 Subject: [PATCH 05/32] stmmac: pci: Use dmi_system_id table for retrieving PHY
@@ -163,5 +163,5 @@ index 9fe6368738ec..279a1355d75f 100644
  		/* Return error to the caller on DMI enabled boards. */
  		if (dmi_get_system_info(DMI_BOARD_NAME))
 -- 
-2.26.2
+2.25.1
 

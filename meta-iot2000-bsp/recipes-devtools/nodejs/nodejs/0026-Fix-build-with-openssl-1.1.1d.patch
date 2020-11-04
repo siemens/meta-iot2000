@@ -1,0 +1,137 @@
+From 347c11adc5e47dff998b1d42e5718aa09e7368c8 Mon Sep 17 00:00:00 2001
+From: Su Baocheng <baocheng.su@siemens.com>
+Date: Thu, 22 Oct 2020 09:38:01 +0800
+Subject: [PATCH 26/26] Fix build with openssl 1.1.1d
+
+Ported from
+OpenSUSE:nodejs8-8.17.0-lp152.147.1:fix_build_with_openssl_1.1.1d.patch
+
+Original commit message:
+
+FROM: https://github.com/nodejs/node/pull/29550/commits
+
+From 94c599e80218b09b27c0df93573a51e6adb45e61 Mon Sep 17 00:00:00 2001
+From: Sam Roberts <vieuxtech@gmail.com>
+Date: Thu, 19 Sep 2019 13:06:46 -0700
+Subject: [PATCH] fixup! test: well-defined DH groups now verify clean
+
+test/parallel/test-crypto-binary-default.js |  3 +--
+ test/parallel/test-crypto-dh.js             | 17 ++---------------
+ 2 files changed, 3 insertions(+), 17 deletions(-)
+
+From 7dc56e082b96aeee34e83dabbad81ee12607e38f Mon Sep 17 00:00:00 2001
+From: Sam Roberts <vieuxtech@gmail.com>
+Date: Fri, 13 Sep 2019 13:19:06 -0700
+Subject: [PATCH] test: well-defined DH groups now verify clean
+
+OpenSSL 1.1.1d no longer generates warnings for some DH groups that used
+to be considered unsafe. See below for discussion. This is considered a
+bug fix.
+
+See:
+- https://github.com/openssl/openssl/pull/9363
+- https://github.com/openssl/openssl/pull/9363#discussion_r324802618
+
+Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
+---
+ test/parallel/test-crypto-binary-default.js |  4 +---
+ test/parallel/test-crypto-dh.js             | 19 +++++++------------
+ 2 files changed, 8 insertions(+), 15 deletions(-)
+
+diff --git a/test/parallel/test-crypto-binary-default.js b/test/parallel/test-crypto-binary-default.js
+index 2927f14120..d4adf097c7 100644
+--- a/test/parallel/test-crypto-binary-default.js
++++ b/test/parallel/test-crypto-binary-default.js
+@@ -34,7 +34,6 @@ const crypto = require('crypto');
+ const fs = require('fs');
+ const tls = require('tls');
+ const fixtures = require('../common/fixtures');
+-const DH_NOT_SUITABLE_GENERATOR = crypto.constants.DH_NOT_SUITABLE_GENERATOR;
+ 
+ crypto.DEFAULT_ENCODING = 'latin1';
+ 
+@@ -612,8 +611,7 @@ assert.throws(function() {
+             '020BBEA63B139B22514A08798E3404DDEF9519B3CD3A431B302B0A6DF25F1437' +
+             '4FE1356D6D51C245E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7ED' +
+             'EE386BFB5A899FA5AE9F24117C4B1FE649286651ECE65381FFFFFFFFFFFFFFFF';
+-  const d = crypto.createDiffieHellman(p, 'hex');
+-  assert.strictEqual(d.verifyError, DH_NOT_SUITABLE_GENERATOR);
++  crypto.createDiffieHellman(p, 'hex');
+ 
+   // Test RSA key signing/verification
+   const rsaSign = crypto.createSign('SHA1');
+diff --git a/test/parallel/test-crypto-dh.js b/test/parallel/test-crypto-dh.js
+index 408786e701..49821ec467 100644
+--- a/test/parallel/test-crypto-dh.js
++++ b/test/parallel/test-crypto-dh.js
+@@ -6,8 +6,6 @@ if (!common.hasCrypto)
+ const assert = require('assert');
+ const crypto = require('crypto');
+ 
+-const DH_NOT_SUITABLE_GENERATOR = crypto.constants.DH_NOT_SUITABLE_GENERATOR;
+-
+ // Test Diffie-Hellman with two parties sharing a secret,
+ // using various encodings as we go along
+ const dh1 = crypto.createDiffieHellman(common.hasFipsCrypto ? 1024 : 256);
+@@ -101,8 +99,6 @@ bob.generateKeys();
+ const aSecret = alice.computeSecret(bob.getPublicKey()).toString('hex');
+ const bSecret = bob.computeSecret(alice.getPublicKey()).toString('hex');
+ assert.strictEqual(aSecret, bSecret);
+-assert.strictEqual(alice.verifyError, DH_NOT_SUITABLE_GENERATOR);
+-assert.strictEqual(bob.verifyError, DH_NOT_SUITABLE_GENERATOR);
+ 
+ /* Ensure specific generator (buffer) works as expected.
+  * The values below (modp2/modp2buf) are for a 1024 bits long prime from
+@@ -133,8 +129,6 @@ const modp2buf = Buffer.from([
+   const exmodp2Secret = exmodp2.computeSecret(modp2.getPublicKey())
+       .toString('hex');
+   assert.strictEqual(modp2Secret, exmodp2Secret);
+-  assert.strictEqual(modp2.verifyError, DH_NOT_SUITABLE_GENERATOR);
+-  assert.strictEqual(exmodp2.verifyError, DH_NOT_SUITABLE_GENERATOR);
+ }
+ 
+ for (const buf of [modp2buf, ...common.getArrayBufferViews(modp2buf)]) {
+@@ -147,7 +141,6 @@ for (const buf of [modp2buf, ...common.getArrayBufferViews(modp2buf)]) {
+   const exmodp2Secret = exmodp2.computeSecret(modp2.getPublicKey())
+       .toString('hex');
+   assert.strictEqual(modp2Secret, exmodp2Secret);
+-  assert.strictEqual(exmodp2.verifyError, DH_NOT_SUITABLE_GENERATOR);
+ }
+ 
+ {
+@@ -159,7 +152,6 @@ for (const buf of [modp2buf, ...common.getArrayBufferViews(modp2buf)]) {
+   const exmodp2Secret = exmodp2.computeSecret(modp2.getPublicKey())
+       .toString('hex');
+   assert.strictEqual(modp2Secret, exmodp2Secret);
+-  assert.strictEqual(exmodp2.verifyError, DH_NOT_SUITABLE_GENERATOR);
+ }
+ 
+ {
+@@ -171,17 +163,20 @@ for (const buf of [modp2buf, ...common.getArrayBufferViews(modp2buf)]) {
+   const exmodp2Secret = exmodp2.computeSecret(modp2.getPublicKey())
+       .toString('hex');
+   assert.strictEqual(modp2Secret, exmodp2Secret);
+-  assert.strictEqual(exmodp2.verifyError, DH_NOT_SUITABLE_GENERATOR);
+ }
+ 
+-
++// Second OAKLEY group, see
++// https://github.com/nodejs/node-v0.x-archive/issues/2338 and
++// https://xml2rfc.tools.ietf.org/public/rfc/html/rfc2412.html#anchor49
+ const p = 'FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD129024E088A67CC74' +
+           '020BBEA63B139B22514A08798E3404DDEF9519B3CD3A431B302B0A6DF25F1437' +
+           '4FE1356D6D51C245E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7ED' +
+           'EE386BFB5A899FA5AE9F24117C4B1FE649286651ECE65381FFFFFFFFFFFFFFFF';
+-const bad_dh = crypto.createDiffieHellman(p, 'hex');
+-assert.strictEqual(bad_dh.verifyError, DH_NOT_SUITABLE_GENERATOR);
++crypto.createDiffieHellman(p, 'hex');
+ 
++// Confirm DH_check() results are exposed for optional examination.
++const bad_dh = crypto.createDiffieHellman('02', 'hex');
++assert.notStrictEqual(bad_dh.verifyError, 0);
+ 
+ const availableCurves = new Set(crypto.getCurves());
+ const availableHashes = new Set(crypto.getHashes());
+-- 
+2.25.1
+

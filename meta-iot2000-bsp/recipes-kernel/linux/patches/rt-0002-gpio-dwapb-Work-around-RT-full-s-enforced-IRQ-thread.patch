@@ -1,4 +1,4 @@
-From 162379965182fa0cdd447ac462c3f3b8fb7377d8 Mon Sep 17 00:00:00 2001
+From 752f1ba7c76e3ee4ba26b4775b2705531bc1c9b6 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Wed, 3 Jan 2018 15:32:56 +0100
 Subject: [PATCH 2/2] gpio: dwapb: Work around RT-full's enforced IRQ threading
@@ -48,5 +48,5 @@ index fcd5b0acfc72..dad75d594f76 100644
  	gpio->nr_ports = pdata->nports;
  
 -- 
-2.13.6
+2.25.1
 

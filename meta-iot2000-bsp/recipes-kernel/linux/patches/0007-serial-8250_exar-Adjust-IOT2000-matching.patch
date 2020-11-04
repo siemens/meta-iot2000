@@ -1,4 +1,4 @@
-From 6214ca294cf3c46dfe9af23f29e6278987f8fb05 Mon Sep 17 00:00:00 2001
+From 74e2a82f7167bbce31b7858e498673dc9f7bdd00 Mon Sep 17 00:00:00 2001
 From: Su Bao Cheng <baocheng.su@siemens.com>
 Date: Fri, 12 Oct 2018 15:12:37 +0200
 Subject: [PATCH 07/32] serial: 8250_exar: Adjust IOT2000 matching
@@ -40,5 +40,5 @@ index be82707d6cb8..3eb3a7674a0f 100644
  		.driver_data = (void *)&iot2040_platform,
  	},
 -- 
-2.26.2
+2.25.1
 

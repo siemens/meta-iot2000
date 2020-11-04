@@ -1,4 +1,4 @@
-From 3e95e3abaef39718ae8f896248102bf46ed3769d Mon Sep 17 00:00:00 2001
+From 6123b5a16667cef27bcab2340afbfa9c5f54f5e2 Mon Sep 17 00:00:00 2001
 From: Theodore Ts'o <tytso@mit.edu>
 Date: Sun, 12 Jun 2016 18:13:36 -0400
 Subject: [PATCH 19/32] random: replace non-blocking pool with a Chacha20-based
@@ -95,7 +95,7 @@ index da9c89968223..1cab83146e33 100644
  			     unsigned int bytes)
  {
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 661ed5ec546e..7b544251eab1 100644
+index 7bb1e423eb19..b93172d64296 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -260,6 +260,7 @@
@@ -416,9 +416,9 @@ index 661ed5ec546e..7b544251eab1 100644
  	mix_pool_bytes(r, &sample, sizeof(sample));
  
  	/*
-@@ -924,11 +1077,21 @@ void add_interrupt_randomness(int irq, int irq_flags)
- 	fast_mix(fast_pool);
+@@ -925,11 +1078,21 @@ void add_interrupt_randomness(int irq, int irq_flags)
  	add_interrupt_bench(cycles);
+ 	this_cpu_add(net_rand_state.s1, fast_pool->pool[cycles & 3]);
  
 +	if (!crng_ready()) {
 +		if ((fast_pool->count >= 64) &&
@@ -439,7 +439,7 @@ index 661ed5ec546e..7b544251eab1 100644
  	if (!spin_trylock(&r->lock))
  		return;
  
-@@ -972,9 +1135,6 @@ EXPORT_SYMBOL_GPL(add_disk_randomness);
+@@ -973,9 +1136,6 @@ EXPORT_SYMBOL_GPL(add_disk_randomness);
   *
   *********************************************************************/
  
@@ -449,7 +449,7 @@ index 661ed5ec546e..7b544251eab1 100644
  /*
   * This utility inline function is responsible for transferring entropy
   * from the primary pool to the secondary extraction pool. We make
-@@ -1149,6 +1309,36 @@ static void extract_buf(struct entropy_store *r, __u8 *out)
+@@ -1150,6 +1310,36 @@ static void extract_buf(struct entropy_store *r, __u8 *out)
  	memzero_explicit(&hash, sizeof(hash));
  }
  
@@ -486,7 +486,7 @@ index 661ed5ec546e..7b544251eab1 100644
  /*
   * This function extracts randomness from the "entropy pool", and
   * returns it in a buffer.
-@@ -1161,7 +1351,6 @@ static void extract_buf(struct entropy_store *r, __u8 *out)
+@@ -1162,7 +1352,6 @@ static void extract_buf(struct entropy_store *r, __u8 *out)
  static ssize_t extract_entropy(struct entropy_store *r, void *buf,
  				 size_t nbytes, int min, int reserved)
  {
@@ -494,7 +494,7 @@ index 661ed5ec546e..7b544251eab1 100644
  	__u8 tmp[EXTRACT_SIZE];
  	unsigned long flags;
  
-@@ -1185,27 +1374,7 @@ static ssize_t extract_entropy(struct entropy_store *r, void *buf,
+@@ -1186,27 +1375,7 @@ static ssize_t extract_entropy(struct entropy_store *r, void *buf,
  	xfer_secondary_pool(r, nbytes);
  	nbytes = account(r, nbytes, min, reserved);
  
@@ -523,7 +523,7 @@ index 661ed5ec546e..7b544251eab1 100644
  }
  
  /*
-@@ -1260,15 +1429,26 @@ static ssize_t extract_entropy_user(struct entropy_store *r, void __user *buf,
+@@ -1261,15 +1430,26 @@ static ssize_t extract_entropy_user(struct entropy_store *r, void __user *buf,
   */
  void get_random_bytes(void *buf, int nbytes)
  {
@@ -555,7 +555,7 @@ index 661ed5ec546e..7b544251eab1 100644
  }
  EXPORT_SYMBOL(get_random_bytes);
  
-@@ -1286,7 +1466,7 @@ int add_random_ready_callback(struct random_ready_callback *rdy)
+@@ -1287,7 +1467,7 @@ int add_random_ready_callback(struct random_ready_callback *rdy)
  	unsigned long flags;
  	int err = -EALREADY;
  
@@ -564,7 +564,7 @@ index 661ed5ec546e..7b544251eab1 100644
  		return err;
  
  	owner = rdy->owner;
-@@ -1294,7 +1474,7 @@ int add_random_ready_callback(struct random_ready_callback *rdy)
+@@ -1295,7 +1475,7 @@ int add_random_ready_callback(struct random_ready_callback *rdy)
  		return -ENOENT;
  
  	spin_lock_irqsave(&random_ready_list_lock, flags);
@@ -573,7 +573,7 @@ index 661ed5ec546e..7b544251eab1 100644
  		goto out;
  
  	owner = NULL;
-@@ -1358,7 +1538,7 @@ void get_random_bytes_arch(void *buf, int nbytes)
+@@ -1359,7 +1539,7 @@ void get_random_bytes_arch(void *buf, int nbytes)
  	}
  
  	if (nbytes)
@@ -582,7 +582,7 @@ index 661ed5ec546e..7b544251eab1 100644
  }
  EXPORT_SYMBOL(get_random_bytes_arch);
  
-@@ -1403,7 +1583,7 @@ static int rand_initialize(void)
+@@ -1404,7 +1584,7 @@ static int rand_initialize(void)
  {
  	init_std_data(&input_pool);
  	init_std_data(&blocking_pool);
@@ -591,7 +591,7 @@ index 661ed5ec546e..7b544251eab1 100644
  	return 0;
  }
  early_initcall(rand_initialize);
-@@ -1465,22 +1645,22 @@ random_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
+@@ -1466,22 +1646,22 @@ random_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
  static ssize_t
  urandom_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
  {
@@ -623,7 +623,7 @@ index 661ed5ec546e..7b544251eab1 100644
  	return ret;
  }
  
-@@ -1534,10 +1714,7 @@ static ssize_t random_write(struct file *file, const char __user *buffer,
+@@ -1535,10 +1715,7 @@ static ssize_t random_write(struct file *file, const char __user *buffer,
  {
  	size_t ret;
  
@@ -635,7 +635,7 @@ index 661ed5ec546e..7b544251eab1 100644
  	if (ret)
  		return ret;
  
-@@ -1586,7 +1763,6 @@ static long random_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
+@@ -1587,7 +1764,6 @@ static long random_ioctl(struct file *f, unsigned int cmd, unsigned long arg)
  		if (!capable(CAP_SYS_ADMIN))
  			return -EPERM;
  		input_pool.entropy_count = 0;
@@ -643,7 +643,7 @@ index 661ed5ec546e..7b544251eab1 100644
  		blocking_pool.entropy_count = 0;
  		return 0;
  	default:
-@@ -1628,11 +1804,10 @@ SYSCALL_DEFINE3(getrandom, char __user *, buf, size_t, count,
+@@ -1629,11 +1805,10 @@ SYSCALL_DEFINE3(getrandom, char __user *, buf, size_t, count,
  	if (flags & GRND_RANDOM)
  		return _random_read(flags & GRND_NONBLOCK, buf, count);
  
@@ -657,7 +657,7 @@ index 661ed5ec546e..7b544251eab1 100644
  		if (signal_pending(current))
  			return -ERESTARTSYS;
  	}
-@@ -1882,18 +2057,17 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
+@@ -1883,18 +2058,17 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
  {
  	struct entropy_store *poolp = &input_pool;
  
@@ -797,5 +797,5 @@ index 000000000000..250ceed9ec9a
 +}
 +EXPORT_SYMBOL(chacha20_block);
 -- 
-2.26.2
+2.25.1
 

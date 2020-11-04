@@ -1,4 +1,4 @@
-From 372d5b61d228f297db192e5a3986b7b95fa7fdae Mon Sep 17 00:00:00 2001
+From 1367de860e5ddda36338e0980250be2407b168d1 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 22 Jun 2017 08:17:58 +0200
 Subject: [PATCH 02/32] stmmac: pci: Use stmmac_pci_info for all devices
@@ -91,5 +91,5 @@ index 828d276748e3..a60059032dc6 100644
  };
  
 -- 
-2.26.2
+2.25.1
 

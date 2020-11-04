@@ -1,4 +1,4 @@
-From 8d2da44941dcd05415307eb9929032945207824c Mon Sep 17 00:00:00 2001
+From dac94e0426e930355b8ac60dd473bd576f39276d Mon Sep 17 00:00:00 2001
 From: Yong Li <sdliyong@gmail.com>
 Date: Thu, 31 Mar 2016 15:33:09 +0800
 Subject: [PATCH 17/32] iot2000-hack: gpio-pca953x: add "drive" property
@@ -330,5 +330,5 @@ index c0fc8effdba9..b73af28ac7d8 100644
  	int			(*to_irq)(struct gpio_chip *chip,
  						unsigned offset);
 -- 
-2.26.2
+2.25.1
 

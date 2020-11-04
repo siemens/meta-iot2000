@@ -1,4 +1,4 @@
-From 9e67bda853dd27652e3608ed6952a8e7f8940f7d Mon Sep 17 00:00:00 2001
+From 177bc1ecfe965c7c496d15fde0296e19f802367e Mon Sep 17 00:00:00 2001
 From: Theodore Ts'o <tytso@mit.edu>
 Date: Wed, 11 Apr 2018 14:58:27 -0400
 Subject: [PATCH 29/32] random: use a different mixing algorithm for
@@ -29,7 +29,7 @@ Signed-off-by: Theodore Ts'o <tytso@mit.edu>
  1 file changed, 52 insertions(+)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index d50f71b3b4ea..b629f84586d9 100644
+index 457b0301b7e7..13f2d62e7a8e 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -796,6 +796,10 @@ static void crng_initialize(struct crng_state *crng)
@@ -106,5 +106,5 @@ index d50f71b3b4ea..b629f84586d9 100644
  	spin_lock_irqsave(&input_pool.lock, flags);
  	_mix_pool_bytes(&input_pool, buf, size);
 -- 
-2.26.2
+2.25.1
 
