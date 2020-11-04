@@ -1,1 +1,0 @@
-EXTRA_OEMAKE += "NO_UUID=1"
