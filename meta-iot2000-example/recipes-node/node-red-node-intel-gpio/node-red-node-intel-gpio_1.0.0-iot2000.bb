@@ -14,7 +14,8 @@ SRC_URI = "git://github.com/node-red/node-red-nodes;protocol=https \
     file://0008-intel-gpio-Add-support-for-user-button-on-Galileo-v2.patch \
     file://0009-intel-gpio-Add-IOT2020-and-IOT2040-board-detection.patch \
     file://0010-intel-gpio-Add-support-for-red-LED-of-IOT2040.patch \
-    file://0011-intel-gpio-Privatize-version.patch"
+    file://0011-intel-gpio-Privatize-version.patch \
+    file://0012-Clean-up-mraa-objects-on-node-closing.patch"
 SRCREV = "8d45e85acfa10b53fb94b1d6bfc16b9f8cc39eea"
 
 RDEPENDS_${PN} += "node-red"

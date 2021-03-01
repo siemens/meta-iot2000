@@ -1,7 +1,7 @@
 From 80754746d357eda4af04ac86133e2e2eeea39c8a Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Mon, 6 May 2019 00:26:56 +0200
-Subject: [PATCH 08/11] intel-gpio: Add support for user button on Galileo v2
+Subject: [PATCH 08/12] intel-gpio: Add support for user button on Galileo v2
 
 mraa does not support it, and it might be shared with Arduino emulation.
 But reading its state via sysfs and the new polling mode is nevertheless
@@ -9,8 +9,8 @@ possible and allows access to this input.
 
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
- hardware/intel/mraa-gpio-din.html | 10 +++++++++-
- hardware/intel/mraa-gpio-din.js   | 37 ++++++++++++++++++++++++++++---------
+ hardware/intel/mraa-gpio-din.html | 10 ++++++++-
+ hardware/intel/mraa-gpio-din.js   | 37 +++++++++++++++++++++++--------
  2 files changed, 37 insertions(+), 10 deletions(-)
 
 diff --git a/hardware/intel/mraa-gpio-din.html b/hardware/intel/mraa-gpio-din.html
@@ -118,5 +118,5 @@ index f98e105..3509e51 100644
                  clearInterval(node.timer);
              }
 -- 
-2.16.4
+2.26.2
 

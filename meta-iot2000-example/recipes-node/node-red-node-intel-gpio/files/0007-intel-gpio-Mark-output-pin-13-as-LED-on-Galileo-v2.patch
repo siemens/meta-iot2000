@@ -1,7 +1,7 @@
 From a34eb83826ea31417b037aeb6579d6d3df8955ae Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Mon, 6 May 2019 00:13:00 +0200
-Subject: [PATCH 07/11] intel-gpio: Mark output pin 13 as "LED" on Galileo v2
+Subject: [PATCH 07/12] intel-gpio: Mark output pin 13 as "LED" on Galileo v2
 
 At least for that board we know that D13 is connected to an LED.
 Visualize that.
@@ -52,5 +52,5 @@ index bcbfbd0..0900039 100644
              });
              $.getJSON('mraa-version/'+this.id,function(data) {
 -- 
-2.16.4
+2.26.2
 

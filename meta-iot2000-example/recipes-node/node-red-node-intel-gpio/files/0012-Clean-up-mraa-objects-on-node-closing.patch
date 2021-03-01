@@ -1,0 +1,67 @@
+From 2462957af002133d55d5ec1d55930dba29ffa5f8 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Fri, 27 Nov 2020 08:14:14 +0100
+Subject: [PATCH 12/12] Clean up mraa objects on node closing
+
+Required as nodejs will only lazily delete the node objects, and we may
+race with the next user requesting the resources.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ hardware/intel/mraa-gpio-ain.js  | 1 +
+ hardware/intel/mraa-gpio-din.js  | 1 +
+ hardware/intel/mraa-gpio-dout.js | 1 +
+ hardware/intel/mraa-gpio-pwm.js  | 1 +
+ 4 files changed, 4 insertions(+)
+
+diff --git a/hardware/intel/mraa-gpio-ain.js b/hardware/intel/mraa-gpio-ain.js
+index 4122551..7ac5683 100644
+--- a/hardware/intel/mraa-gpio-ain.js
++++ b/hardware/intel/mraa-gpio-ain.js
+@@ -21,6 +21,7 @@ module.exports = function(RED) {
+ 
+         this.on('close', function() {
+             clearInterval(this.timer);
++            node.x.close();
+         });
+     }
+     RED.nodes.registerType("mraa-gpio-ain", gpioAin);
+diff --git a/hardware/intel/mraa-gpio-din.js b/hardware/intel/mraa-gpio-din.js
+index 3509e51..1e86822 100644
+--- a/hardware/intel/mraa-gpio-din.js
++++ b/hardware/intel/mraa-gpio-din.js
+@@ -97,6 +97,7 @@ module.exports = function(RED) {
+             if (node.timer) {
+                 clearInterval(node.timer);
+             }
++            node.x.close();
+         });
+     }
+     RED.nodes.registerType("mraa-gpio-din", gpioDin);
+diff --git a/hardware/intel/mraa-gpio-dout.js b/hardware/intel/mraa-gpio-dout.js
+index ec54e9e..6e2781c 100644
+--- a/hardware/intel/mraa-gpio-dout.js
++++ b/hardware/intel/mraa-gpio-dout.js
+@@ -43,6 +43,7 @@ module.exports = function(RED) {
+         }
+ 
+         this.on('close', function() {
++            node.p.close();
+         });
+     }
+     RED.nodes.registerType("mraa-gpio-dout", gpioDout);
+diff --git a/hardware/intel/mraa-gpio-pwm.js b/hardware/intel/mraa-gpio-pwm.js
+index 22b02cb..6a2469f 100644
+--- a/hardware/intel/mraa-gpio-pwm.js
++++ b/hardware/intel/mraa-gpio-pwm.js
+@@ -21,6 +21,7 @@ module.exports = function(RED) {
+ 
+         this.on('close', function() {
+             node.p.enable(false);
++            node.p.close();
+         });
+     }
+     RED.nodes.registerType("mraa-gpio-pwm", gpioPWM);
+-- 
+2.26.2
+
