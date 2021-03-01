@@ -1,7 +1,7 @@
 From a4dd2b0e9e54d77454c00dd31397cadae0ca9879 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Mon, 29 Apr 2019 12:31:08 +0200
-Subject: [PATCH 02/11] intel-gpio: Consistently use "this" where available
+Subject: [PATCH 02/12] intel-gpio: Consistently use "this" where available
 
 The "node" alias variable is for use in callbacks.
 
@@ -69,5 +69,5 @@ index 020db55..1c97e0a 100644
                  node.p.write(1);
              }
 -- 
-2.16.4
+2.26.2
 

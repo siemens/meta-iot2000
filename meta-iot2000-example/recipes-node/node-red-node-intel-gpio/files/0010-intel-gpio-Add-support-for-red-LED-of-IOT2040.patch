@@ -1,14 +1,14 @@
 From 9ff93c7e0a4b193541c71b9376dc1170f2f0d8f0 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Mon, 6 May 2019 00:33:12 +0200
-Subject: [PATCH 10/11] intel-gpio: Add support for red LED of IOT2040
+Subject: [PATCH 10/12] intel-gpio: Add support for red LED of IOT2040
 
 This one can easily be controlled via sysfs.
 
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
- hardware/intel/mraa-gpio-dout.html |  8 ++++++-
- hardware/intel/mraa-gpio-dout.js   | 44 +++++++++++++++++++++++++-------------
+ hardware/intel/mraa-gpio-dout.html |  8 +++++-
+ hardware/intel/mraa-gpio-dout.js   | 44 ++++++++++++++++++++----------
  2 files changed, 36 insertions(+), 16 deletions(-)
 
 diff --git a/hardware/intel/mraa-gpio-dout.html b/hardware/intel/mraa-gpio-dout.html
@@ -104,5 +104,5 @@ index 37058d3..ec54e9e 100644
          this.on('close', function() {
          });
 -- 
-2.16.4
+2.26.2
 

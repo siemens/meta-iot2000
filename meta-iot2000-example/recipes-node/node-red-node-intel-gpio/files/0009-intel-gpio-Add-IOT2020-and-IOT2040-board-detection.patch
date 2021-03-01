@@ -1,7 +1,7 @@
 From 62a7f2313bc7f7866b9074cdc7b7b6557b6c0ab2 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Mon, 6 May 2019 00:30:29 +0200
-Subject: [PATCH 09/11] intel-gpio: Add IOT2020 and IOT2040 board detection
+Subject: [PATCH 09/12] intel-gpio: Add IOT2020 and IOT2040 board detection
 
 These boards share the properties of the Galileo v2. Adding detection
 not only provide cleaner listing, it also allows add an IOT2040-specific
@@ -104,5 +104,5 @@ index 2879e07..69e0990 100644
                  $('#node-input-pin').val(pinnow);
              });
 -- 
-2.16.4
+2.26.2
 

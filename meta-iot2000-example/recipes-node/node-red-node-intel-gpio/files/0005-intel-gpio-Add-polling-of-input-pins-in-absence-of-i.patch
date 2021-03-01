@@ -1,7 +1,7 @@
 From 274b034e7b0214d5e09755b0c8ddc3805747e82c Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Mon, 29 Apr 2019 12:52:58 +0200
-Subject: [PATCH 05/11] intel-gpio: Add polling of input pins in absence of
+Subject: [PATCH 05/12] intel-gpio: Add polling of input pins in absence of
  interrupts
 
 Some GPIO pins may not support interrupts, and then we will get no
@@ -10,8 +10,8 @@ updates at all. Address that case by setting up polling, by default with
 
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 ---
- hardware/intel/mraa-gpio-din.html |  8 +++++++-
- hardware/intel/mraa-gpio-din.js   | 38 ++++++++++++++++++++++++++++++--------
+ hardware/intel/mraa-gpio-din.html |  8 ++++++-
+ hardware/intel/mraa-gpio-din.js   | 38 ++++++++++++++++++++++++-------
  2 files changed, 37 insertions(+), 9 deletions(-)
 
 diff --git a/hardware/intel/mraa-gpio-din.html b/hardware/intel/mraa-gpio-din.html
@@ -114,5 +114,5 @@ index 031341a..f98e105 100644
      }
      RED.nodes.registerType("mraa-gpio-din", gpioDin);
 -- 
-2.16.4
+2.26.2
 

@@ -1,7 +1,7 @@
 From 357d7e2adc9cfa82854af1983ade56e015aedac7 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Mon, 29 Apr 2019 12:19:03 +0200
-Subject: [PATCH 03/11] intel-gpio: Add support for initial message from
+Subject: [PATCH 03/12] intel-gpio: Add support for initial message from
  digital input
 
 This allows to send out an initial message with the current digital pin
@@ -73,5 +73,5 @@ index a11c5e0..2ce87b1 100644
              node.x.isr(m.EDGE_BOTH, null);
          });
 -- 
-2.16.4
+2.26.2
 
