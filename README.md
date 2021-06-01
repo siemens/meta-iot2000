@@ -137,9 +137,6 @@ $ sudo dd if=build/tmp/deploy/images/iot2000/iot2000-example-image-iot2000.wic \
           of=/dev/mmcblk0 bs=4M oflag=sync
 ```
 
-If you built the image in Docker, the .wic file will be located directly in the
-meta-iot2000 directory.
-
 The example image starts with the IP 192.168.200.1 preconfigured on the first
 Ethernet interface. You can use ssh to connect to the system.
 
