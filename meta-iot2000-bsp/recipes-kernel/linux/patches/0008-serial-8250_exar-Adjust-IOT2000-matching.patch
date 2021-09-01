@@ -1,0 +1,44 @@
+From f2950401033352d34e738e49ca8d23220c9e3022 Mon Sep 17 00:00:00 2001
+From: Su Bao Cheng <baocheng.su@siemens.com>
+Date: Fri, 12 Oct 2018 15:12:37 +0200
+Subject: [PATCH 08/33] serial: 8250_exar: Adjust IOT2000 matching
+
+Since there are more IOT2040 variants with identical hardware but
+different asset tags, the asset tag matching should be adjusted to
+support them.
+
+As only the IOT2040 variants have the Exar chip on board, matching on
+their board name is enough. In the future there will be no other devices
+with the "SIMATIC IOT2000" DMI board name but different hardware.
+
+Signed-off-by: Su Bao Cheng <baocheng.su@siemens.com>
+Reviewed-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ drivers/tty/serial/8250/8250_exar.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/tty/serial/8250/8250_exar.c b/drivers/tty/serial/8250/8250_exar.c
+index be82707d6cb8..3eb3a7674a0f 100644
+--- a/drivers/tty/serial/8250/8250_exar.c
++++ b/drivers/tty/serial/8250/8250_exar.c
+@@ -338,12 +338,15 @@ static const struct exar8250_platform iot2040_platform = {
+ 	.register_gpio = iot2040_register_gpio,
+ };
+ 
++/*
++ * For SIMATIC IOT2000, only IOT2040 and its variants have the Exar device,
++ * IOT2020 doesn't have. Therefore it is sufficient to match on the common
++ * board name after the device was found.
++ */
+ static const struct dmi_system_id exar_platforms[] = {
+ 	{
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_BOARD_NAME, "SIMATIC IOT2000"),
+-			DMI_EXACT_MATCH(DMI_BOARD_ASSET_TAG,
+-					"6ES7647-0AA00-1YA2"),
+ 		},
+ 		.driver_data = (void *)&iot2040_platform,
+ 	},
+-- 
+2.31.1
+

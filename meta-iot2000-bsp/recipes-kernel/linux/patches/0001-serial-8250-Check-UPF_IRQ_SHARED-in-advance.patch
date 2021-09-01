@@ -1,0 +1,112 @@
+From 675ba24d949f15e6c3a12f5ce038bfb3d42a9ad2 Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date: Tue, 11 Feb 2020 15:55:59 +0200
+Subject: [PATCH 01/33] serial: 8250: Check UPF_IRQ_SHARED in advance
+
+commit 7febbcbc48fc92e3f33863b32ed715ba4aff18c4 upstream.
+
+The commit 54e53b2e8081
+  ("tty: serial: 8250: pass IRQ shared flag to UART ports")
+nicely explained the problem:
+
+---8<---8<---
+
+On some systems IRQ lines between multiple UARTs might be shared. If so, the
+irqflags have to be configured accordingly. The reason is: The 8250 port startup
+code performs IRQ tests *before* the IRQ handler for that particular port is
+registered. This is performed in serial8250_do_startup(). This function checks
+whether IRQF_SHARED is configured and only then disables the IRQ line while
+testing.
+
+This test is performed upon each open() of the UART device. Imagine two UARTs
+share the same IRQ line: On is already opened and the IRQ is active. When the
+second UART is opened, the IRQ line has to be disabled while performing IRQ
+tests. Otherwise an IRQ might handler might be invoked, but the IRQ itself
+cannot be handled, because the corresponding handler isn't registered,
+yet. That's because the 8250 code uses a chain-handler and invokes the
+corresponding port's IRQ handling routines himself.
+
+Unfortunately this IRQF_SHARED flag isn't configured for UARTs probed via device
+tree even if the IRQs are shared. This way, the actual and shared IRQ line isn't
+disabled while performing tests and the kernel correctly detects a spurious
+IRQ. So, adding this flag to the DT probe solves the issue.
+
+Note: The UPF_SHARE_IRQ flag is configured unconditionally. Therefore, the
+IRQF_SHARED flag can be set unconditionally as well.
+
+Example stack trace by performing `echo 1 > /dev/ttyS2` on a non-patched system:
+
+|irq 85: nobody cared (try booting with the "irqpoll" option)
+| [...]
+|handlers:
+|[<ffff0000080fc628>] irq_default_primary_handler threaded [<ffff00000855fbb8>] serial8250_interrupt
+|Disabling IRQ #85
+
+---8<---8<---
+
+But unfortunately didn't fix the root cause. Let's try again here by moving
+IRQ flag assignment from serial_link_irq_chain() to serial8250_do_startup().
+
+This should fix the similar issue reported for 8250_pnp case.
+
+Since this change we don't need to have custom solutions in 8250_aspeed_vuart
+and 8250_of drivers, thus, drop them.
+
+Fixes: 1c2f04937b3e ("serial: 8250: add IRQ trigger support")
+Reported-by: Li RongQing <lirongqing@baidu.com>
+Cc: Kurt Kanzenbach <kurt@linutronix.de>
+Cc: Vikram Pandita <vikram.pandita@ti.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable <stable@vger.kernel.org>
+Acked-by: Kurt Kanzenbach <kurt@linutronix.de>
+Link: https://lore.kernel.org/r/20200211135559.85960-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Jan: ported to 4.4]
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ drivers/tty/serial/8250/8250_core.c | 5 ++---
+ drivers/tty/serial/8250/8250_port.c | 4 ++++
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
+index f24fa99da69f..544c9131f960 100644
+--- a/drivers/tty/serial/8250/8250_core.c
++++ b/drivers/tty/serial/8250/8250_core.c
+@@ -181,7 +181,7 @@ static int serial_link_irq_chain(struct uart_8250_port *up)
+ 	struct hlist_head *h;
+ 	struct hlist_node *n;
+ 	struct irq_info *i;
+-	int ret, irq_flags = up->port.flags & UPF_SHARE_IRQ ? IRQF_SHARED : 0;
++	int ret;
+ 
+ 	mutex_lock(&hash_mutex);
+ 
+@@ -216,9 +216,8 @@ static int serial_link_irq_chain(struct uart_8250_port *up)
+ 		INIT_LIST_HEAD(&up->list);
+ 		i->head = &up->list;
+ 		spin_unlock_irq(&i->lock);
+-		irq_flags |= up->port.irqflags;
+ 		ret = request_irq(up->port.irq, serial8250_interrupt,
+-				  irq_flags, "serial", i);
++				  up->port.irqflags, "serial", i);
+ 		if (ret < 0)
+ 			serial_do_unlink(i, up);
+ 	}
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index fef1b9335f60..06750edbb92a 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -1900,6 +1900,10 @@ int serial8250_do_startup(struct uart_port *port)
+ 		serial_port_out(port, UART_LCR, 0);
+ 	}
+ 
++	/* Check if we need to have shared IRQs */
++	if (port->irq && (up->port.flags & UPF_SHARE_IRQ))
++		up->port.irqflags |= IRQF_SHARED;
++
+ 	if (port->irq) {
+ 		unsigned char iir1;
+ 
+-- 
+2.31.1
+
