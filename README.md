@@ -96,11 +96,11 @@ Again, the first step is cloning of the repository (or unpacking an archive):
 $ git clone https://github.com/siemens/meta-iot2000
 ```
 
-Next, install the `kas-docker` script like this:
+Next, install the `kas-container` script like this:
 
 ```shell
-$ wget https://raw.githubusercontent.com/siemens/kas/2.0/kas-docker
-$ chmod a+x kas-docker
+$ wget https://raw.githubusercontent.com/siemens/kas/2.6.2/kas-container
+$ chmod a+x kas-container
 ```
 
 Now you can generate a desired image. The following assumes that your user has
@@ -109,7 +109,7 @@ docker group (which has security implications). Note that running the build as
 root does not work.
 
 ```shell
-$ ./kas-docker build meta-iot2000/kas-example.yml
+$ ./kas-container build meta-iot2000/kas-example.yml
 ```
 
 The above command disposes the build container after use, keeping downloads and
@@ -118,7 +118,7 @@ build results in the current work directory.
 You may want to use the container interactively:
 
 ```shell
-$ ./kas-docker shell meta-iot2000/kas-example.yml
+$ ./kas-container shell meta-iot2000/kas-example.yml
 ```
 
 If you are building from within a proxy-restricted network, make sure the
