@@ -1,4 +1,4 @@
-From 50ea291f62a027643360824d892e7770f5797bbd Mon Sep 17 00:00:00 2001
+From 3d2fa867cc51f2f6130b122f556a92c19ddbabab Mon Sep 17 00:00:00 2001
 From: Linus Walleij <linus.walleij@linaro.org>
 Date: Mon, 7 Dec 2015 14:21:49 +0100
 Subject: [PATCH 09/32] gpio: sch: use gpiochip data pointer
@@ -82,5 +82,5 @@ index b72906f5b999..23907fc080a3 100644
  
  static int sch_gpio_remove(struct platform_device *pdev)
 -- 
-2.25.1
+2.34.1
 

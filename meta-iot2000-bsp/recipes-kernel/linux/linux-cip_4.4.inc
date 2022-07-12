@@ -3,12 +3,12 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/configs:${THISDIR}/patches:"
 
-LINUX_VERSION = "4.4.238-cip50"
+LINUX_VERSION = "4.4.302-cip69"
 SRC_URI = " \
     https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git/snapshot/linux-cip-${LINUX_VERSION}.tar.gz \
     file://defconfig \
     ${KERNEL_PATCHES}"
-SRC_URI[sha256sum] = "a8c59bcdce363b4d94ad026643f37087200fdc0a918231f6a6d5d1dc27fa763d"
+SRC_URI[sha256sum] = "3acecb8f9ee4d9fba58d4a4cf4a2114018f030865f55b65cbc8e385ad04e691e"
 
 KERNEL_PATCHES = " \
     file://0001-stmmac-pci-Make-stmmac_pci_info-structure-constant.patch \

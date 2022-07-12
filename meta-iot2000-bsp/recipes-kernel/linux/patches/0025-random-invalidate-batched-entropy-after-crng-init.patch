@@ -1,4 +1,4 @@
-From a6841ce415b145214efbf0551fd0c938c65272bd Mon Sep 17 00:00:00 2001
+From b82c988262cfbbdeaac96bfbd3f3fe05a804342b Mon Sep 17 00:00:00 2001
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Date: Wed, 7 Jun 2017 19:45:31 -0400
 Subject: [PATCH 25/32] random: invalidate batched entropy after crng init
@@ -26,7 +26,7 @@ Cc: stable@vger.kernel.org  # v4.11+
  1 file changed, 37 insertions(+)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 0a05e87d17e2..09168f0a828f 100644
+index 1a22df4e9289..62c7cdd88769 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -1,6 +1,9 @@
@@ -64,7 +64,7 @@ index 0a05e87d17e2..09168f0a828f 100644
  		crng_init = 2;
  		process_random_ready_list();
  		wake_up_interruptible(&crng_init_wait);
-@@ -2076,6 +2083,7 @@ struct batched_entropy {
+@@ -2075,6 +2082,7 @@ struct batched_entropy {
  	};
  	unsigned int position;
  };
@@ -72,7 +72,7 @@ index 0a05e87d17e2..09168f0a828f 100644
  
  /*
   * Get a random word for internal kernel use only. The quality of the random
-@@ -2086,14 +2094,20 @@ static DEFINE_PER_CPU(struct batched_entropy, batched_entropy_u64);
+@@ -2085,14 +2093,20 @@ static DEFINE_PER_CPU(struct batched_entropy, batched_entropy_u64);
  u64 get_random_u64(void)
  {
  	u64 ret;
@@ -93,7 +93,7 @@ index 0a05e87d17e2..09168f0a828f 100644
  	put_cpu_var(batched_entropy_u64);
  	return ret;
  }
-@@ -2103,19 +2117,42 @@ static DEFINE_PER_CPU(struct batched_entropy, batched_entropy_u32);
+@@ -2102,19 +2116,42 @@ static DEFINE_PER_CPU(struct batched_entropy, batched_entropy_u32);
  u32 get_random_u32(void)
  {
  	u32 ret;
@@ -137,5 +137,5 @@ index 0a05e87d17e2..09168f0a828f 100644
   * randomize_range() returns a start address such that
   *
 -- 
-2.25.1
+2.34.1
 

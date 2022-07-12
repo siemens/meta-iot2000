@@ -1,4 +1,4 @@
-From 77c13a850bd4aede16c584e73a7daefd6ec06651 Mon Sep 17 00:00:00 2001
+From 6ee50c74c54bebb50167e398fe9122671679e51a Mon Sep 17 00:00:00 2001
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Date: Wed, 7 Jun 2017 19:58:56 -0400
 Subject: [PATCH 27/32] random: add wait_for_random_bytes() API
@@ -15,7 +15,7 @@ Signed-off-by: Theodore Ts'o <tytso@mit.edu>
  2 files changed, 32 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 07778d603c78..fc6f6899c5ac 100644
+index d0f7c85770be..2d6f57c7ee81 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -860,11 +860,6 @@ static void crng_reseed(struct crng_state *crng, struct entropy_store *r)
@@ -30,7 +30,7 @@ index 07778d603c78..fc6f6899c5ac 100644
  static void _extract_crng(struct crng_state *crng,
  			  __u8 out[CHACHA20_BLOCK_SIZE])
  {
-@@ -1500,7 +1495,10 @@ static ssize_t extract_entropy_user(struct entropy_store *r, void __user *buf,
+@@ -1499,7 +1494,10 @@ static ssize_t extract_entropy_user(struct entropy_store *r, void __user *buf,
   * number of good random numbers, suitable for key generation, seeding
   * TCP sequence numbers, etc.  It does not rely on the hardware random
   * number generator.  For random bytes direct from the hardware RNG
@@ -42,7 +42,7 @@ index 07778d603c78..fc6f6899c5ac 100644
   */
  void get_random_bytes(void *buf, int nbytes)
  {
-@@ -1529,6 +1527,24 @@ void get_random_bytes(void *buf, int nbytes)
+@@ -1528,6 +1526,24 @@ void get_random_bytes(void *buf, int nbytes)
  }
  EXPORT_SYMBOL(get_random_bytes);
  
@@ -67,7 +67,7 @@ index 07778d603c78..fc6f6899c5ac 100644
  /*
   * Add a callback function that will be invoked when the nonblocking
   * pool is initialised.
-@@ -1894,6 +1910,8 @@ const struct file_operations urandom_fops = {
+@@ -1893,6 +1909,8 @@ const struct file_operations urandom_fops = {
  SYSCALL_DEFINE3(getrandom, char __user *, buf, size_t, count,
  		unsigned int, flags)
  {
@@ -76,7 +76,7 @@ index 07778d603c78..fc6f6899c5ac 100644
  	if (flags & ~(GRND_NONBLOCK|GRND_RANDOM))
  		return -EINVAL;
  
-@@ -1906,9 +1924,9 @@ SYSCALL_DEFINE3(getrandom, char __user *, buf, size_t, count,
+@@ -1905,9 +1923,9 @@ SYSCALL_DEFINE3(getrandom, char __user *, buf, size_t, count,
  	if (!crng_ready()) {
  		if (flags & GRND_NONBLOCK)
  			return -EAGAIN;
@@ -89,7 +89,7 @@ index 07778d603c78..fc6f6899c5ac 100644
  	}
  	return urandom_read(NULL, buf, count, NULL);
  }
-@@ -2088,7 +2106,10 @@ static rwlock_t batched_entropy_reset_lock = __RW_LOCK_UNLOCKED(batched_entropy_
+@@ -2087,7 +2105,10 @@ static rwlock_t batched_entropy_reset_lock = __RW_LOCK_UNLOCKED(batched_entropy_
  /*
   * Get a random word for internal kernel use only. The quality of the random
   * number is either as good as RDRAND or as good as /dev/urandom, with the
@@ -114,5 +114,5 @@ index 45c3c3b4ee92..a2f6f85140fd 100644
  extern void del_random_ready_callback(struct random_ready_callback *rdy);
  extern void get_random_bytes_arch(void *buf, int nbytes);
 -- 
-2.25.1
+2.34.1
 

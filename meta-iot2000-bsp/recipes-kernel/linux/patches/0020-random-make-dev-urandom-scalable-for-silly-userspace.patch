@@ -1,4 +1,4 @@
-From c4f4c9ce1551f1806034ae738c4bbe4e87539e16 Mon Sep 17 00:00:00 2001
+From 428557f8b1040704710dc4da93b83f25fb74aed9 Mon Sep 17 00:00:00 2001
 From: Theodore Ts'o <tytso@mit.edu>
 Date: Mon, 2 May 2016 02:04:41 -0400
 Subject: [PATCH 20/32] random: make /dev/urandom scalable for silly userspace
@@ -18,7 +18,7 @@ Signed-off-by: Theodore Ts'o <tytso@mit.edu>
  1 file changed, 58 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index b93172d64296..64eebb835854 100644
+index 7b544251eab1..da8c45f6d342 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -435,6 +435,8 @@ static int crng_init = 0;
@@ -106,7 +106,7 @@ index b93172d64296..64eebb835854 100644
  static ssize_t extract_crng_user(void __user *buf, size_t nbytes)
  {
  	ssize_t ret = 0, i;
-@@ -1582,9 +1614,31 @@ static void init_std_data(struct entropy_store *r)
+@@ -1581,9 +1613,31 @@ static void init_std_data(struct entropy_store *r)
   */
  static int rand_initialize(void)
  {
@@ -139,5 +139,5 @@ index b93172d64296..64eebb835854 100644
  }
  early_initcall(rand_initialize);
 -- 
-2.25.1
+2.34.1
 

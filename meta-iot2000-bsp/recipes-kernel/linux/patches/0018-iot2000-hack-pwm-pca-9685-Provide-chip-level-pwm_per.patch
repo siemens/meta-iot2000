@@ -1,4 +1,4 @@
-From f4af584309cec2773ee38a14346c0fd85f2db500 Mon Sep 17 00:00:00 2001
+From 0fc6db3ce88b642be1c4e320e2f66ee539befdb6 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Fri, 17 Nov 2017 20:25:54 +0100
 Subject: [PATCH 18/32] iot2000-hack: pwm: pca-9685: Provide chip-level
@@ -101,5 +101,5 @@ index 611b9263a896..ce765f903714 100644
  	if (ret)
  		return ret;
 -- 
-2.25.1
+2.34.1
 

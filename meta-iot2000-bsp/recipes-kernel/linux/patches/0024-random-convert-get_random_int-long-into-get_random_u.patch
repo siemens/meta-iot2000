@@ -1,4 +1,4 @@
-From 3f0e7c51417fc7ae68d108f623df20426e065bef Mon Sep 17 00:00:00 2001
+From e5ba8bdf122526bd3ec2205b62b419c86a0cd423 Mon Sep 17 00:00:00 2001
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Date: Sun, 22 Jan 2017 16:34:08 +0100
 Subject: [PATCH 24/32] random: convert get_random_int/long into
@@ -22,10 +22,10 @@ Signed-off-by: Theodore Ts'o <tytso@mit.edu>
  2 files changed, 35 insertions(+), 29 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 4fa63bfde6c9..0a05e87d17e2 100644
+index 64a1254bf0ba..1a22df4e9289 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
-@@ -2071,8 +2071,8 @@ struct ctl_table random_table[] = {
+@@ -2070,8 +2070,8 @@ struct ctl_table random_table[] = {
  
  struct batched_entropy {
  	union {
@@ -36,7 +36,7 @@ index 4fa63bfde6c9..0a05e87d17e2 100644
  	};
  	unsigned int position;
  };
-@@ -2082,46 +2082,39 @@ struct batched_entropy {
+@@ -2081,46 +2081,39 @@ struct batched_entropy {
   * number is either as good as RDRAND or as good as /dev/urandom, with the
   * goal of being quite fast and not depleting entropy.
   */
@@ -130,5 +130,5 @@ index 63041eb581da..45c3c3b4ee92 100644
  
  /*
 -- 
-2.25.1
+2.34.1
 

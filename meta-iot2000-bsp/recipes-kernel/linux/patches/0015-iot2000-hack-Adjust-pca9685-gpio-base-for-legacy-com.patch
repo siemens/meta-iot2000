@@ -1,4 +1,4 @@
-From 78ffaa5f57e056cff46ad9c4e4fe07a12fb2b129 Mon Sep 17 00:00:00 2001
+From b11e03e512bb2ea41752c432db51cd5cd6874281 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 25 May 2017 13:05:12 +0200
 Subject: [PATCH 15/32] iot2000-hack: Adjust pca9685-gpio base for legacy
@@ -38,5 +38,5 @@ index d2b92e940e38..611b9263a896 100644
  	pca->gpio.can_sleep = true;
  
 -- 
-2.25.1
+2.34.1
 
