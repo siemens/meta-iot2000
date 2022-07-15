@@ -1,7 +1,7 @@
-From c915a50970cb95f911a0b1116ab8ed9ce9eb1ff6 Mon Sep 17 00:00:00 2001
+From 40e7a236de29ae5cb85a36aee6c76459c8a02168 Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Thu, 22 Oct 2020 09:35:07 +0800
-Subject: [PATCH 25/26] OpenSSL 1.1.1 support
+Subject: [PATCH 31/32] OpenSSL 1.1.1 support
 
 Ported from
 OpenSUSE:nodejs8-8.17.0-lp152.147.1:openssl_1_1_1.patch
@@ -236,5 +236,5 @@ index 4c01f618a3..c104d0ff52 100644
      Local<Value> callback = object->Get(env->onhandshakedone_string());
      if (callback->IsFunction()) {
 -- 
-2.25.1
+2.34.1
 

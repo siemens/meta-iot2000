@@ -1,7 +1,7 @@
-From 938cfbe939734bcc59d6e81fcf42db8cdfe30655 Mon Sep 17 00:00:00 2001
+From afc6ebba47051804872d40e8d08db31e0f733b32 Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Tue, 20 Oct 2020 17:15:12 +0800
-Subject: [PATCH 12/26] py2to3: fix deps/v8/tools/gen-postmortem-metadata.py
+Subject: [PATCH 12/32] py2to3: fix deps/v8/tools/gen-postmortem-metadata.py
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---
@@ -23,5 +23,5 @@ index 827d00dc9e..0696bd0ff2 100644
  
          out.write('/* miscellaneous constants */\n');
 -- 
-2.25.1
+2.34.1
 

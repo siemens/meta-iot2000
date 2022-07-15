@@ -1,7 +1,7 @@
-From a7e2ce9c9879c1d160807a6a3bfa4f0d0a5a8b71 Mon Sep 17 00:00:00 2001
+From 2efeca0edceb4483ea53c878c900cb47c66e81e2 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Sat, 16 Mar 2019 15:21:53 +0100
-Subject: [PATCH 03/26] Relax check in ComputeInputFrameSize
+Subject: [PATCH 03/32] Relax check in ComputeInputFrameSize
 
 It's not yet clear why the x87 port sometimes triggers this, e.g. while
 running npm, but it seems harmless to ignore, at least the case where
@@ -32,5 +32,5 @@ index 21b36ba49c..25e8abab58 100644
               result);
    }
 -- 
-2.25.1
+2.34.1
 

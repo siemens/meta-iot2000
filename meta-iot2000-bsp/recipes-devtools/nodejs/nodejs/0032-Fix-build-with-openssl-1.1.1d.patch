@@ -1,7 +1,7 @@
-From 347c11adc5e47dff998b1d42e5718aa09e7368c8 Mon Sep 17 00:00:00 2001
+From 761f7c14a042acfe4ba7e40f88166f0663801d46 Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Thu, 22 Oct 2020 09:38:01 +0800
-Subject: [PATCH 26/26] Fix build with openssl 1.1.1d
+Subject: [PATCH 32/32] Fix build with openssl 1.1.1d
 
 Ported from
 OpenSUSE:nodejs8-8.17.0-lp152.147.1:fix_build_with_openssl_1.1.1d.patch
@@ -10,27 +10,27 @@ Original commit message:
 
 FROM: https://github.com/nodejs/node/pull/29550/commits
 
-From 94c599e80218b09b27c0df93573a51e6adb45e61 Mon Sep 17 00:00:00 2001
-From: Sam Roberts <vieuxtech@gmail.com>
-Date: Thu, 19 Sep 2019 13:06:46 -0700
-Subject: [PATCH] fixup! test: well-defined DH groups now verify clean
+   From 94c599e80218b09b27c0df93573a51e6adb45e61 Mon Sep 17 00:00:00 2001
+   From: Sam Roberts <vieuxtech@gmail.com>
+   Date: Thu, 19 Sep 2019 13:06:46 -0700
+   Subject: [PATCH] fixup! test: well-defined DH groups now verify clean
 
-test/parallel/test-crypto-binary-default.js |  3 +--
- test/parallel/test-crypto-dh.js             | 17 ++---------------
- 2 files changed, 3 insertions(+), 17 deletions(-)
+   test/parallel/test-crypto-binary-default.js |  3 +--
+   test/parallel/test-crypto-dh.js             | 17 ++---------------
+   2 files changed, 3 insertions(+), 17 deletions(-)
 
-From 7dc56e082b96aeee34e83dabbad81ee12607e38f Mon Sep 17 00:00:00 2001
-From: Sam Roberts <vieuxtech@gmail.com>
-Date: Fri, 13 Sep 2019 13:19:06 -0700
-Subject: [PATCH] test: well-defined DH groups now verify clean
+   From 7dc56e082b96aeee34e83dabbad81ee12607e38f Mon Sep 17 00:00:00 2001
+   From: Sam Roberts <vieuxtech@gmail.com>
+   Date: Fri, 13 Sep 2019 13:19:06 -0700
+   Subject: [PATCH] test: well-defined DH groups now verify clean
 
-OpenSSL 1.1.1d no longer generates warnings for some DH groups that used
-to be considered unsafe. See below for discussion. This is considered a
-bug fix.
+   OpenSSL 1.1.1d no longer generates warnings for some DH groups that used
+   to be considered unsafe. See below for discussion. This is considered a
+   bug fix.
 
-See:
-- https://github.com/openssl/openssl/pull/9363
-- https://github.com/openssl/openssl/pull/9363#discussion_r324802618
+   See:
+   - https://github.com/openssl/openssl/pull/9363
+   - https://github.com/openssl/openssl/pull/9363#discussion_r324802618
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---
@@ -133,5 +133,5 @@ index 408786e701..49821ec467 100644
  const availableCurves = new Set(crypto.getCurves());
  const availableHashes = new Set(crypto.getHashes());
 -- 
-2.25.1
+2.34.1
 

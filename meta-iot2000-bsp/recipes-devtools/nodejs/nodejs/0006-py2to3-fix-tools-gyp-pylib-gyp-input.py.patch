@@ -1,7 +1,7 @@
-From 847886e268be99030268b8bc8fc33af48a4d35c8 Mon Sep 17 00:00:00 2001
+From 553ca88684898cf1d90d50d4734071a8e1420416 Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Fri, 9 Oct 2020 18:15:21 +0800
-Subject: [PATCH 06/26] py2to3: fix tools/gyp/pylib/gyp/input.py
+Subject: [PATCH 06/32] py2to3: fix tools/gyp/pylib/gyp/input.py
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---
@@ -110,5 +110,5 @@ index c322c83b28..7de6c44ae2 100644
              sys.stderr.write(p_stderr)
              # Simulate check_call behavior, since check_call only exists
 -- 
-2.25.1
+2.34.1
 

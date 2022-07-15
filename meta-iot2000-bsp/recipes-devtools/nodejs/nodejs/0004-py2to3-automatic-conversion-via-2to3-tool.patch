@@ -1,7 +1,7 @@
-From 1acb2be57b495e55860fb16d88a2a06e756c15ac Mon Sep 17 00:00:00 2001
+From 5e15806cde9130e2c5cd6114c222c7d03c955631 Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Fri, 9 Oct 2020 16:21:40 +0800
-Subject: [PATCH 04/26] py2to3: automatic conversion via 2to3 tool
+Subject: [PATCH 04/32] py2to3: automatic conversion via 2to3 tool
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---
@@ -14742,5 +14742,5 @@ index e3c759372a..68ff68fa56 100755
      timed_tests = [ t.case for t in cases_to_run if not t.case.duration is None ]
      timed_tests.sort(lambda a, b: a.CompareTime(b))
 -- 
-2.25.1
+2.34.1
 

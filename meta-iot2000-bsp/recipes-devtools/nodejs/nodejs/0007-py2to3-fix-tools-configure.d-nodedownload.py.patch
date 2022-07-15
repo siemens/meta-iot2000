@@ -1,7 +1,7 @@
-From 8e3d1a244d7867b62c62bfddeefc35b9b9adb4c9 Mon Sep 17 00:00:00 2001
+From 8f7295b674a11eeea0f0d5f223941159451740d5 Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Fri, 9 Oct 2020 18:19:02 +0800
-Subject: [PATCH 07/26] py2to3: fix tools/configure.d/nodedownload.py
+Subject: [PATCH 07/32] py2to3: fix tools/configure.d/nodedownload.py
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---
@@ -27,5 +27,5 @@ index 64a85bb505..92a30d6ee5 100644
  def spin(c):
      """print out an ASCII 'spinner' based on the value of counter 'c'"""
 -- 
-2.25.1
+2.34.1
 

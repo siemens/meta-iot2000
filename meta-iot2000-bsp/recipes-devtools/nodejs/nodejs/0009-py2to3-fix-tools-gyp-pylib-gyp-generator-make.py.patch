@@ -1,7 +1,7 @@
-From 8de6304f4346aebc6467f8e7c250b62cf16d6792 Mon Sep 17 00:00:00 2001
+From 8a45211edbdbe9e6fc9f11ac723ca90f471c3313 Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Tue, 20 Oct 2020 15:57:35 +0800
-Subject: [PATCH 09/26] py2to3: fix tools/gyp/pylib/gyp/generator/make.py
+Subject: [PATCH 09/32] py2to3: fix tools/gyp/pylib/gyp/generator/make.py
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---
@@ -24,5 +24,5 @@ index bde7e01429..210e18762a 100644
        self.WriteLn('\t%s' % '@:');
        self.WriteLn('%s: %s' % ('.INTERMEDIATE', intermediate))
 -- 
-2.25.1
+2.34.1
 
