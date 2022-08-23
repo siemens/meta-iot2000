@@ -1,4 +1,4 @@
-From 9bf513fca21a88823d278c2702d6ba6ae428b24a Mon Sep 17 00:00:00 2001
+From 2fe704108ef009998def6bea00386ed38a6c0570 Mon Sep 17 00:00:00 2001
 From: Theodore Ts'o <tytso@mit.edu>
 Date: Wed, 20 Feb 2019 16:06:38 -0500
 Subject: [PATCH 30/32] random: only read from /dev/random after its pool has
@@ -25,7 +25,7 @@ Signed-off-by: Theodore Ts'o <tytso@mit.edu>
  2 files changed, 27 insertions(+), 30 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index 13f2d62e7a8e..c695a624a4e6 100644
+index b629f84586d9..0c72ec3eaf3b 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -466,7 +466,6 @@ struct entropy_store {
@@ -106,7 +106,7 @@ index 13f2d62e7a8e..c695a624a4e6 100644
  	}
  }
  
-@@ -1511,6 +1506,11 @@ static ssize_t extract_entropy_user(struct entropy_store *r, void __user *buf,
+@@ -1510,6 +1505,11 @@ static ssize_t extract_entropy_user(struct entropy_store *r, void __user *buf,
  	int large_request = (nbytes > 256);
  
  	trace_extract_entropy_user(r->name, nbytes, ENTROPY_BITS(r), _RET_IP_);
@@ -159,5 +159,5 @@ index 4684de344c5d..d5323630be90 100644
  
  TRACE_EVENT(push_to_pool,
 -- 
-2.25.1
+2.34.1
 

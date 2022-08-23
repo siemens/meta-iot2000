@@ -1,7 +1,7 @@
-From e21712cbb2f92b3da3951a2b93d7320042592d6a Mon Sep 17 00:00:00 2001
+From aa533dc22fce9cb37ef8053eea9fd7799c72001c Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Fri, 16 Oct 2020 15:16:06 +0800
-Subject: [PATCH 16/26] py2to3: use python3 for node-gyp
+Subject: [PATCH 16/32] py2to3: use python3 for node-gyp
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---
@@ -33,5 +33,5 @@ index 2094017c34..649b7ff6da 100644
              sys.stderr.write(p_stderr)
              # Simulate check_call behavior, since check_call only exists
 -- 
-2.25.1
+2.34.1
 

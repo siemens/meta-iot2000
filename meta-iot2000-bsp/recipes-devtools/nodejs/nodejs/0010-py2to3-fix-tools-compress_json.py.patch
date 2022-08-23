@@ -1,7 +1,7 @@
-From 714df5873139abd31fd3fab2dc1fe7f52279a318 Mon Sep 17 00:00:00 2001
+From fa0ee90074505d8a8dc387bdb3a93c3e0c5a0ccf Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Fri, 9 Oct 2020 19:08:09 +0800
-Subject: [PATCH 10/26] py2to3: fix tools/compress_json.py
+Subject: [PATCH 10/32] py2to3: fix tools/compress_json.py
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---
@@ -39,5 +39,5 @@ index f136cd49be..13808b9769 100644
 +  with open(sys.argv[2], 'w') as fp:
 +    fp.write(text)
 -- 
-2.25.1
+2.34.1
 

@@ -1,4 +1,4 @@
-From 8359806ac5527490b29b4b4e30fd53e2a1fe72d4 Mon Sep 17 00:00:00 2001
+From aac07e3dcd93a200a2f1326f75c5d937ccded8ac Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 22 Jun 2017 08:18:00 +0200
 Subject: [PATCH 04/32] stmmac: pci: Select quark_pci_dmi_data from
@@ -161,5 +161,5 @@ index 19cf9607618a..9fe6368738ec 100644
  		return ret;
  
 -- 
-2.25.1
+2.34.1
 

@@ -1,4 +1,4 @@
-From be37f402bbad155b5e6fa865db26d91609442c6e Mon Sep 17 00:00:00 2001
+From eaea9f187b05f364b281ffa7ced5ddc3d85a6347 Mon Sep 17 00:00:00 2001
 From: Theodore Ts'o <tytso@mit.edu>
 Date: Wed, 11 Apr 2018 13:27:52 -0400
 Subject: [PATCH 28/32] random: fix crng_ready() test
@@ -24,7 +24,7 @@ Reviewed-by: Jann Horn <jannh@google.com>
  1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index fc6f6899c5ac..457b0301b7e7 100644
+index 2d6f57c7ee81..d50f71b3b4ea 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -435,7 +435,7 @@ struct crng_state primary_crng = {
@@ -54,16 +54,16 @@ index fc6f6899c5ac..457b0301b7e7 100644
  	    time_after(jiffies, crng->init_time + CRNG_RESEED_INTERVAL))
  		crng_reseed(crng, crng == &primary_crng ? &input_pool : NULL);
  	spin_lock_irqsave(&crng->lock, flags);
-@@ -1147,7 +1147,7 @@ void add_interrupt_randomness(int irq, int irq_flags)
+@@ -1146,7 +1146,7 @@ void add_interrupt_randomness(int irq, int irq_flags)
+ 	fast_mix(fast_pool);
  	add_interrupt_bench(cycles);
- 	this_cpu_add(net_rand_state.s1, fast_pool->pool[cycles & 3]);
  
 -	if (!crng_ready()) {
 +	if (unlikely(crng_init == 0)) {
  		if ((fast_pool->count >= 64) &&
  		    crng_fast_load((char *) fast_pool->pool,
  				   sizeof(fast_pool->pool))) {
-@@ -2202,7 +2202,7 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
+@@ -2201,7 +2201,7 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
  {
  	struct entropy_store *poolp = &input_pool;
  
@@ -73,5 +73,5 @@ index fc6f6899c5ac..457b0301b7e7 100644
  		return;
  	}
 -- 
-2.25.1
+2.34.1
 

@@ -1,7 +1,7 @@
-From bfd4e95e9c283842002a61cb80478d4a44807fcb Mon Sep 17 00:00:00 2001
+From c1655a56f68fdf7ade8e1bfd48d9299e49e9e185 Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Sat, 10 Oct 2020 12:59:22 +0800
-Subject: [PATCH 15/26] py2to3: fix gyp/samples/samples
+Subject: [PATCH 15/32] py2to3: fix gyp/samples/samples
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---
@@ -74,5 +74,5 @@ index 804b618998..94c0a9febd 100755
      else:
        assert False
 -- 
-2.25.1
+2.34.1
 

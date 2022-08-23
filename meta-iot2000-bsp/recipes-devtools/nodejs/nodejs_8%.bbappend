@@ -21,7 +21,16 @@ SRC_URI += " \
     file://0018-CVE-2019-15604.patch \
     file://0019-CVE-2019-15605.patch \
     file://0020-CVE-2020-8174.patch \
-    file://0021-CVE-2020-11080.patch \
-    file://0022-CVE-2020-11080-part-2.patch \
-    file://0023-CVE-2020-7598.patch \
+    file://0021-nghttp2_1.41.0.patch \
+    file://0022-CVE-2020-11080.patch \
+    file://0023-CVE-2020-8265.patch \
+    file://0024-CVE-2020-8287.patch \
+    file://0025-CVE-2021-22884.patch \
+    file://0026-CVE-2021-22883.patch \
+    file://0027-CVE-2021-22930.patch \
+    file://0028-CVE-2021-22939.patch \
+    file://0029-CVE-2021-44907.patch \
+    file://0030-CVE-2022-0235.patch \
+    file://0031-OpenSSL-1.1.1-support.patch \
+    file://0032-Fix-build-with-openssl-1.1.1d.patch \
 "

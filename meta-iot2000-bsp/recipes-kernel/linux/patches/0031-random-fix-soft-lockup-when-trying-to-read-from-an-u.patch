@@ -1,4 +1,4 @@
-From fa67d0d04298679a29e0299bd465dcdbba22c42d Mon Sep 17 00:00:00 2001
+From c74cb5fd0d89a37c3e6bd42bc3fcff9dd779ed7d Mon Sep 17 00:00:00 2001
 From: Theodore Ts'o <tytso@mit.edu>
 Date: Wed, 22 May 2019 12:02:16 -0400
 Subject: [PATCH 31/32] random: fix soft lockup when trying to read from an
@@ -12,7 +12,7 @@ Signed-off-by: Theodore Ts'o <tytso@mit.edu>
  1 file changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index c695a624a4e6..e9d19107b836 100644
+index 0c72ec3eaf3b..6529a2043fde 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -702,8 +702,11 @@ retry:
@@ -42,7 +42,7 @@ index c695a624a4e6..e9d19107b836 100644
  		/* should we wake readers? */
  		if (entropy_bits >= random_read_wakeup_bits) {
  			wake_up_interruptible(&random_read_wait);
-@@ -1796,8 +1806,8 @@ _random_read(int nonblock, char __user *buf, size_t nbytes)
+@@ -1795,8 +1805,8 @@ _random_read(int nonblock, char __user *buf, size_t nbytes)
  			return -EAGAIN;
  
  		wait_event_interruptible(random_read_wait,
@@ -54,5 +54,5 @@ index c695a624a4e6..e9d19107b836 100644
  			return -ERESTARTSYS;
  	}
 -- 
-2.25.1
+2.34.1
 

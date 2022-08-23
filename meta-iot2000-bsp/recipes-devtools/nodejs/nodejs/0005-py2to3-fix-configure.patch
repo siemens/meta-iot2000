@@ -1,7 +1,7 @@
-From 9d1b310f6ddf67eeb667ef1e11b0b1b596545dc5 Mon Sep 17 00:00:00 2001
+From f5e6d7e0354caf2d650da0ab315d78801f0bcc24 Mon Sep 17 00:00:00 2001
 From: Su Baocheng <baocheng.su@siemens.com>
 Date: Fri, 9 Oct 2020 17:14:34 +0800
-Subject: [PATCH 05/26] py2to3: fix configure
+Subject: [PATCH 05/32] py2to3: fix configure
 
 Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
 ---
@@ -155,5 +155,5 @@ index a24eeef8ed..f5e325a133 100755
      print('Could not read U_ICU_VERSION_SHORT version from %s' % uvernum_h)
      sys.exit(1)
 -- 
-2.25.1
+2.34.1
 

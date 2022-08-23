@@ -1,4 +1,4 @@
-From 805ddc14461649b2540080bca1d5ffc52f63143b Mon Sep 17 00:00:00 2001
+From 40ffd7e710b9bd828467fb07b60dd087bb0662d1 Mon Sep 17 00:00:00 2001
 From: Yong Li <sdliyong@gmail.com>
 Date: Thu, 31 Mar 2016 15:33:08 +0800
 Subject: [PATCH 16/32] iot2000-hack: gpio: pca953x: provide GPIO base based on
@@ -95,5 +95,5 @@ index b45ba6be69ef..8b467c0db1cb 100644
  
  	chip->chip_type = PCA_CHIP_TYPE(chip->driver_data);
 -- 
-2.25.1
+2.34.1
 

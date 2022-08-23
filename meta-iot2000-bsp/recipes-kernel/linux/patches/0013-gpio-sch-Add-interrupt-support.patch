@@ -1,4 +1,4 @@
-From eca29e3a714aad86c538b3f159386f890f2a1105 Mon Sep 17 00:00:00 2001
+From b613bd97a6e958da8e5de97cdf6fba495b99e3a9 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Wed, 17 Apr 2019 22:26:22 +0200
 Subject: [PATCH 13/32] gpio: sch: Add interrupt support
@@ -226,5 +226,5 @@ index 6715828c3940..1d1dadebc8c1 100644
  
  static struct platform_driver sch_gpio_driver = {
 -- 
-2.25.1
+2.34.1
 

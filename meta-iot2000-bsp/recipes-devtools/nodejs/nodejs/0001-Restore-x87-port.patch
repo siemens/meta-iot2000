@@ -1,7 +1,7 @@
-From d24fdad3230b556c9a6895fc247577d7719eac57 Mon Sep 17 00:00:00 2001
+From 926ee2e58584429d907e9231d08c0f428edfdf09 Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Thu, 7 Feb 2019 21:22:57 +0100
-Subject: [PATCH 01/26] Restore x87 port
+Subject: [PATCH 01/32] Restore x87 port
 
 This reverts commit e825c4318eb2065ffdf9044aa6a5278635c36427 and brings
 the result to the latest 8.x changes. It also optimizes some details to
@@ -24131,5 +24131,5 @@ index 0000000000..62917d838f
 +}
 +#undef __
 -- 
-2.25.1
+2.34.1
 

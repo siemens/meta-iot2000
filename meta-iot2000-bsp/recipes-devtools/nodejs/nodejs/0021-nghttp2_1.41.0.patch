@@ -1,10 +1,10 @@
-From 67c6ab839005c4fe4d1a2f44c03d62ac72977942 Mon Sep 17 00:00:00 2001
-From: Su Baocheng <baocheng.su@siemens.com>
-Date: Wed, 21 Oct 2020 13:27:01 +0800
-Subject: [PATCH 21/26] CVE-2020-11080
+From 68e2d74e9c531087d4f30916034bd0e434090ff8 Mon Sep 17 00:00:00 2001
+From: chao zeng <chao.zeng@siemens.com>
+Date: Fri, 15 Jul 2022 11:13:20 +0800
+Subject: [PATCH 21/32] nghttp2_1.41.0
 
 Ported from
-OpenSUSE:nodejs8-8.17.0-lp152.147.1:nghttp2_1.41.0.patch
+OpenSuse:nodejs8-8.17.0-150200.10.22.1
 
 Original commit message:
 
@@ -21,7 +21,7 @@ Date:   Tue May 5 15:27:53 2020 -0700
     Reviewed-By: Beth Griggs <Bethany.Griggs@uk.ibm.com>
     Reviewed-By: Sam Roberts <vieuxtech@gmail.com>
 
-Signed-off-by: Su Baocheng <baocheng.su@siemens.com>
+Signed-off-by: chao zeng <chao.zeng@siemens.com>
 ---
  deps/nghttp2/lib/CMakeLists.txt               |   76 -
  deps/nghttp2/lib/includes/nghttp2/nghttp2.h   |   36 +
@@ -10289,5 +10289,5 @@ index f604eff5c9..744a49cf60 100644
  
    return 0;
 -- 
-2.25.1
+2.34.1
 

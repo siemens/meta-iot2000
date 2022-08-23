@@ -1,4 +1,4 @@
-From b4d9543c8d2e5bcd3f09626377470a3aaf8e81cb Mon Sep 17 00:00:00 2001
+From d6f0c543ede2caec1067922e29d91aa50b93761f Mon Sep 17 00:00:00 2001
 From: Linus Torvalds <torvalds@linux-foundation.org>
 Date: Sat, 28 Sep 2019 16:53:52 -0700
 Subject: [PATCH 32/32] random: try to actively add entropy rather than
@@ -61,10 +61,10 @@ Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
  1 file changed, 61 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index e9d19107b836..353b0a72f7be 100644
+index 6529a2043fde..7d29c1cc5a1f 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
-@@ -1589,6 +1589,56 @@ void get_random_bytes(void *buf, int nbytes)
+@@ -1588,6 +1588,56 @@ void get_random_bytes(void *buf, int nbytes)
  }
  EXPORT_SYMBOL(get_random_bytes);
  
@@ -121,7 +121,7 @@ index e9d19107b836..353b0a72f7be 100644
  /*
   * Wait for the urandom pool to be seeded and thus guaranteed to supply
   * cryptographically secure random numbers. This applies to: the /dev/urandom
-@@ -1603,7 +1653,17 @@ int wait_for_random_bytes(void)
+@@ -1602,7 +1652,17 @@ int wait_for_random_bytes(void)
  {
  	if (likely(crng_ready()))
  		return 0;
@@ -141,5 +141,5 @@ index e9d19107b836..353b0a72f7be 100644
  EXPORT_SYMBOL(wait_for_random_bytes);
  
 -- 
-2.25.1
+2.34.1
 
