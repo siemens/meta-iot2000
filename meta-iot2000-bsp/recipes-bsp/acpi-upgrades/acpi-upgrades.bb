@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/tables:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/tables:"
 
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${IOT2000_MIT_LICENSE};md5=838c366f69b72c5df05c96dff79b35f2"

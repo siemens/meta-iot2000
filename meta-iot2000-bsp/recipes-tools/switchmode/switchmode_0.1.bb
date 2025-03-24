@@ -7,7 +7,7 @@ SRC_URI = "file://switchmode.c"
 S = "${WORKDIR}"
 INSTDIR = "/usr/bin/"
 
-FILES_${PN} = "${INSTDIR}*"
+FILES:${PN} = "${INSTDIR}*"
 
 do_compile() {
 	${CC} ${CFLAGS} ${LDFLAGS} ${WORKDIR}/switchmode.c -o switchserialmode

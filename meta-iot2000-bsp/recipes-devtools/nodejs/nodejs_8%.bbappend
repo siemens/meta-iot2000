@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/nodejs:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/nodejs:"
 
 SRC_URI += " \
     file://0001-Restore-x87-port.patch \

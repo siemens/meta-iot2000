@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/common:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/common:"
 
 SRC_URI += " \
     file://0001-runtime-Implement-i386-atomic-quadword-ops-alternati.patch \
@@ -7,7 +7,7 @@ SRC_URI += " \
     file://go-wrapper \
     "
 
-do_install_append() {
+do_install:append() {
     mv ${D}${bindir}/go ${D}${bindir}/go.bin
     install -m755 ${WORKDIR}/go-wrapper ${D}${bindir}/go
 }

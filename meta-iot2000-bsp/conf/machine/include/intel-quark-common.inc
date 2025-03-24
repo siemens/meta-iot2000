@@ -8,5 +8,5 @@ require conf/machine/include/x86-base.inc
 
 # gnutls padlock code uses CMOV instruction in assembly which
 # is not valid for Quark.
-EXTRA_OECONF_append_pn-gnutls_intel-quark = " --disable-padlock"
-EXTRA_OECONF_append_pn-openssl_intel-quark = " no-asm" 
+EXTRA_OECONF:append:pn-gnutls_intel-quark = " --disable-padlock"
+EXTRA_OECONF:append:pn-openssl_intel-quark = " no-asm" 
