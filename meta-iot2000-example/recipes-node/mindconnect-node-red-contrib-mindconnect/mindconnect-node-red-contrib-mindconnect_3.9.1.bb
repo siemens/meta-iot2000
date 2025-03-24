@@ -10,4 +10,4 @@ inherit npm-ng
 NPMPN = "@mindconnect/node-red-contrib-mindconnect"
 NPM_LOCAL_INSTALL_DIR = "/home/root/.node-red"
 
-RDEPENDS_${PN} += "bash"
+RDEPENDS:${PN} += "bash"

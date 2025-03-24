@@ -11,7 +11,7 @@ SRC_URI = "file://Makefile \
 
 S = "${WORKDIR}"
 
-do_install_append() {
+do_install:append() {
 	install -d ${D}${sysconfdir}/modules-load.d
 	echo "galileo-uio-gpio" > ${D}${sysconfdir}/modules-load.d/galileo-uio-gpio.conf
 }

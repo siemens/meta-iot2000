@@ -11,4 +11,4 @@ export PYTHON = "python3"
 
 NPM_LOCAL_INSTALL_DIR = "/home/root/.node-red"
 
-INSANE_SKIP_${PN} += "textrel"
+INSANE_SKIP:${PN} += "textrel"

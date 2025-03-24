@@ -4,6 +4,6 @@
 #according to your requirements. This file will be placed at 
 #/etc/network/interfaces.
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI_append = " file://interfaces"
+SRC_URI:append = " file://interfaces"

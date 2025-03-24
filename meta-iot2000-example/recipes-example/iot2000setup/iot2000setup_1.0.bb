@@ -6,12 +6,12 @@ inherit update-rc.d
 
 SRC_URI = "file://expandfs.sh file://iot2000setup.py"
 
-FILES_${PN} += " \
+FILES:${PN} += " \
 	${sysconfdir}/init.d/expandfs.sh \
 	${bindir}/iot2000setup \
 "
 
-RDEPENDS_${PN} += "libnewt-python python3-mraa util-linux-sfdisk"
+RDEPENDS:${PN} += "libnewt-python python3-mraa util-linux-sfdisk"
 INITSCRIPT_NAME = "expandfs.sh"
 INITSCRIPT_PARAMS = "defaults 10"
 

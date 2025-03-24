@@ -11,7 +11,7 @@ SRC_URI = "file://Makefile \
 
 S = "${WORKDIR}"
 
-do_install_append() {
+do_install:append() {
             install -d ${D}${sysconfdir}/modules-load.d
             echo "galileogen2-fake" > ${D}${sysconfdir}/modules-load.d/galileogen2-fake.conf
 }

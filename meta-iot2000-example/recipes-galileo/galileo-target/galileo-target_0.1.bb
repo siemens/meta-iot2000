@@ -10,16 +10,16 @@ SRC_URI = "file://galileo-target \
            file://r1_2_sketch_reset.patch"
 
 INSTALLDIR = "/opt/cln/galileo"
-FILES_${PN} += "${INSTALLDIR} \
+FILES:${PN} += "${INSTALLDIR} \
                 ${systemd_unitdir}/system/ \
                 /sketch"
-FILES_${PN}-dbg += "${INSTALLDIR}/.debug"
+FILES:${PN}-dbg += "${INSTALLDIR}/.debug"
 
 S = "${WORKDIR}/galileo-target"
 
-RDEPENDS_${PN} += "uclibc uclibc-libpthread uclibc-libm uclibc-binlibs"
-RDEPENDS_${PN} += "galileogen2-fake galileo-uio-gpio galileo-spi1-spidev"
-RDEPENDS_${PN} += "acm-gadget"
+RDEPENDS:${PN} += "uclibc uclibc-libpthread uclibc-libm uclibc-binlibs"
+RDEPENDS:${PN} += "galileogen2-fake galileo-uio-gpio galileo-spi1-spidev"
+RDEPENDS:${PN} += "acm-gadget"
 
 do_compile() {
 	make
@@ -49,4 +49,4 @@ INITSCRIPT_PACKAGES = "${PN}"
 INITSCRIPT_NAME = "galileod"
 
 inherit systemd
-SYSTEMD_SERVICE_${PN} = "galileo-target.service galileo-sketch-reset.service"
+SYSTEMD_SERVICE:${PN} = "galileo-target.service galileo-sketch-reset.service"

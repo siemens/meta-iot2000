@@ -6,9 +6,9 @@ SRC_URI = "file://setledcolor.py"
 
 S = "${WORKDIR}"
 
-FILES_${PN} += "${bindir}/setledcolor.py"
+FILES:${PN} += "${bindir}/setledcolor.py"
 
-RDEPENDS_${PN} = "python3-mraa"
+RDEPENDS:${PN} = "python3-mraa"
 
 do_install() {
 	install -d ${D}${bindir}

@@ -10,13 +10,13 @@ inherit npm-ng
 
 SRC_URI += "file://node-red.init"
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/node-red.init ${D}${sysconfdir}/init.d/node-red
 }
 
-FILES_${PN} += "${sysconfdir}/init.d/node-red.sh ${bindir}/node-red"
+FILES:${PN} += "${sysconfdir}/init.d/node-red.sh ${bindir}/node-red"
 
-RDEPENDS_${PN} += "python3 bash"
+RDEPENDS:${PN} += "python3 bash"
 
-INSANE_SKIP_${PN} += "textrel"
+INSANE_SKIP:${PN} += "textrel"

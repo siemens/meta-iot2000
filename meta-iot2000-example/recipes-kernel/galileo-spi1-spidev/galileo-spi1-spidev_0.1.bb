@@ -11,7 +11,7 @@ SRC_URI = "file://Makefile \
 
 S = "${WORKDIR}"
 
-do_install_append() {
+do_install:append() {
             install -d ${D}${sysconfdir}/modules-load.d
             echo "galileo-spi1-spidev" > ${D}${sysconfdir}/modules-load.d/galileo-spi1-spidev.conf
 }

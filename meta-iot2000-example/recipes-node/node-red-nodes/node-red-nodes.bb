@@ -11,7 +11,7 @@ NODE_RED_PACKAGES = " \
     node-red-contrib-modbus \
     @mindconnect/node-red-contrib-mindconnect"
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     node-red-dashboard \
     node-red-node-serialport \
     node-red-node-intel-gpio \
@@ -40,4 +40,4 @@ do_install() {
     install -m 0644 ${S}/package.json ${D}/home/root/.node-red/
 }
 
-FILES_${PN} = "/home/root/.node-red/package.json"
+FILES:${PN} = "/home/root/.node-red/package.json"

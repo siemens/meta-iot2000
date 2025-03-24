@@ -16,7 +16,7 @@ file://${S}/test/regex/testregex.c;beginline=1;endline=31;md5=234efb227d0a40677f
 
 require uclibc-config.inc
 
-PATH_prepend = "${STAGING_BINDIR_TOOLCHAIN}.${STAGINGCC}:"
+PATH:prepend = "${STAGING_BINDIR_TOOLCHAIN}.${STAGINGCC}:"
 
 # siteconfig.bbclass runs configure which needs a working compiler
 # For the compiler to work we need a working libc yet libc isn't
@@ -25,7 +25,7 @@ PATH_prepend = "${STAGING_BINDIR_TOOLCHAIN}.${STAGINGCC}:"
 # Here we create a hacked up libc linker script and pass in the right
 # flags to let configure work. Ugly.
 EXTRASITECONFIG = "CFLAGS='${CFLAGS} -Wl,-L${WORKDIR}/site_config_libc -L${WORKDIR}/site_config_libc -L${SYSROOT_DESTDIR}${libdir} -L${SYSROOT_DESTDIR}${base_libdir} -Wl,-L${SYSROOT_DESTDIR}${libdir} -Wl,-L${SYSROOT_DESTDIR}${base_libdir}'"
-siteconfig_do_siteconfig_gencache_prepend = " \
+siteconfig_do_siteconfig_gencache:prepend = " \
 mkdir -p ${WORKDIR}/site_config_libc; \
 cp ${SYSROOT_DESTDIR}${libdir}/libc.so ${WORKDIR}/site_config_libc; \
 sed -i -e 's# ${base_libdir}# ${SYSROOT_DESTDIR}${base_libdir}#g' -e 's# ${libdir}# ${SYSROOT_DESTDIR}${libdir}#g' ${WORKDIR}/site_config_libc/libc.so; \
@@ -61,7 +61,7 @@ export V="2"
 # -O<n> -fno-omit-frame-pointer ends up with GCC ICE on thumb as reported
 # http://gcc.gnu.org/bugzilla/show_bug.cgi?id=44860
 #
-CFLAGS_remove_arm = "-fno-omit-frame-pointer"
+CFLAGS:remove:arm = "-fno-omit-frame-pointer"
 UCLIBC_EXTRA_CFLAGS  = "${@oe.utils.str_filter_out('(-I\S+|-i\S+)', '${CFLAGS}', d)}"
 
 configmangle = '/^KERNEL_HEADERS/d; \
@@ -85,7 +85,7 @@ OE_FEATURES = "${@features_to_uclibc_conf(d)}"
 OE_DEL      = "${@features_to_uclibc_del(d)}"
 python () {
     if "${OE_DEL}":
-        d.setVar('configmangle_append', "${OE_DEL}" + "\n")
+        d.setVar('configmangle:append', "${OE_DEL}" + "\n")
 
     # by default uclibc uses mips1 ISA for o32 ABI
     # if we use TARGET_CC_ARCH="-march=mips32" we end up 
@@ -95,13 +95,13 @@ python () {
     if tune.startswith('mips32'):
         import re
         tune = re.sub('(el)*(-nf)*', '', tune)
-        d.setVar('configmangle_append',
+        d.setVar('configmangle:append',
                  "/^### MIPS32_CHECK$/a\\\nCONFIG_MIPS_ISA_%s=y\n\n" % (tune.upper()))
     if "${OE_FEATURES}":
-        d.setVar('configmangle_append',
+        d.setVar('configmangle:append',
                    "/^### DISTRO FEATURES$/a\\\n%s\n\n" %
                    ("\\n".join((d.expand("${OE_FEATURES}").split("\n")))))
-    d.setVar('configmangle_append',
+    d.setVar('configmangle:append',
                  "/^### CROSS$/a\\\n%s\n" %
                   ("\\n".join(["CROSS_COMPILER_PREFIX=\"${TARGET_PREFIX}\"",
                         "UCLIBC_EXTRA_CFLAGS=\"${UCLIBC_EXTRA_CFLAGS}\"",
@@ -111,16 +111,16 @@ python () {
                          "SHARED_LIB_LOADER_PREFIX=\"/lib\"",
                         ])
                   ))
-    d.setVar('configmangle_append',
+    d.setVar('configmangle:append',
                  "/^### TGT$/a\\\nTARGET_ARCH=\"%s\"\\nTARGET_%s=y\n" %
                         ("${UCLIBC_ARCH}", "${UCLIBC_ARCH}"))
-    d.setVar('configmangle_append',
+    d.setVar('configmangle:append',
     "/^### FPU$/a\\\n%s\n\n" % (["UCLIBC_HAS_FPU=y","# UCLIBC_HAS_FPU is not set"][d.getVar('TARGET_FPU', True) in [ 'soft' ]]))
     if "${UCLIBC_ENDIAN}":
-        d.setVar('configmangle_append',
+        d.setVar('configmangle:append',
                    "/^### ABI$/a\\\nARCH_WANTS_%s_ENDIAN=y\n\n" % ("${UCLIBC_ENDIAN}"))
     if "${UCLIBC_ABI}":
-        d.setVar('configmangle_append',
+        d.setVar('configmangle:append',
                    "/^### ABI$/a\\\nCONFIG_%s=y\n\n" % ("${UCLIBC_ABI}"))
 }
 
@@ -159,7 +159,7 @@ do_install() {
 }
 
 # build ldd, ldconfig and friends but only for full uclibc
-do_install_append_pn-uclibc () {
+do_install:append:pn-uclibc () {
         oe_runmake PREFIX=${D} "SSP_ALL_CFLAGS=${TARGET_LINK_HASH_STYLE}" -C utils utils_install
 }
 

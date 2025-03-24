@@ -1,7 +1,7 @@
 LICENSE = "MIT"
 
-FILES_${PN} += "/data"
+FILES:${PN} += "/data"
 
-do_install_append () {
+do_install:append () {
 	install -d "${D}/data"
 }

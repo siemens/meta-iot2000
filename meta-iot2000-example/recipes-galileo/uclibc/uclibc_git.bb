@@ -3,7 +3,7 @@ require uclibc-package.inc
 require uclibc-git.inc
 
 STAGINGCC = "gcc-cross-initial-${TARGET_ARCH}"
-STAGINGCC_class-nativesdk = "gcc-crosssdk-initial-${TARGET_ARCH}"
+STAGINGCC:class-nativesdk = "gcc-crosssdk-initial-${TARGET_ARCH}"
 
 DEPENDS = "virtual/${TARGET_PREFIX}binutils \
            virtual/${TARGET_PREFIX}gcc \
@@ -11,4 +11,4 @@ DEPENDS = "virtual/${TARGET_PREFIX}binutils \
            linux-libc-headers ncurses-native \
            kern-tools-native"
 
-RDEPENDS_${PN}-dev = "linux-libc-headers-dev"
+RDEPENDS:${PN}-dev = "linux-libc-headers-dev"

@@ -213,4 +213,4 @@ def get_nodes_install_dir(d):
     else:
         return d.getVar('libdir') + "/node"
 
-FILES_${PN} += "${@get_nodes_install_dir(d)}/${NPMPN}"
+FILES:${PN} += "${@get_nodes_install_dir(d)}/${NPMPN}"

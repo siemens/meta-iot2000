@@ -7,9 +7,9 @@ DEPENDS = "openssl zlib icu"
 
 inherit pkgconfig
 
-COMPATIBLE_MACHINE_armv4 = "(!.*armv4).*"
-COMPATIBLE_MACHINE_armv5 = "(!.*armv5).*"
-COMPATIBLE_MACHINE_mips64 = "(!.*mips64).*"
+COMPATIBLE_MACHINE:armv4 = "(!.*armv4).*"
+COMPATIBLE_MACHINE:armv5 = "(!.*armv5).*"
+COMPATIBLE_MACHINE:mips64 = "(!.*mips64).*"
 
 SRC_URI = "http://nodejs.org/dist/v${PV}/node-v${PV}.tar.xz \
     file://0001-Disable-running-gyp-files-for-bundled-deps.patch \
@@ -32,12 +32,12 @@ def map_nodejs_arch(a, d):
     elif re.match('powerpc$', a): return 'ppc'
     return a
 
-ARCHFLAGS_arm = "${@bb.utils.contains('TUNE_FEATURES', 'callconvention-hard', '--with-arm-float-abi=hard', '--with-arm-float-abi=softfp', d)} \
+ARCHFLAGS:arm = "${@bb.utils.contains('TUNE_FEATURES', 'callconvention-hard', '--with-arm-float-abi=hard', '--with-arm-float-abi=softfp', d)} \
                  ${@bb.utils.contains('TUNE_FEATURES', 'neon', '--with-arm-fpu=neon', \
                     bb.utils.contains('TUNE_FEATURES', 'vfpv3d16', '--with-arm-fpu=vfpv3-d16', \
                     bb.utils.contains('TUNE_FEATURES', 'vfpv3', '--with-arm-fpu=vfpv3', \
                     '--with-arm-fpu=vfp', d), d), d)}"
-GYP_DEFINES_append_mipsel = " mips_arch_variant='r1' "
+GYP_DEFINES:append:mipsel = " mips_arch_variant='r1' "
 ARCHFLAGS ?= ""
 
 # Node is way too cool to use proper autotools, so we install two wrappers to forcefully inject proper arch cflags to workaround gypi
@@ -61,7 +61,7 @@ do_install () {
     oe_runmake install DESTDIR=${D}
 }
 
-do_install_append_class-native() {
+do_install:append:class-native() {
     # use node from PATH instead of absolute path to sysroot
     # node-v0.10.25/tools/install.py is using:
     # shebang = os.path.join(node_prefix, 'bin/node')
@@ -76,17 +76,17 @@ do_install_append_class-native() {
     sed "1s^.*^#\!/usr/bin/env node^g" -i ${D}${exec_prefix}/lib/node_modules/npm/bin/npm-cli.js
 }
 
-do_install_append_class-target() {
+do_install:append:class-target() {
     sed "1s^.*^#\!${bindir}/env node^g" -i ${D}${exec_prefix}/lib/node_modules/npm/bin/npm-cli.js
 }
 
 PACKAGES =+ "${PN}-npm"
-FILES_${PN}-npm = "${exec_prefix}/lib/node_modules ${bindir}/npm ${bindir}/npx"
-RDEPENDS_${PN}-npm = "bash python3-core python3-shell python3-datetime \
+FILES:${PN}-npm = "${exec_prefix}/lib/node_modules ${bindir}/npm ${bindir}/npx"
+RDEPENDS:${PN}-npm = "bash python3-core python3-shell python3-datetime \
     python3-misc python3-multiprocessing"
 
 PACKAGES =+ "${PN}-systemtap"
-FILES_${PN}-systemtap = "${datadir}/systemtap"
+FILES:${PN}-systemtap = "${datadir}/systemtap"
 
 
 BBCLASSEXTEND = "native"
