@@ -18,7 +18,7 @@ repos:
 
   meta-swupdate:
     url: https://github.com/sbabic/meta-swupdate
-    refspec: 1886350dacb63d931b3d1a3809b27795b0a5c306
+    refspec: kirkstone
 
 local_conf_header:
   package_ipk: |
