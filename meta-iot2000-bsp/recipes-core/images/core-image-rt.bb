@@ -1,4 +1,4 @@
-require recipes-core/images/core-image-minimal.bb
+require recipes-core/images/core-image-minimal-iot2000.bb
 require core-image-iot2000.inc
 
 # Skip processing of this recipe if linux-cip-rt is not explicitly specified as the
