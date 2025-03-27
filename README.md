@@ -1,6 +1,15 @@
 IOT2000 Board Support Package
 =============================
 
+> [!IMPORTANT]
+> Product cancellation for Siemens SIMATIC IOT2040 has been declared on [January 1, 2023](https://support.industry.siemens.com/cs/de/en/view/109816013), this means:
+> 
+> - IOT2040 is no longer available for new orders.
+> - Example Image [V3.1.17](https://support.industry.siemens.com/cs/ww/en/view/109741799) is the final offical version from Siemens.
+> - This repo will not accept new pull requests.
+> 
+> SIMATIC IOT2050 is available as its successor product. See [meta-iot2050](https://github.com/siemens/meta-iot2050) for details.
+
 This packages contains the following elements:
 
 - meta-iot2000-bsp
